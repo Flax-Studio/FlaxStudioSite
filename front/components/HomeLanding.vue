@@ -36,7 +36,7 @@
 .landing-top {
     width: 100%;
     overflow-y: auto;
-    background: #448bd2;
+    background: linear-gradient(90deg, #6F40BD 0%, #D33396 100%);
 }
 
 .header a {
