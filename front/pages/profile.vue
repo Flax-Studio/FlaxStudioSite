@@ -100,6 +100,7 @@ import { userProfiles } from '../data/CommonData';
             </div>
         </div>
     </div>
+    <FooterComponent/>
 </template>
 <style scoped>
 .profile-container {

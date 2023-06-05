@@ -2,15 +2,15 @@
 </script>
 <template>
     <header>
-       <div class="header-parent">
-        <div class="header">
-            <h2><a href="./">Flax Studio</a></h2>
-            <div>
-                <a href="./">Home</a>
-                <a href="#about" class="hide-responsive">About</a>
+        <div class="header-parent">
+            <div class="header">
+                <h2><a href="./">Flax Studio</a></h2>
+                <div>
+                    <a href="./">Home</a>
+                    <a href="#about" class="hide-responsive">About</a>
+                </div>
             </div>
         </div>
-       </div>
     </header>
 </template>
 <style scoped>
@@ -23,13 +23,13 @@ header {
     z-index: 1000;
 }
 
-.header-parent{
+.header-parent {
     background-color: rgba(255, 255, 255, 0.103);
 }
 
 
 .header {
-   
+
     max-width: var(--max-page-width);
     margin: auto;
     height: 60px;

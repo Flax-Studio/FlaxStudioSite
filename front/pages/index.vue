@@ -9,5 +9,6 @@ import { releasedAppsData, upcomingAppsData, profileData } from '../data/CommonD
     <AppsAndGames :data="releasedAppsData" />
     <AppsAndGames :data="upcomingAppsData" />
     <Features />
+    <FooterComponent/>
 </template>
 <style scoped></style>

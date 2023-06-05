@@ -27,6 +27,7 @@ const bigPara = "Draw On is a versatile drawing app that lets you create stunnin
         :ending="'By incorporating these features, your Draw On app can provide users with a powerful and enjoyable drawing experience.'" />
 
     <AppsAndGames :data="releasedAppsData" />
-    <AppPrivacyCard :privacy-link="'./draw-on/privacy'" />
+    <!-- <AppPrivacyCard :privacy-link="'./draw-on/privacy'" /> -->
+    <FooterComponent/>
 </template>
 <style scoped></style>

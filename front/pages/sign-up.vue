@@ -3,6 +3,7 @@
 </script>
 <template>
     <h1>Hello starter</h1>
+    <FooterComponent/>
 </template>
 <style scoped>
 h1 {

@@ -3,7 +3,7 @@
 
 </script>
 <template>
-    <HeaderComponent/>
+    <HeaderComponent />
     <PrivacyLanding :app-name="'Draw On'" :small-para="'A simple & easy drawing app to show your creativity.'"
         :big-para="'Draw On is a versatile drawing app that lets you create stunning illustrations and designs with ease. With its intuitive interface and powerful tools, you can draw rectangles, lines, circles, curves, and more with just a few taps and swipes.'"
         :app-link="'https://play.google.com/store/apps/details?id=com.flaxstudio.drawon'" :app-page-link="'/draw-on'" />
@@ -81,6 +81,7 @@
             <b>flaxstudiohelp@gmail.com</b>.
         </p>
     </div>
+    <FooterComponent/>
 </template>
 <style scoped>
 .privacy-content {
