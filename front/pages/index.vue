@@ -3,6 +3,7 @@ import { releasedAppsData, upcomingAppsData, profileData } from '../data/CommonD
 
 </script>
 <template>
+    <HeaderComponent/>
     <HomeLanding />
     <Developers :data="profileData" />
     <AppsAndGames :data="releasedAppsData" />

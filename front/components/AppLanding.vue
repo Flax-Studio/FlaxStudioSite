@@ -14,17 +14,6 @@ const props = defineProps({
 
 <template>
     <div class="landing-top">
-        <div class="header-parent">
-            <div class="header">
-                <h2><a href="./">Flax Studio</a></h2>
-                <div>
-                    <a href="./">Home</a>
-                    <a href="#features" class="hide-responsive">Features</a>
-                    <a :href="privacyLink" class="hide-responsive">Privacy</a>
-                </div>
-            </div>
-        </div>
-
         <div class="content-parent">
             <div class="content">
                 <div class="detail">

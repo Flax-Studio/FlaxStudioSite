@@ -6,7 +6,8 @@ const bigPara = "Draw On is a versatile drawing app that lets you create stunnin
 
 </script>
 <template>
-     <AppLanding :app-name="'Draw On'" :small-para="'A simple & easy drawing app to show your creativity.'"
+    <HeaderComponent/>
+    <AppLanding :app-name="'Draw On'" :small-para="'A simple & easy drawing app to show your creativity.'"
         :big-para="bigPara" :app-link="'https://play.google.com/store/apps/details?id=com.flaxstudio.drawon'"
         :app-images-link="drawOnImage" :privacy-link="'/draw-on/privacy'" />
 
@@ -28,6 +29,4 @@ const bigPara = "Draw On is a versatile drawing app that lets you create stunnin
     <AppsAndGames :data="releasedAppsData" />
     <AppPrivacyCard :privacy-link="'./draw-on/privacy'" />
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>

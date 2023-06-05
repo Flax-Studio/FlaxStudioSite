@@ -1,5 +1,11 @@
 <script setup lang="ts">
-
+const props = defineProps({
+    appName: String,
+    smallPara: String,
+    bigPara: String,
+    appLink: String,
+    appPageLink: String
+})
 </script>
 
 <template>
@@ -7,15 +13,13 @@
         <div class="content-parent">
             <div class="content">
                 <div class="detail">
-                    <h1>We love make things amazing and simple</h1>
-                    <p>We are trying to create stuffs which make things easier and simpler to use. Our most of the app is
-                        open source so just find the Github repo and feel free to contribute. </p>
-                    <a target="_blank" href="https://play.google.com/store/apps/dev?id=7957006414559129964">Visit
-                        Playstore</a>
+                    <h1>{{ appName }}</h1>
+                    <p>{{ smallPara }}</p>
+                    <p>{{ bigPara }}</p>
+
+                    <a :href="appLink" target="_blank">Get from Playstore</a> <a :href="appPageLink">View App</a>
                 </div>
-                <div class="images">
-                    <img src="../public/app_images/home_image.png" alt="our apps">
-                </div>
+                <div></div>
             </div>
         </div>
 
@@ -29,9 +33,6 @@
     background: linear-gradient(90deg, #6F40BD 0%, #D33396 100%);
 }
 
-.header a {
-    cursor: pointer;
-}
 
 .header-parent {
     background-color: rgba(255, 255, 255, 0.13);
@@ -83,7 +84,6 @@
     grid-template-columns: 1fr 1fr;
     gap: 50px;
     color: white;
-    align-items: center;
 }
 
 .content h1 {
@@ -121,8 +121,9 @@
 .content img {
     display: block;
     margin: auto;
-    height: auto;
-    width: 90%;
+    margin-top: 30px;
+    height: 300px;
+
 }
 
 
@@ -149,5 +150,11 @@
         height: auto;
     }
 
+}
+
+@media only screen and (max-width: 400px) {
+    .hide-responsive {
+        display: none;
+    }
 }
 </style>

@@ -2,6 +2,7 @@
 </script>
 <template>
     <header>
+       <div class="header-parent">
         <div class="header">
             <h2><a href="./">Flax Studio</a></h2>
             <div>
@@ -9,6 +10,7 @@
                 <a href="#about" class="hide-responsive">About</a>
             </div>
         </div>
+       </div>
     </header>
 </template>
 <style scoped>
@@ -16,13 +18,18 @@ header {
     width: 100%;
     height: 60px;
     background: linear-gradient(90deg, #6F40BD 0%, #D33396 100%);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.header-parent {
-    background-color: rgba(255, 255, 255, 0.13);
+.header-parent{
+    background-color: rgba(255, 255, 255, 0.103);
 }
+
 
 .header {
+   
     max-width: var(--max-page-width);
     margin: auto;
     height: 60px;
