@@ -103,6 +103,7 @@ import { userProfiles } from '../data/CommonData';
 </template>
 <style scoped>
 .profile-container {
+    overflow: auto;
     background-color: var(--surface-color);
     color: var(--color-on-secondary);
 }
