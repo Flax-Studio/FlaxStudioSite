@@ -26,17 +26,25 @@
     --max-page-width: 1280px;
     --page-margin: 24px;
     --default-border-radius: 4px;
+    --border-radius-medium: 8px;
     --color-primary: #448bd2;
+    --color-primary-light: #448bd215;
     --color-primary-dark: #337ac2;
     --color-primary-variant: #D33396;
+    --color-primary-variant-light: #d3339621;
+    --color-tertiary:#6F40BD;
     --color-secondary: White;
     --color-on-secondary: #210053b6;
     --surface-color: #F5F5F5;
+    --surface-variant-color: #ffffff;
+    --surface-dark-color: #e0e0e0;
     
 
     --big-font: 24px;
+    --average-font: 20px;
     --medium-font: 16px;
-    --small-font: 14px;
+    --medium-2-font: 18px;
+    --small-font: 12px;
 }
 
 p {
