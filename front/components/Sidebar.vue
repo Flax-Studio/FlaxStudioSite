@@ -1,11 +1,31 @@
 <script setup lang='ts'>
+
+
+const activeTabIndex = ref(0)
+const emit = defineEmits({
+    Click: (index: number) => {
+        return index
+    }
+})
+
+
+function changeTab(index: number){
+    if(activeTabIndex.value == index) return
+    activeTabIndex.value = index
+    emit('Click', index)
+}
+
+
+
+
+
 </script>
 <template>
     <aside>
         <h2>Flax Studio</h2>
         <hr>
         <ul>
-            <li class="active">
+            <li :class="{'active': activeTabIndex == 0}" @click="changeTab(0)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -13,7 +33,7 @@
                 </svg>
                 <span>Home</span>
             </li>
-            <li>
+            <li :class="{'active': activeTabIndex == 1}" @click="changeTab(1)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -21,7 +41,7 @@
                 </svg>
                 <span>Projects</span>
             </li>
-            <li>
+            <li :class="{'active': activeTabIndex == 2}" @click="changeTab(2)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -29,7 +49,7 @@
                 </svg>
                 <span>Members</span>
             </li>
-            <li>
+            <li :class="{'active': activeTabIndex == 3}" @click="changeTab(3)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path

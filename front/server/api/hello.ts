@@ -1,5 +1,3 @@
-export default defineEventHandler((event) => {
-    return {
-        hello: 'world'
-    }
+export default defineEventHandler(async (event) => {
+    return await $fetch('https://amazon-ecommerce-site.nitesh-dev.repl.co/home')
 })

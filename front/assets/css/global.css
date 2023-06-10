@@ -31,6 +31,8 @@
     --color-primary-light: #448bd215;
     --color-primary-dark: #337ac2;
     --color-primary-variant: #D33396;
+    --color-error: rgb(245, 76, 76);
+    --color-success: rgb(53, 184, 107);
     --color-primary-variant-light: #d3339621;
     --color-tertiary:#6F40BD;
     --color-secondary: White;
@@ -71,4 +73,99 @@ p {
     :root {
         --page-margin: 12px;
     }
+}
+
+
+
+
+
+
+/* --------------------- table ----------------------- */
+
+.table-holder {
+    margin-top: 2rem;
+    overflow-x: auto;
+    width: 100%;
+}
+
+.table-holder input,
+.table-holder textarea {
+    border: none;
+    border: 1px solid var(--color-surface-dark);
+    padding: 0.4em 1em;
+    font-size: var(--medium-font);
+    background-color: transparent;
+    width: 100%;
+    height: auto;
+    resize: none;
+    overflow: hidden;
+
+}
+
+.table-holder table {
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    background-color: white;
+    border-radius: var(--radius-medium);
+}
+
+.table-holder table *{
+    white-space: nowrap;
+}
+
+.table-holder table .name{
+    min-width: 500px;
+    white-space: normal;
+}
+
+.table-holder thead {
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.table-holder th {
+    padding: 1em;
+    font-weight: 400;
+    color: var(--color-primary);
+}
+
+.table-holder td {
+    padding: 0.8em 1em;
+    border-bottom: 1px solid var(--color-surface);
+}
+
+.table-holder td button {
+    margin: auto;
+    display: block;
+    border: none;
+    background-color: transparent;
+}
+
+.table-holder td svg {
+    fill: var(--color-primary)
+}
+
+.table-holder td .delete svg {
+    fill: var(--color-error);
+}
+
+.table-holder td .update svg {
+    fill: var(--color-secondary);
+}
+
+.table-holder td button:hover {
+    scale: 1.2;
+}
+
+
+.table-holder tbody tr {
+    background-color: var(--color-surface-variant);
+    cursor: pointer;
+}
+
+.table-holder tbody tr:hover {
+    background-color: var(--color-surface);
+
 }

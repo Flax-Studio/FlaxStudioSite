@@ -1,8 +1,14 @@
 <script setup lang='ts'>
-import { releasedAppsData } from '../data/CommonData';
-import drawOnImage from '../public/app_images/draw_on_image.png'
-
+import { releasedAppsData } from '../../data/CommonData';
+import drawOnImage from '../../public/app_images/draw_on_image.png'
 const bigPara = "Draw On is a versatile drawing app that lets you create stunning illustrations and designs with ease. With its intuitive interface and powerful tools, you can draw rectangles, lines, circles, curves, and more with just a few taps and swipes."
+
+
+
+onMounted(function(){
+    // console.log(params.name)
+})
+
 
 </script>
 <template>
