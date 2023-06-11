@@ -243,12 +243,6 @@ form .form-group input:valid~i {
   text-decoration: none;
   font-weight: bold;
 }
-
-
-
-
-
-
 .wrapper .form-container form .link {
   text-align: center;
   font-size: 1.4rem;
