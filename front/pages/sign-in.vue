@@ -2,11 +2,17 @@
 onMounted(function () {
   let signUpLink = document.querySelector('.link .signup-link') as Element;
   let signInLink = document.querySelector('.link .signin-link') as Element;
+  let forgotPass = document.querySelector(".link .forgot-pass") as Element;
   let wrapper = document.querySelector('.wrapper') as Element;
   signUpLink.addEventListener('click', () => {
     wrapper.classList.add('animated-signin');
     wrapper.classList.remove('animated-signup');
   });
+  forgotPass.addEventListener('click', () => {
+  wrapper.classList.add('animated-forgot');
+  wrapper.classList.remove('animated-signin', 'animated-signup');
+});
+
 
   signInLink.addEventListener('click', () => {
     wrapper.classList.add('animated-signup');
@@ -25,17 +31,14 @@ onMounted(function () {
           <div class="form-group">
             <input type="text" required>
             <label for="">username</label>
-            <i class="fas fa-user"></i>
           </div>
           <div class="form-group">
             <input type="email" required>
             <label for="">email</label>
-            <i class="fas fa-at"></i>
           </div>
           <div class="form-group">
             <input type="password" required>
             <label for="">password</label>
-            <i class="fas fa-lock"></i>
           </div>
           <div class="form-group">
             <input type="password" required>
@@ -53,12 +56,10 @@ onMounted(function () {
           <h2>login</h2>
           <div class="form-group">
             <input type="text" required>
-            <i class="fas fa-user"></i>
             <label for="">username</label>
           </div>
           <div class="form-group">
             <input type="password" required>
-            <i class="fas fa-lock"></i>
             <label for="">password</label>
           </div>
           <div class="forgot-pass">
@@ -323,6 +324,27 @@ form .form-group input:valid~i {
   100% {
     transform: translateX(0) rotate(7deg) scale(1);
   }
+}
+.wrapper.animated-forgot .form-container.forgot-password {
+  animation: forgot-flip 1s ease-in-out forwards;
+}
+
+@keyframes forgot-flip {
+  0% {
+    transform: rotate(7deg);
+  }
+
+  50% {
+    transform: rotate(0) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(7deg) scale(1);
+  }
+}
+
+.wrapper .form-container.forgot-password {
+  transform: rotate(7deg);
 }
 
 .wrapper.animated-signup .form-container.sign-in {
