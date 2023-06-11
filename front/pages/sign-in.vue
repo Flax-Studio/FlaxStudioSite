@@ -2,16 +2,11 @@
 onMounted(function () {
   let signUpLink = document.querySelector('.link .signup-link') as Element;
   let signInLink = document.querySelector('.link .signin-link') as Element;
-  let forgotPass = document.querySelector(".link .forgot-pass") as Element;
   let wrapper = document.querySelector('.wrapper') as Element;
   signUpLink.addEventListener('click', () => {
     wrapper.classList.add('animated-signin');
     wrapper.classList.remove('animated-signup');
   });
-  forgotPass.addEventListener('click', () => {
-  wrapper.classList.add('animated-forgot');
-  wrapper.classList.remove('animated-signin', 'animated-signup');
-});
 
 
   signInLink.addEventListener('click', () => {
