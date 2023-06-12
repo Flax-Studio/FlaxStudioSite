@@ -9,8 +9,8 @@ const emit = defineEmits({
 })
 
 
-function changeTab(index: number){
-    if(activeTabIndex.value == index) return
+function changeTab(index: number) {
+    if (activeTabIndex.value == index) return
     activeTabIndex.value = index
     emit('Click', index)
 }
@@ -21,11 +21,12 @@ function changeTab(index: number){
 
 </script>
 <template>
+    
     <aside>
         <h2>Flax Studio</h2>
         <hr>
         <ul>
-            <li :class="{'active': activeTabIndex == 0}" @click="changeTab(0)">
+            <li :class="{ 'active': activeTabIndex == 0 }" @click="changeTab(0)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -33,7 +34,7 @@ function changeTab(index: number){
                 </svg>
                 <span>Home</span>
             </li>
-            <li :class="{'active': activeTabIndex == 1}" @click="changeTab(1)">
+            <li :class="{ 'active': activeTabIndex == 1 }" @click="changeTab(1)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -41,15 +42,16 @@ function changeTab(index: number){
                 </svg>
                 <span>Projects</span>
             </li>
-            <li :class="{'active': activeTabIndex == 2}" @click="changeTab(2)">
+            <li :class="{ 'active': activeTabIndex == 2 }" @click="changeTab(2)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
                     <path
                         d="M15.75 2a2.25 2.25 0 0 1 2.245 2.096L18 4.25v.749L19.75 5a2.25 2.25 0 0 1 2.245 2.096L22 7.25v9.5a2.25 2.25 0 0 1-2.096 2.245L19.75 19H18v.75a2.25 2.25 0 0 1-2.096 2.245L15.75 22h-7.5a2.25 2.25 0 0 1-2.245-2.096L6 19.75V19H4.25a2.25 2.25 0 0 1-2.245-2.096L2 16.75v-9.5a2.25 2.25 0 0 1 2.096-2.245L4.25 5 6 4.999V4.25a2.25 2.25 0 0 1 2.096-2.245L8.25 2h7.5Zm0 1.5h-7.5a.75.75 0 0 0-.743.648L7.5 4.25v15.5c0 .38.282.694.648.743l.102.007h7.5a.75.75 0 0 0 .743-.648l.007-.102V4.25a.75.75 0 0 0-.648-.743L15.75 3.5ZM6 6.499 4.25 6.5a.75.75 0 0 0-.743.648L3.5 7.25v9.5c0 .38.282.694.648.743l.102.007H6V6.499Zm13.75.001L18 6.499V17.5h1.75a.75.75 0 0 0 .743-.648l.007-.102v-9.5a.75.75 0 0 0-.75-.75Z" />
                 </svg>
                 <span>Members</span>
             </li>
-            <li :class="{'active': activeTabIndex == 3}" @click="changeTab(3)">
+            <li :class="{ 'active': activeTabIndex == 3 }" @click="changeTab(3)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path

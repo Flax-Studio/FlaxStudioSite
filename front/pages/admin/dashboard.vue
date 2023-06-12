@@ -152,8 +152,15 @@ function changeActiveTab(index: number) {
                 </div>
             </section>
 
-            <section v-if="activeTabIndex == 3">
+            <section class="profile" v-if="activeTabIndex == 3">
                 <h2>Profile</h2>
+
+                <div class="card basic">
+                    <div class="heading">
+                        <img src="../../public/extra/no_image.png" alt="no_image">
+                    </div>
+                    
+                </div>
             </section>
 
 
@@ -162,12 +169,33 @@ function changeActiveTab(index: number) {
     </div>
 </template>
 <style scoped>
+
+
+
 .dashboard {
     display: grid;
     grid-template-columns: 20% 80%;
     width: 100%;
     background-color: var(--surface-color);
 }
+
+
+/* ----------------- profile ------------------- */
+
+.card{
+    background-color: var(--color-primary-variant);
+    border-radius: var(--border-radius-medium);
+    padding: 1rem;
+}
+
+.profile{
+    position: relative;
+}
+
+.profile .basic{
+
+}
+
 
 
 section {
@@ -276,4 +304,9 @@ section .projects-container {
 .dashboard table tr.success::before {
     background-color: var(--color-success)
 }
+
+
+
+
+
 </style>
