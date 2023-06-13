@@ -156,22 +156,127 @@ function changeActiveTab(index: number) {
                 <h2>Profile</h2>
 
                 <div class="card basic">
+                    <button>
+                        <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" data-v-e92eabd9="">
+                            <path
+                                d="M12 3.5a8.5 8.5 0 0 0-.705 16.971l-.234.936a2.117 2.117 0 0 0-.064.543C5.945 21.447 2 17.184 2 12 2 6.477 6.477 2 12 2c5.27 0 9.589 4.077 9.972 9.25a3.293 3.293 0 0 0-1.257-.25h-.002c-.09 0-.18.004-.27.011A8.501 8.501 0 0 0 12 3.5Zm8.715 8.5h-.002c-.585 0-1.17.223-1.615.67l-5.902 5.902a2.684 2.684 0 0 0-.707 1.247l-.458 1.831a1.087 1.087 0 0 0 1.319 1.318l1.83-.457a2.684 2.684 0 0 0 1.248-.707l5.902-5.902A2.285 2.285 0 0 0 20.715 12Z">
+                            </path>
+                        </svg>
+                    </button>
                     <div class="heading">
                         <img src="../../public/extra/no_image.png" alt="no_image">
+                        <div>
+                            <h3>Nitesh Kumar</h3>
+                            <span>Android & Web fullstack Developer</span>
+                        </div>
                     </div>
-                    
+                    <p>As an intermediate developer, I recognize that there is always room for improvement and growth. I am
+                        constantly seeking out new challenges and opportunities to expand my skillset and knowledge base.
+                    </p>
                 </div>
+
+
+                <h4>Extra Details</h4>
+                <div class="card">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Availability: </th>
+                                <td>Full-Time</td>
+                            </tr>
+                            <tr>
+                                <th>Age: </th>
+                                <td>19</td>
+                            </tr>
+                            <tr>
+                                <th>Location: </th>
+                                <td>India, Bihar</td>
+                            </tr>
+                            <tr>
+                                <th>Experience: </th>
+                                <td>2 years</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="icons">
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision"
+                                text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd"
+                                clip-rule="evenodd" viewBox="0 0 640 640">
+                                <path
+                                    d="M319.988 7.973C143.293 7.973 0 151.242 0 327.96c0 141.392 91.678 261.298 218.826 303.63 16.004 2.964 21.886-6.957 21.886-15.414 0-7.63-.319-32.835-.449-59.552-89.032 19.359-107.8-37.772-107.8-37.772-14.552-36.993-35.529-46.831-35.529-46.831-29.032-19.879 2.209-19.442 2.209-19.442 32.126 2.245 49.04 32.954 49.04 32.954 28.56 48.922 74.883 34.76 93.131 26.598 2.882-20.681 11.15-34.807 20.315-42.803-71.08-8.067-145.797-35.516-145.797-158.14 0-34.926 12.52-63.485 32.965-85.88-3.33-8.078-14.291-40.606 3.083-84.674 0 0 26.87-8.61 88.029 32.8 25.512-7.075 52.878-10.642 80.056-10.76 27.2.118 54.614 3.673 80.162 10.76 61.076-41.386 87.922-32.8 87.922-32.8 17.398 44.08 6.485 76.631 3.154 84.675 20.516 22.394 32.93 50.953 32.93 85.879 0 122.907-74.883 149.93-146.117 157.856 11.481 9.921 21.733 29.398 21.733 59.233 0 42.792-.366 77.28-.366 87.804 0 8.516 5.764 18.473 21.992 15.354 127.076-42.354 218.637-162.274 218.637-303.582 0-176.695-143.269-319.988-320-319.988l-.023.107z" />
+                            </svg>
+                        </a>
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision"
+                                text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd"
+                                clip-rule="evenodd" viewBox="0 0 640 640">
+                                <path
+                                    d="M640.012 121.513c-23.528 10.524-48.875 17.516-75.343 20.634 27.118-16.24 47.858-41.977 57.756-72.615-25.347 14.988-53.516 25.985-83.363 31.866-24-25.5-58.087-41.35-95.848-41.35-72.508 0-131.21 58.736-131.21 131.198 0 10.228 1.134 20.232 3.355 29.882-109.1-5.528-205.821-57.757-270.57-137.222a131.423 131.423 0 0 0-17.764 66c0 45.497 23.102 85.738 58.347 109.207-21.508-.638-41.74-6.638-59.505-16.359v1.642c0 63.627 45.225 116.718 105.32 128.718-11.008 2.988-22.63 4.642-34.606 4.642-8.48 0-16.654-.874-24.78-2.35 16.783 52.11 65.233 90.095 122.612 91.205-44.989 35.245-101.493 56.233-163.09 56.233-10.63 0-20.988-.65-31.334-1.89 58.229 37.359 127.206 58.997 201.31 58.997 241.42 0 373.552-200.069 373.552-373.54 0-5.764-.13-11.35-.366-16.996 25.642-18.343 47.87-41.493 65.469-67.844l.059-.059z" />
+                            </svg>
+                        </a>
+
+                        <a href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision"
+                                text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd"
+                                clip-rule="evenodd" viewBox="0 0 640 640">
+                                <path
+                                    d="M228.582 205.715h126.462v64.832h1.83c17.611-31.595 60.675-64.832 124.892-64.832C615.303 205.715 640 288.818 640 396.926v220.219H508.116V421.93c0-46.536-.969-106.442-68.576-106.442-68.67 0-79.194 50.658-79.194 103.052v198.605H228.581v-411.43zM137.152 91.43c0 37.855-30.721 68.576-68.576 68.576-37.855 0-68.587-30.721-68.587-68.576 0-37.855 30.732-68.576 68.587-68.576 37.855 0 68.576 30.721 68.576 68.576zM-.011 205.715h137.163v411.43H-.011v-411.43z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <h4>About</h4>
+                <div class="card">
+                    <p>As an intermediate Android, game, and web developer, I am constantly honing my skills and expanding
+                        my knowledge in the ever-evolving world of digital technology. I have always been fascinated by the
+                        ability of technology to connect people and empower them to accomplish incredible things, and that
+                        is what motivates me every day.
+                    </p>
+                    <p>In my journey as a developer, I have gained a solid foundation in developing mobile applications for
+                        the Android operating system. I have learned how to build applications that leverage the full
+                        potential of the platform, from designing intuitive user interfaces to implementing complex features
+                        that enhance user engagement and interactivity.
+                    </p>
+                    <p>As a game developer, I have been able to express my creativity and imagination through designing
+                        immersive gaming experiences. I enjoy the challenge of crafting compelling gameplay mechanics,
+                        creating visually stunning graphics, and incorporating new technologies and trends to make my games
+                        stand out.
+                    </p>
+                </div>
+
+                <h4>External Projects</h4>
+                <div class="card">
+                    <div class="chip-container">
+                        <a href="#">DrawOn</a>
+                        <a href="#">DrawOn</a>
+                        <a href="#">DrawOn</a>
+                    </div>
+                </div>
+
+                <h4>Skills</h4>
+                <div class="card">
+                    <div class="chip-container">
+                        <span>Android</span>
+                        <span>Android</span>
+                        <span>Android</span>
+                    </div>
+                </div>
+
+                <h4>Languages</h4>
+                <div class="card">
+                    <div class="chip-container">
+                        <span>Hindi</span>
+                        <span>English</span>
+                    </div>
+                </div>
+
             </section>
-
-
-
         </main>
     </div>
 </template>
 <style scoped>
-
-
-
 .dashboard {
     display: grid;
     grid-template-columns: 20% 80%;
@@ -182,19 +287,139 @@ function changeActiveTab(index: number) {
 
 /* ----------------- profile ------------------- */
 
-.card{
-    background-color: var(--color-primary-variant);
+.card {
+    background-color: var(--surface-variant-color);
     border-radius: var(--border-radius-medium);
     padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 
-.profile{
+.profile .basic button {
+    border: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 50px;
+    background-color: var(--color-tertiary);
+    border-radius: var(--default-border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile .basic button svg {
+    fill: white;
+    width: 28px;
+}
+
+.profile {
+    color: var(--color-on-secondary);
+}
+
+.profile h4 {
+    color: var(--color-tertiary);
+}
+
+.profile .basic {
     position: relative;
 }
 
-.profile .basic{
+.profile .heading img {
+    width: 80px;
+    border-radius: 50%;
+}
+
+.profile .heading {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile .heading h3 {
+    margin-bottom: 0.2em;
+    font-size: var(--average-font);
+    color: var(--color-tertiary);
+}
+
+.profile .heading span {
+    color: var(--color-primary-variant);
+    font-size: var(--medium-font);
+}
+
+.profile p {
+    margin: 1em 0;
+    font-size: var(--medium-font);
+}
+
+.profile table td,
+.profile table th {
+    padding: 0.5rem 2rem;
+    padding-left: 0;
+    text-align: left;
+}
+
+
+
+/* -----------extra details */
+
+.profile .icons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.4rem;
+}
+
+.profile .icons a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface-color);
+    fill: var(--color-on-secondary);
+    border-radius: var(--default-border-radius);
+}
+
+.profile .icons a:hover {
+    background-color: var(--color-primary-variant);
+    fill: var(--color-secondary);
+}
+
+.profile .icons svg {
+    width: 24px;
+    fill: inherit;
 
 }
+
+
+/* ----------- chips -------- */
+.profile .chip-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+.profile .chip-container a, .profile .chip-container span{
+    text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--color-primary-variant);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--medium-font);
+    color: var(--color-primary-variant);
+    font-weight: 600;
+}
+
+.profile .chip-container a:hover, .profile .chip-container span:hover{
+    background-color: var(--color-primary-variant);
+    color: var(--color-secondary);
+
+}
+
+
+
+
+
 
 
 
@@ -304,9 +529,4 @@ section .projects-container {
 .dashboard table tr.success::before {
     background-color: var(--color-success)
 }
-
-
-
-
-
 </style>
