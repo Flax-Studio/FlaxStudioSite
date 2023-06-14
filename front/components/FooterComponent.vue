@@ -10,7 +10,7 @@
                         <h2>Flax Studio</h2>
                     </div>
                     <p>A developers place where we interact, learn and create stuff together.</p>
-                    <button>Join</button>
+                    <button><NuxtLink to="/sign-in">Join</NuxtLink></button>
                 </div>
                 <div class="resource">
                     <h3>COMMUNITY</h3>
@@ -90,6 +90,10 @@ footer .branding button {
     transition: all 200ms;
     box-shadow: 0px 2px 4px rgba(20, 138, 255, 0.3);
 
+}
+footer .branding button a{
+    text-decoration: none;
+    color: var(--color-secondary);
 }
 
 footer .branding button:hover {
