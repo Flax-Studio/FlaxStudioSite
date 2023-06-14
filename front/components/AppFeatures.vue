@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { FeaturesData } from '../DataType'
+import { FeaturesData } from '../data/DataType'
 
 const props = defineProps({
     details: {
