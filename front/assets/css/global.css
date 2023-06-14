@@ -54,6 +54,10 @@ p {
     line-height: 1.6;
 }
 
+h2{
+    font-size: var(--big-font);
+}
+
 .reveal {
     /* position: relative;
     transform: translateY(150px);

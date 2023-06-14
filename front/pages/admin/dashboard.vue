@@ -152,6 +152,7 @@ function changeActiveTab(index: number) {
                 </div>
             </section>
 
+            <!-- profile -->
             <section class="profile" v-if="activeTabIndex == 3">
                 <h2>Profile</h2>
 
