@@ -22,3 +22,7 @@ export interface ProfileDetail{
 export interface FeaturesData{
     heading: string, description: string
 }
+
+export interface ProductPageData{
+    
+}

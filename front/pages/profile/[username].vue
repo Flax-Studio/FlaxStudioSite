@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { userProfiles } from '../data/CommonData';
+import { userProfiles } from '../../data/CommonData';
 </script>
 <template>
     <HeaderComponent />
@@ -7,7 +7,7 @@ import { userProfiles } from '../data/CommonData';
         <div class="profile-parent">
             <div class="profile-bio">
                 <div class="left">
-                    <img src="../public/profiles/nitesh_image.png" alt="nitesh">
+                    <img src="../../public/profiles/nitesh_image.png" alt="nitesh">
                     <div>
                         <h2>Nitesh Kumar</h2>
                         <p class="info">Android, Web & Game developer</p>
