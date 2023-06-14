@@ -27,19 +27,6 @@
                 <label>Landing description</label>
             </div>
 
-            <div class="col-2">
-                <div class="input-holder">
-                    <input type="url" readonly placeholder="Landing image url">
-                    <label>Landing Image</label>
-                </div>
-
-                <div class="upload">
-                    <input type="file" >
-                    <button type="button">Upload</button>
-                </div>
-            </div>
-
-
             <div class="input-holder">
                 <input type="url" placeholder="https://play.google.com/store/apps/details?id=com.flaxstudio.drawon">
                 <label>Playstore url</label>
@@ -51,17 +38,7 @@
                     placeholder="Write markdown here..."></textarea>
                 <label>About description</label>
             </div>
-            <div class="input-holder">
-                <textarea placeholder="Write small ending lines..."></textarea>
-                <label>About end description</label>
-            </div>
-
-            <h3>Features</h3>
-            <div class="input-holder">
-                <textarea placeholder="e.g: <Title> --: <Content>"></textarea>
-                <label>Features</label>
-            </div>
-
+            
             <button type="submit">Send</button>
 
         </form>
