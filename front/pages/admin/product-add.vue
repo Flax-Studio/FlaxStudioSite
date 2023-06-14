@@ -71,7 +71,6 @@
 main {
     background-color: var(--surface-color);
     overflow: auto;
-    margin-bottom: 10rem;
 }
 
 main form {
@@ -81,6 +80,7 @@ main form {
     padding: var(--page-margin);
     min-height: 100vh;
     color: var(--color-on-secondary);
+    padding-bottom: 10rem;
 }
 
 main h2 {
