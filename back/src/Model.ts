@@ -42,6 +42,14 @@ const projectSchema = new Schema({
 
 export const Project = mongoose.model("Project", projectSchema)
 
+
+
+
+
+
+
+
+
 const projectContentSchema = new Schema({
     _id: { type: String, required: true },
     name: { type: String, required: true },

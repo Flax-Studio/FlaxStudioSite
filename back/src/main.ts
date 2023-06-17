@@ -42,7 +42,7 @@ app.use('/public', express.static('public'));
 
 
 // auth middleware
-app.get('/admin/*', (req, res, next) => {
+app.get('/admin/*', async (req, res, next) => {
     const token =
         req.body.token || req.query.token || req.headers["x-access-token"];
 
@@ -52,7 +52,12 @@ app.get('/admin/*', (req, res, next) => {
     try {
         const decoded = jwt.verify(token, tokenKey)
         res.locals.accountId = decoded
-        next()
+        if(await mongoApi.isAccountExist(decoded as string)){
+            next()
+        }else{
+            return res.status(401).send("Invalid Token");
+        }
+        
 
     } catch (err) {
         return res.status(401).send("Invalid Token");
@@ -172,7 +177,9 @@ app.post('/verify-signup', async (req, res) => {
                     about: '',
                     externalProjectsLinks: '',
                     skills: '',
-                    languages: ''
+                    languages: '',
+                    joinedAt: new Date().getTime(),
+                    projects: ''
                 }
                 let response = await mongoApi.createAccount(account)
 
@@ -316,9 +323,14 @@ app.post('/reset-password', async (req, res) => {
 // app.get('/admin')
 
 app.get('/admin/dashboard', async (req, res) => {
+    console.log('dashboard data requested')
     const accountId = res.locals.accountId as string
-    res.send(accountId)
-
+    const data = await mongoApi.getDashboardData(accountId)
+    if(data != null){
+        res.status(200).send(data)
+    }else{
+        res.status(500).send('Server error')
+    }
 })
 
 

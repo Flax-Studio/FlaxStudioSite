@@ -23,6 +23,8 @@ export interface AccountData {
     externalProjectsLinks: string,
     skills: string,
     languages: string,
+    joinedAt: number,
+    projects: string,
 }
 
 
@@ -34,7 +36,6 @@ export interface AccountBasicData {
     role: 'CEO' | 'CO' | 'Member',
     projects: string,
     joinedAt: number,
-    
 }
 
 export interface ProjectData{

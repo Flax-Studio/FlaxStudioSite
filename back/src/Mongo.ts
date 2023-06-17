@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Account } from "./Model.js";
-import { AccountData } from "./DataType.js";
+import { Account, Project } from "./Model.js";
+import { AccountBasicData, AccountData, DashboardData, ProjectData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -25,6 +25,19 @@ export default class MongoAPI {
 
 
     // ------------------ Account -------------------
+
+    async isAccountExist(accountId: string){
+        try {
+            const account = await Account.findById(accountId)
+            if(account != null) return true
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        return false
+    }
+
     async getAccount(email: string) {
         try {
             const account = await Account.findOne({ email: email });
@@ -54,6 +67,34 @@ export default class MongoAPI {
             const account = await Account.findByIdAndUpdate(accountId, { password: newPassword })
             console.log("reset account password")
             return account
+
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
+
+    
+    // ----------------------- Dashboard ---------------------
+
+    async getDashboardData(accountId: string){
+        try {
+            const profile = await Account.findById(accountId)
+
+            if(profile == null) return null
+            profile!!.password = ''
+
+            const projects = await Project.find() as Array<ProjectData>
+            const accounts = await Account.find().select('_id firstName lastName profileImage role projects joinedAt') as Array<AccountBasicData>
+
+            const data: DashboardData = {
+                members: accounts,
+                projects: projects,
+                profile: profile as AccountData
+            }
+
+            return data
 
         } catch (error) {
             console.error('Error in account:', error);
