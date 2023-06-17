@@ -67,6 +67,9 @@ namespace Api {
     }
 
 
+    
+
+
     // export async function getCategoryProducts(categoryId: number, limit: number) {
     //     return get<ProductData[]>("category-products", `categoryId=${categoryId}&limit=${limit}`)
     // }

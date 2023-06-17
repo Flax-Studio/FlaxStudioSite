@@ -6,10 +6,13 @@ import { sendMail } from './EmailManger.js'
 import { AccountData, MailData, PendingAccountData, PendingResetPassword } from './DataType.js'
 import MongoAPI from './Mongo.js'
 import { generateId, generateOTP, getEmailVerifyHtml, getResetPasswordHtml } from './Utils.js'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
 const port = process.env.EXPRESS_PORT || 3001
+const tokenKey = process.env.TOKEN_KEY || 'test'
 const atlas = process.env.ATLAS_URI || '';
 const mailerEmail = process.env.NODE_MAILER_EMAIL || ''
 
@@ -38,9 +41,29 @@ app.use('/public', express.static('public'));
 
 
 
+// auth middleware
+app.get('/admin/*', (req, res, next) => {
+    const token =
+        req.body.token || req.query.token || req.headers["x-access-token"];
+
+    if (!token) {
+        return res.status(403).send("A token is required for authentication");
+    }
+    try {
+        const decoded = jwt.verify(token, tokenKey)
+        res.locals.accountId = decoded
+        next()
+
+    } catch (err) {
+        return res.status(401).send("Invalid Token");
+    }
+})
 
 
-// ---------------------- account handling------------------------
+
+
+
+// ---------------------- Authentication ------------------------
 app.post('/sign-in', async (req, res) => {
     try {
         let email = req.body.email as string
@@ -48,19 +71,24 @@ app.post('/sign-in', async (req, res) => {
 
         let account = await mongoApi.getAccount(email)
         if (account != null) {
-            if(account.password != password) {
+
+            // check if password is correct or not
+            if (!await bcrypt.compare(password, account.password as string)) {
                 res.status(400).send('Wrong password!')
             } else {
-                res.status(200).send({ token: account._id })
+
+                // create token for auth
+                const token = jwt.sign(account._id, tokenKey)
+                res.status(200).send({ token: token})
             }
         } else {
             res.status(400).send('No account found with this email, try sign up')
         }
     } catch (error) {
+        console.log(error)
         res.status(400).send('Bad request')
     }
 })
-
 
 
 // only work with sign in with email
@@ -77,15 +105,15 @@ app.post('/sign-up', async (req, res) => {
 
         let account = await mongoApi.getAccount(email)
         if (account != null) {
-            res.status(400).send('Account already exist with this email')
+            res.status(409).send('Account already exist with this email')
             return
         }
 
         const newAccount: PendingAccountData = {
             firstName: firstName,
             lastName: lastName,
-            email: email,
-            password: password,
+            email: email.toLowerCase(),
+            password: await bcrypt.hash(password, 10),          // encrypt password
             otp: generateOTP(),
             token: generateId()
         }
@@ -139,8 +167,11 @@ app.post('/verify-signup', async (req, res) => {
                     roomId: generateId()
                 }
                 let response = await mongoApi.createAccount(account)
+
+                // create token for auth
+                const token = jwt.sign({ accountId: account._id }, tokenKey)
                 if (response != null) {
-                    res.status(200).send({ token: account._id })
+                    res.status(200).send({ token: token })
                 } else {
                     res.status(400).send('Something went wrong')
                 }
@@ -212,7 +243,7 @@ app.post('/forgot-password', async (req, res) => {
         for (let index = 0; index < pendingReset.length; index++) {
 
             // update previous 
-            if(pendingReset[index].email == email){
+            if (pendingReset[index].email == email) {
                 pendingReset[index] = pending
                 isUpdated = true
                 break
@@ -220,7 +251,7 @@ app.post('/forgot-password', async (req, res) => {
         }
 
         // add new if not updated
-        if(!isUpdated){
+        if (!isUpdated) {
             pendingReset.push(pending)
         }
 
@@ -232,7 +263,7 @@ app.post('/forgot-password', async (req, res) => {
             html: getResetPasswordHtml(account.firstName, `http://localhost:3000/resetpassword?token=${pending.token}`)
         })
 
-        res.status(200).send({email: email})
+        res.status(200).send({ email: email })
 
     } catch (error) {
         res.status(400).send('Bad request')
@@ -249,18 +280,18 @@ app.post('/reset-password', async (req, res) => {
         const currentTime = new Date().getTime()
 
         for (let index = 0; index < pendingReset.length; index++) {
-            if(pendingReset[index].token == token && currentTime < pendingReset[index].expiry){
-                
+            if (pendingReset[index].token == token && currentTime < pendingReset[index].expiry) {
+
                 const result = await mongoApi.resetAccountPassword(pendingReset[index].accountId, password)
-                if(result == null){
+                if (result == null) {
                     res.status(400).send('Unable to reset your password')
-                }else{
-                    res.status(200).send({email: pendingReset[index].email})
+                } else {
+                    res.status(200).send({ email: pendingReset[index].email })
                 }
 
                 pendingReset = pendingReset.splice(index, 1)
                 return
-            } 
+            }
         }
 
         res.status(400).send('Invalid credential')
@@ -272,12 +303,13 @@ app.post('/reset-password', async (req, res) => {
 
 
 
+// ------------------------ Admin ----------------------------
 
+// app.get('/admin')
 
-// ------------------------- statistics -----------------------
-
-app.post('/statistics', async (req, res) => {
-
+app.get('/admin/dashboard', async (req, res) => {
+    const accountId = res.locals.accountId as string
+    res.send(accountId)
 
 })
 
@@ -323,18 +355,6 @@ app.get('/', async function (req, res) {
 
     res.send('Hello welcome back')
 })
-
-app.get('/mail', async function (req, res) {
-    let mailData: MailData = {
-        from: 'niteshdev547@gmail.com',
-        to: 'mangoisbest0002@gmail.com',
-        subject: 'This is test mail',
-        html: '<h1>Welcome</h1><p>That was easy!</p>'
-    }
-    let resp = await sendMail(mailData)
-    res.send(resp)
-})
-
 
 
 
