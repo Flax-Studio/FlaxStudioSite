@@ -13,8 +13,41 @@ export interface AccountData {
     lastName: string,
     email: string,
     password: string,
-    mode: 'none'| 'google',
-    roomId: string
+    mode: 'none' | 'google',
+    profileImage: string,
+    role: 'CEO' | 'CO' | 'Member',
+    smallInfo: string,
+    extraInfo: string,
+    socialLinks: string,
+    about: string,
+    externalProjectsLinks: string,
+    skills: string,
+    languages: string,
+}
+
+
+export interface AccountBasicData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    profileImage: string,
+    role: 'CEO' | 'CO' | 'Member',
+    projects: string,
+    joinedAt: number,
+    
+}
+
+export interface ProjectData{
+    _id: string,
+    name: string,
+    iconUrl: string,
+    description: string,
+
+    platform: string,
+    teamLead: string,
+    startedAt: string,
+    completedAt: number,
+    status: number,
 }
 
 export interface PendingAccountData {
@@ -31,6 +64,13 @@ export interface PendingResetPassword {
     email: string,
     token: string,
     expiry: number
+}
+
+
+export interface DashboardData{
+    members: Array<AccountBasicData>,
+    projects: Array<ProjectData>,
+    profile: AccountData
 }
 
 

@@ -164,7 +164,15 @@ app.post('/verify-signup', async (req, res) => {
                     email: reg.email,
                     password: reg.password,
                     mode: 'none',
-                    roomId: generateId()
+                    profileImage: '',
+                    role: 'Member',
+                    smallInfo: '',
+                    extraInfo: '',
+                    socialLinks: '',
+                    about: '',
+                    externalProjectsLinks: '',
+                    skills: '',
+                    languages: ''
                 }
                 let response = await mongoApi.createAccount(account)
 
