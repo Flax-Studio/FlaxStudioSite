@@ -147,8 +147,7 @@ export function getResetPasswordHtml(name: string, url: string){
         <p>If you didn't make this request, please disregard this email.</p>
         <p>Please note that your password will not change unless you click the above link. This link will be expire
             after 10 minutes. </p>
-        <p><b>The TyperBuddy team</b>
-        </p>
+            <p><b>Team Flax Studio</b></p>
     </section>
 </body>
 

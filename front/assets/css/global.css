@@ -31,6 +31,7 @@
     --color-primary-light: #448bd215;
     --color-primary-dark: #337ac2;
     --color-primary-variant: #D33396;
+    --color-primary-variant-dark: #b10b71;
     --color-error: rgb(245, 76, 76);
     --color-success: rgb(53, 184, 107);
     --color-primary-variant-light: #d3339621;
@@ -42,6 +43,8 @@
     --surface-dark-color: #e0e0e0;
     
 
+
+    --big-2-font: 28px;
     --big-font: 24px;
     --average-font: 20px;
     --medium-font: 16px;
@@ -172,4 +175,27 @@ h2{
 .table-holder tbody tr:hover {
     background-color: var(--color-surface);
 
+}
+
+
+/* loader 2 */
+
+.loader2 {
+    margin: auto;
+    border: 2px solid var(--color-secondary);
+    border-left-color: transparent;
+    width: 24px;
+    height: 24px;
+    animation: spin89345 1s linear infinite;
+    border-radius: 50%;
+}
+
+@keyframes spin89345 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

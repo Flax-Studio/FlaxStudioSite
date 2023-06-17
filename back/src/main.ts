@@ -13,7 +13,6 @@ const port = process.env.EXPRESS_PORT || 3001
 const atlas = process.env.ATLAS_URI || '';
 const mailerEmail = process.env.NODE_MAILER_EMAIL || ''
 
-
 const app = express()
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))

@@ -1,0 +1,181 @@
+.auth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--surface-color);
+}
+
+
+
+.auth .resend{
+    margin: 1.5rem 0;
+}
+
+.auth .resend span{
+    display: block;
+    color: var(--color-on-secondary);
+    font-weight: 600;
+}
+
+.auth .resend .button{
+    color: var(--color-primary);
+    cursor: context-menu;
+}
+
+
+.auth form {
+    background-color: var(--surface-variant-color);
+    max-width: 500px;
+    margin: 1rem;
+    width: 100%;
+    box-shadow: 0 2px 20px #b3b3b34d;
+    border-radius: var(--border-radius-medium);
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+.auth h2 {
+    color: var(--color-primary-variant);
+}
+
+.auth p {
+    font-size: var(--medium-font);
+    color: var(--color-on-secondary);
+    margin: 1em 0;
+}
+
+.auth a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth form>a{
+    text-align: right;
+    display: inline-block;
+}
+
+.auth form>input {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: var(--medium-font);
+    color: var(--color-on-secondary);
+    margin: 0.8rem 0;
+    background-color: var(--surface-color);
+    border: none;
+    outline: 1px solid var(--surface-dark-color);
+    border-radius: var(--default-border-radius);
+}
+
+
+.auth form>input:focus {
+    outline: 2px solid var(--color-primary);
+}
+
+
+.auth button {
+    display: block;
+    width: 100%;
+    height: 50px;
+    font-size: var(--medium-font);
+    margin-top: 2rem;
+    margin-bottom: 0.6rem;
+    border: none;
+    border-radius: var(--default-border-radius);
+    font-weight: 600;
+    transition: all 200ms;
+}
+
+.auth button.primary {
+    color: var(--color-secondary);
+    background-color: var(--color-primary-variant);
+}
+
+
+.auth button.primary:hover {
+    background-color: var(--color-primary-variant-dark);
+}
+
+.auth button.secondary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.auth button.secondary:hover {
+    background-color: var(--surface-dark-color);
+}
+
+.auth button.secondary svg {
+    width: 24px;
+}
+
+.auth button.secondary span {
+    color: var(--color-on-secondary);
+}
+
+
+.auth .divider {
+    position: relative;
+    height: 30px;
+}
+
+.auth .divider span,
+.auth .divider hr {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+
+.auth .divider hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid var(--surface-dark-color);
+}
+
+.auth .divider span {
+    background-color: var(--color-secondary);
+    padding: 0 1rem;
+    color: var(--color-on-secondary);
+}
+
+
+
+.auth .otp-container{
+    position: relative !important;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.auth .otp-container input{
+    position: absolute !important;
+    top: 0;
+    width: 100%;
+    left: 0;
+    height: 100%;
+    padding: 0.8rem;
+    opacity: 0;
+}
+
+.auth .otp-container div{
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.auth .otp-container span{
+    background-color: var(--surface-color);
+    font-size: var(--big-2-font);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    border-radius: var(--default-border-radius);
+    outline: 1px solid var(--surface-dark-color);
+}

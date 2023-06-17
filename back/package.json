@@ -1,7 +1,7 @@
 {
     "name": "server",
     "version": "1.0.0",
-    "description": "A server to manage the TyperBuddy backend part.",
+    "description": "A server to manage the Flaxstudio backend part.",
     "main": "main.js",
     "scripts": {
         "dev": "nodemon out/main.js"
