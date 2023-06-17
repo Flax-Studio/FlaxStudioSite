@@ -35,8 +35,8 @@ import { userProfiles } from '../../data/CommonData';
                         <p>1.5 years</p>
                     </div>
                     <div class="profile-icons">
-                        <a href="https://github.com/nitesh-dev/"><img src="../public/extra/github.svg" alt="github"></a>
-                        <a href="https://twitter.com/niteshdev547"><img src="../public/extra/twitter.svg"
+                        <a href="https://github.com/nitesh-dev/"><img src="../../public/extra/github.svg" alt="github"></a>
+                        <a href="https://twitter.com/niteshdev547"><img src="../../public/extra/twitter.svg"
                                 alt="twitter"></a>
                         <!-- <a href="#"><img src="../../assets/extra/instagram.svg" alt="instagram"></a> -->
                         <!-- <a href="#"><img src="../../assets/extra/linkedin.svg" alt="linkedin"></a>
