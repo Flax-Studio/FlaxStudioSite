@@ -27,7 +27,7 @@ async function onResetPassword(){
         <form method="post" @submit.prevent="onResetPassword">
             <h2>Forgot Password</h2>
             <p>Enter your email address associated with your account and we'll send reset link on your email.</p>
-            <input v-model="email" type="email" placeholder="Email">
+            <input v-model="email" type="email" placeholder="Email" required>
             <button class="primary" type="submit">
                 <span v-if="!isProcessing">Reset</span>
                 <div v-else class="loader2"></div>

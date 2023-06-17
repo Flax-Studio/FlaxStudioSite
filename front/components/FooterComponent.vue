@@ -10,7 +10,7 @@
                         <h2>Flax Studio</h2>
                     </div>
                     <p>A developers place where we interact, learn and create stuff together.</p>
-                    <button><NuxtLink to="/sign-in">Join</NuxtLink></button>
+                    <NuxtLink to="/signup"><Button>Join</Button></NuxtLink>
                 </div>
                 <div class="resource">
                     <h3>COMMUNITY</h3>
