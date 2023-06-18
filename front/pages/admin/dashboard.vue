@@ -54,6 +54,18 @@ function getProjectStatus(value: number){
     }
 }
 
+function countActiveProjects(){
+    if(dashboardData.value == undefined) return 0
+    let count = 0
+    dashboardData.value!!.projects.forEach(element => {
+        if(element.status == 0){
+            count++
+        }
+    });
+
+    return count
+}
+
 </script>
 <template>
     <div v-if="isLoading" class="loader-container">
@@ -69,7 +81,7 @@ function getProjectStatus(value: number){
             <section v-if="activeTabIndex == 0">
                 <h2>Active Projects</h2>
                 <div class="projects-container">
-
+                    <p class="text-center" v-if="countActiveProjects() == 0">No active project found</p>
                     <template v-for="project in dashboardData?.projects">
                         <div v-if="project.status == 0" class="card">
                             <div class="header">
@@ -313,6 +325,12 @@ function getProjectStatus(value: number){
     </div>
 </template>
 <style scoped>
+.text-center{
+    text-align: center !important;
+    color: var(--color-on-secondary);
+    width: 100%;
+    margin-top: 10rem;
+}
 .loader-container {
     min-height: 100vh;
     display: flex;
