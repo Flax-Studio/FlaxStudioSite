@@ -1,4 +1,4 @@
-import { DashboardData } from "./DataType"
+import { DashboardData, ProductData } from "./DataType"
 
 
 interface Result<T> {
@@ -76,6 +76,15 @@ namespace Api {
         myHeaders.append("x-access-token", token);
         return get<DashboardData>("admin/dashboard", ``, myHeaders)
     }
+
+    export async function addProduct(token: string, productData: ProductData) {
+        let data = {
+            token: token,
+            productData: productData
+        }
+        return post<{status: number}>("admin/addProduct", "", data)
+    }
+
 
 
 

@@ -57,12 +57,12 @@ export interface PendingResetPassword {
 
 export interface DashboardData {
     members: Array<AccountBasicData>,
-    projects: Array<ProjectBasicData>,
+    products: Array<ProductBasicData>,
     profile: AccountData
 }
 
 
-export interface ProjectBasicData {
+export interface ProductBasicData {
     _id: string,
     name: string,
     dashIconUrl: string,
@@ -71,10 +71,10 @@ export interface ProjectBasicData {
     dashTeamLead: string,
     dashStartedAt: number,
     dashCompletedAt: number,
-    dashStatus: number
+    dashStatus: string
 }
 
-export interface ProjectData {
+export interface ProductData {
     _id: string,
     name: string,
     dashIconUrl: string,
@@ -83,7 +83,7 @@ export interface ProjectData {
     dashTeamLead: string,
     dashStartedAt: number,
     dashCompletedAt: number,
-    dashStatus: number,
+    dashStatus: string,
 
     landingDescription: string,
     landingImageUrl: string,

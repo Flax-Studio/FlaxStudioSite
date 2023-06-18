@@ -1,25 +1,86 @@
 <script setup lang='ts'>
+import { ProductData } from '~/data/DataType';
+import Api from '~/data/api';
+
+const isSubmitting = ref(false)
+const isIconUploading = ref(false)
+const isLandingImageUploading = ref(false)
+
+const startDate = ref('')
+const endDate = ref('')
+const product = ref<ProductData>({
+    _id: '',
+    name: '',
+    dashIconUrl: '',
+    dashDescription: '',
+    dashPlatform: 'Android',
+    dashTeamLead: '',
+    dashStartedAt: 0,
+    dashCompletedAt: 0,
+    dashStatus: 'active',
+    landingDescription: '',
+    landingImageUrl: '',
+    playStoreUrl: '',
+    productSeoDesc: '',
+    productSeoTitle: '',
+    productAboutDesc: '',
+    productAboutEndDesc: '',
+    productFeatures: '',
+    privacySeoTitle: '',
+    privacySeoDescription: '',
+    privacyAboutDesc: ''
+})
+
+async function addProduct() {
+    if (isSubmitting.value) return
+    const token = localStorage.getItem('token')
+    if (token == null) {
+        alert('You are not authorized for submitting this form.')
+        return
+    }
+
+    isSubmitting.value = true
+
+    // convert string date to number
+    if(startDate.value != '') product.value.dashStartedAt = new Date(startDate.value).getTime()
+    if(endDate.value != '') product.value.dashCompletedAt = new Date(endDate.value).getTime()
+
+    const res = await Api.addProduct(token, product.value)
+    isSubmitting.value = false
+    if (res.isError) {
+        alert(res.error)
+    } else {
+        if (res.result != null) {
+            alert('Submitted successfully')
+        } else {
+            alert('Something went wrong')
+        }
+    }
+}
+
 </script>
+
 <template>
     <main>
-        <form>
+        <form method="post" @submit.prevent="addProduct">
             <h2>Project</h2>
 
             <!-- ---------- dashboard data -------------- -->
             <h3>Dashboard Part</h3>
             <div class="input-holder">
-                <input type="text" placeholder="Name of project" required>
+                <input v-model="product.name" type="text" placeholder="Name of project" required>
                 <label>Project Name*</label>
             </div>
 
             <div class="input-holder">
-                <textarea placeholder="Project description which is only visible on dashboard" required></textarea>
+                <textarea v-model="product.dashDescription"
+                    placeholder="Project description which is only visible on dashboard" required></textarea>
                 <label>Project Description*</label>
             </div>
 
             <div class="input-holder">
-                <select>
-                    <option value="Android">Android</option>
+                <select v-model="product.dashPlatform">
+                    <option value="Android" selected>Android</option>
                     <option value="Website">Website</option>
                     <option value="Web App">Web App</option>
                     <option value="Game">Game</option>
@@ -30,39 +91,43 @@
             </div>
 
             <div class="input-holder">
-                <input type="text" placeholder="Name of person who will lead the team" required>
+                <input v-model="product.dashTeamLead" type="text" placeholder="Name of person who will lead the team"
+                    required>
                 <label>Team Lead*</label>
             </div>
 
             <div class="input-holder">
-                <input type="date" placeholder="Start date" required>
+                <input v-model="startDate" type="date" placeholder="Start date" required>
                 <label>Project Start Date*</label>
             </div>
 
             <div class="input-holder">
-                <input type="date" placeholder="End date" required>
+                <input v-model="endDate" type="date" placeholder="End date" required>
                 <label>Project End Date*</label>
             </div>
 
             <div class="input-holder">
-                <select>
-                    <option value="0">Active</option>
-                    <option value="1">Completed</option>
-                    <option value="2">Failed</option>
-                    <option value="3">Pending</option>
+                <select v-model="product.dashStatus">
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                    <option value="failed">Failed</option>
+                    <option value="pending">Pending</option>
                 </select>
                 <label>Project Status</label>
             </div>
 
             <div class="col-2">
                 <div class="input-holder">
-                    <input type="url" readonly placeholder="Project Icon url">
+                    <input v-model="product.dashIconUrl" type="url" readonly placeholder="Project Icon url">
                     <label>Project Icon</label>
                 </div>
 
                 <div class="upload">
                     <input type="file">
-                    <button type="button">Upload</button>
+                    <button type="button">
+                        <div class="loader2" v-if="isIconUploading"></div>
+                        <span v-else>Upload</span>
+                    </button>
                 </div>
             </div>
 
@@ -74,53 +139,57 @@
             <h3>Project Page Part</h3>
 
             <div class="input-holder">
-                <textarea
+                <textarea v-model="product.landingDescription"
                     placeholder="Landing description for project page, it will be visible to the users who visit this page."></textarea>
                 <label>Landing description</label>
             </div>
 
             <div class="input-holder">
-                <input type="url" placeholder="Playstore url">
+                <input v-model="product.playStoreUrl" type="url" placeholder="Playstore url">
                 <label>Playstore url</label>
             </div>
 
 
             <div class="input-holder">
-                <textarea
+                <textarea v-model="product.productAboutDesc"
                     placeholder="Description for project page, it will be visible to the users who visit this page (Markdown supported)"></textarea>
                 <label>Project description</label>
             </div>
 
             <div class="input-holder">
-                <textarea placeholder="Second description (Markdown supported)"></textarea>
+                <textarea v-model="product.productAboutEndDesc"
+                    placeholder="Second description (Markdown supported)"></textarea>
                 <label>Project second description</label>
             </div>
 
             <div class="input-holder">
-                <textarea placeholder="e.g: <Title> --: <Content>"></textarea>
+                <textarea v-model="product.productFeatures" placeholder="e.g: <Title> --: <Content>"></textarea>
                 <label>Features</label>
             </div>
 
             <div class="col-2">
                 <div class="input-holder">
-                    <input type="url" readonly placeholder="Landing image url">
+                    <input v-model="product.landingImageUrl" type="url" readonly placeholder="Landing image url">
                     <label>Landing image</label>
                 </div>
 
                 <div class="upload">
                     <input type="file">
-                    <button type="button">Upload</button>
+                    <button type="button">
+                        <div class="loader2" v-if="isLandingImageUploading"></div>
+                        <span v-else>Upload</span>
+                    </button>
                 </div>
             </div>
 
             <div class="input-holder">
-                <input type="text" placeholder="SEO title for project page">
+                <input v-model="product.productSeoTitle" type="text" placeholder="SEO title for project page">
                 <label>Project SEO title</label>
             </div>
 
 
             <div class="input-holder">
-                <textarea placeholder="SEO description for project page"></textarea>
+                <textarea v-model="product.productSeoDesc" placeholder="SEO description for project page"></textarea>
                 <label>Project SEO description</label>
             </div>
 
@@ -132,22 +201,27 @@
 
             <h3>Privacy Page Part</h3>
             <div class="input-holder">
-                <input type="text" placeholder="SEO title for project privacy page">
+                <input v-model="product.privacySeoTitle" type="text" placeholder="SEO title for project privacy page">
                 <label>Project privacy SEO title</label>
             </div>
 
 
             <div class="input-holder">
-                <textarea placeholder="SEO description for project privacy page"></textarea>
+                <textarea v-model="product.privacySeoDescription"
+                    placeholder="SEO description for project privacy page"></textarea>
                 <label>Project privacy SEO description</label>
             </div>
 
             <div class="input-holder">
-                <textarea placeholder="Project privacy about description"></textarea>
+                <textarea v-model="product.privacyAboutDesc"
+                    placeholder="Project privacy about description (Markdown Supported)"></textarea>
                 <label>Project privacy about description </label>
             </div>
 
-            <button type="submit">Send</button>
+            <button type="submit">
+                <div class="loader2" v-if="isSubmitting"></div>
+                <span v-else>Send</span>
+            </button>
 
         </form>
     </main>
@@ -204,6 +278,9 @@ form .upload {
 }
 
 form button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 40px;
     background-color: var(--color-primary-variant);
@@ -248,5 +325,4 @@ form select {
 form input:focus,
 form textarea:focus {
     outline: 2px solid var(--color-primary);
-}
-</style>
+}</style>

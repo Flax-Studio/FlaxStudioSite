@@ -42,23 +42,13 @@ async function fetchDataFromServer() {
     }
 }
 
-function getProjectStatus(value: number) {
-    if (value == 0) {
-        return 'active'
-    } else if (value == 1) {
-        return 'success'
-    } else if (value == 2) {
-        return 'failed'
-    } else {
-        return 'pending'
-    }
-}
+
 
 function countActiveProjects() {
     if (dashboardData.value == undefined) return 0
     let count = 0
-    dashboardData.value!!.projects.forEach(element => {
-        if (element.dashStatus == 0) {
+    dashboardData.value!!.products.forEach(element => {
+        if (element.dashStatus == 'active') {
             count++
         }
     });
@@ -93,18 +83,19 @@ function countActiveProjects() {
                 
                 <div class="projects-container">
                     <p class="text-center" v-if="countActiveProjects() == 0">No active project found</p>
-                    <template v-for="project in dashboardData?.projects">
-                        <div v-if="project.dashStatus == 0" class="card">
+                    <template v-for="product in dashboardData?.products">
+                        <div v-if="product.dashStatus == 'active'" class="card">
                             <div class="header">
-                                <img :src="project.dashIconUrl" :alt="project.name">
+                                <img v-if="product.dashIconUrl == ''" src="../../public/extra/no_image.png" alt="no_image">
+                                <img v-else :src="product.dashIconUrl" :alt="product.name">
                                 <div>
-                                    <h3>{{ project.name }}</h3>
-                                    <span>{{ project.dashPlatform }}</span>
+                                    <h3>{{ product.name }}</h3>
+                                    <span>{{ product.dashPlatform }}</span>
                                 </div>
                             </div>
-                            <p class="detail">StartedAt: {{ dateTimeString(project.dashStartedAt) }} | {{
-                                project.dashTeamLead }}</p>
-                            <p class="description">{{ project.dashDescription }}</p>
+                            <p class="detail">StartedAt: {{ dateTimeString(product.dashStartedAt) }} | {{
+                                product.dashTeamLead }}</p>
+                            <p class="description">{{ product.dashDescription }}</p>
                         </div>
                     </template>
 
@@ -140,13 +131,13 @@ function countActiveProjects() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="project in dashboardData?.projects" :class="getProjectStatus(project.dashStatus)">
+                            <tr v-for="product in dashboardData?.products" :class="product.dashStatus">
                                 <td><img src="../../public/extra/no_image.png" alt="no_image"></td>
-                                <td>{{ project.name }}</td>
-                                <td>{{ project.dashPlatform }}</td>
-                                <td>{{ project.dashTeamLead }}</td>
-                                <td>{{ dateTimeString(project.dashStartedAt) }}</td>
-                                <td>{{ dateTimeString(project.dashCompletedAt) }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.dashPlatform }}</td>
+                                <td>{{ product.dashTeamLead }}</td>
+                                <td>{{ dateTimeString(product.dashStartedAt) }}</td>
+                                <td>{{ dateTimeString(product.dashCompletedAt) }}</td>
                                 <td>
                                     <button>
                                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24"

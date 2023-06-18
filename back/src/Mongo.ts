@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Account, Project } from "./Model.js";
-import { AccountBasicData, AccountData, DashboardData, ProjectBasicData, ProjectData} from "./DataType.js";
+import { Account, Product } from "./Model.js";
+import { AccountBasicData, AccountData, DashboardData, ProductBasicData, ProductData} from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -98,26 +98,25 @@ export default class MongoAPI {
             if(profile == null) return null
             profile!!.password = ''
 
-            const projects = await Project.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProjectBasicData>
+            const products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductBasicData>
             const accounts = await Account.find().select('_id firstName lastName profileImage role projects joinedAt') as Array<AccountBasicData>
 
             const data: DashboardData = {
                 members: accounts,
-                projects: projects,
+                products: products,
                 profile: profile as AccountData
             }
 
             return data
-
         } catch (error) {
             console.error('Error in account:', error);
             return null
         }
     }
 
-    async addProject(projectData: ProjectData){
+    async addProject(productData: ProductData){
         try {
-            const project = await Project.create(projectData)
+            const project = await Product.create(productData)
             return project
         } catch (error) {
             console.error('Error in account:', error);
@@ -126,10 +125,10 @@ export default class MongoAPI {
     }
 
 
-    async updateProject(projectData: ProjectData){
+    async updateProject(productData: ProductData){
         try {
-            const project = await Project.create(projectData)
-            return project
+            const product = await Product.create(productData)
+            return product
         } catch (error) {
             console.error('Error in account:', error);
             return null

@@ -26,7 +26,7 @@ const accountSchema = new Schema({
 export const Account = mongoose.model("Account", accountSchema)
 
 
-const projectSchema = new Schema({
+const productSchema = new Schema({
     _id: { type: String, required: true },
     name: { type: String, required: true },
     dashIconUrl: { type: String, required: false },
@@ -35,7 +35,7 @@ const projectSchema = new Schema({
     dashTeamLead: { type: String, require: true },
     dashStartedAt: { type: Number, require: true },
     dashCompletedAt: { type: Number, require: false },
-    dashStatus: { type: Number, require: true },
+    dashStatus: { type: String, require: true },
 
     // ----------- product page ----------
     landingDescription: { type: String, required: false },
@@ -54,6 +54,6 @@ const projectSchema = new Schema({
 
 })
 
-export const Project = mongoose.model("Project", projectSchema)
+export const Product = mongoose.model("Product", productSchema)
 
 

@@ -3,12 +3,11 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { sendMail } from './EmailManger.js'
-import { AccountData, MailData, PendingAccountData, PendingResetPassword, ProjectData } from './DataType.js'
+import { AccountData, MailData, PendingAccountData, PendingResetPassword, ProductData } from './DataType.js'
 import MongoAPI from './Mongo.js'
 import { generateId, generateOTP, getEmailVerifyHtml, getResetPasswordHtml } from './Utils.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { Project } from './Model.js'
 
 dotenv.config()
 
@@ -362,10 +361,10 @@ app.post('/admin/addProduct', async (req, res) => {
             return
         }
 
-        const projectData = req.body.projectData as ProjectData
-        projectData._id = generateId()
+        const productData = req.body.productData as ProductData
+        productData._id = generateId()
 
-        const data = await mongoApi.addProject(projectData)
+        const data = await mongoApi.addProject(productData)
         
         if(data != null){
             res.status(200).send({status: 200})
