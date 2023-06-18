@@ -29,58 +29,31 @@ export const Account = mongoose.model("Account", accountSchema)
 const projectSchema = new Schema({
     _id: { type: String, required: true },
     name: { type: String, required: true },
-    iconUrl: { type: String, required: false },
-    description: { type: String, required: true },
+    dashIconUrl: { type: String, required: false },
+    dashDescription: { type: String, required: true },
+    dashPlatform: { type: String, required: true },
+    dashTeamLead: { type: String, require: true },
+    dashStartedAt: { type: Number, require: true },
+    dashCompletedAt: { type: Number, require: false },
+    dashStatus: { type: Number, require: true },
 
-    platform: { type: String, required: true },
-    teamLead: { type: String, require: true },
-    startedAt: { type: Number, require: true },
-    completedAt: { type: Number, require: false },
-    status: { type: Number, require: true },
+    // ----------- product page ----------
+    landingDescription: { type: String, required: false },
+    landingImageUrl: { type: String, required: false },
+    playStoreUrl: { type: String, required: false },
+    productSeoTitle: { type: String, required: false },
+    productSeoDesc: { type: String, required: false },
+    productAboutDesc: { type: String, require: false },
+    productAboutEndDesc: { type: String, require: false },
+    productFeatures: { type: String, require: false },
+
+    // ------------- privacy page ---------------
+    privacySeoTitle: { type: String, require: false },
+    privacySeoDescription: { type: String, require: false },
+    privacyAboutDesc: { type: String, require: false },
 
 })
 
 export const Project = mongoose.model("Project", projectSchema)
-
-
-
-
-
-
-
-
-
-const projectContentSchema = new Schema({
-    _id: { type: String, required: true },
-    name: { type: String, required: true },
-    landingDescription: { type: String, required: false },
-    landingImageUrl: { type: String, required: false },
-    playStoreUrl: { type: String, required: false },
-
-    seoTitle: { type: String, require: false },
-    seoDescription: { type: String, require: false },
-
-    aboutDescription: { type: String, require: false },
-    aboutEndDescription: { type: String, require: false },
-
-    features: { type: String, require: false },
-})
-
-export const ProjectContent = mongoose.model("ProjectContent", projectContentSchema)
-
-
-const projectPrivacySchema = new Schema({
-    _id: { type: String, required: true },
-    name: { type: String, required: true },
-    landingDescription: { type: String, required: false },
-    playStoreUrl: { type: String, required: false },
-
-    seoTitle: { type: String, require: false },
-    seoDescription: { type: String, require: false },
-
-    aboutDescription: { type: String, require: false },
-})
-
-export const ProjectPrivacy = mongoose.model("ProjectPrivacy", projectPrivacySchema)
 
 

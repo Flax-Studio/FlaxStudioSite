@@ -3,11 +3,12 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { sendMail } from './EmailManger.js'
-import { AccountData, MailData, PendingAccountData, PendingResetPassword } from './DataType.js'
+import { AccountData, MailData, PendingAccountData, PendingResetPassword, ProjectData } from './DataType.js'
 import MongoAPI from './Mongo.js'
 import { generateId, generateOTP, getEmailVerifyHtml, getResetPasswordHtml } from './Utils.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { Project } from './Model.js'
 
 dotenv.config()
 
@@ -52,12 +53,34 @@ app.get('/admin/*', async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, tokenKey)
         res.locals.accountId = decoded
-        if(await mongoApi.isAccountExist(decoded as string)){
+        if (await mongoApi.isAccountExist(decoded as string)) {
             next()
-        }else{
+        } else {
             return res.status(401).send("Invalid Token");
         }
-        
+
+
+    } catch (err) {
+        return res.status(401).send("Invalid Token");
+    }
+})
+
+app.post('/admin/*', async (req, res, next) => {
+    const token =
+        req.body.token || req.query.token || req.headers["x-access-token"];
+
+    if (!token) {
+        return res.status(403).send("A token is required for authentication");
+    }
+    try {
+        const decoded = jwt.verify(token, tokenKey)
+        res.locals.accountId = decoded
+        if (await mongoApi.isAccountExist(decoded as string)) {
+            next()
+        } else {
+            return res.status(401).send("Invalid Token");
+        }
+
 
     } catch (err) {
         return res.status(401).send("Invalid Token");
@@ -82,7 +105,7 @@ app.post('/sign-in', async (req, res) => {
 
                 // create token for auth
                 const token = jwt.sign(account._id, tokenKey)
-                res.status(200).send({ token: token})
+                res.status(200).send({ token: token })
             }
         } else {
             res.status(400).send('No account found with this email, try sign up')
@@ -324,10 +347,36 @@ app.get('/admin/dashboard', async (req, res) => {
     console.log('dashboard data requested')
     const accountId = res.locals.accountId as string
     const data = await mongoApi.getDashboardData(accountId)
-    if(data != null){
+    if (data != null) {
         res.status(200).send(data)
-    }else{
+    } else {
         res.status(500).send('Server error')
+    }
+})
+
+app.post('/admin/addProduct', async (req, res) => {
+    try {
+        const accountId = res.locals.accountId as string
+        if(!await mongoApi.isAdmin(accountId)){
+            res.status(400).send('You are not the admin. Only the admin can do this type of request.')
+            return
+        }
+
+        const projectData = req.body.projectData as ProjectData
+        projectData._id = generateId()
+
+        const data = await mongoApi.addProject(projectData)
+        
+        if(data != null){
+            res.status(200).send({status: 200})
+        }else{
+            res.status(400).send('Bad request')
+        }
+
+        console.log('add product request')
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Bad request')
     }
 })
 

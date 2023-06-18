@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Account, Project } from "./Model.js";
-import { AccountBasicData, AccountData, DashboardData, ProjectData } from "./DataType.js";
+import { AccountBasicData, AccountData, DashboardData, ProjectBasicData, ProjectData} from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -25,6 +25,19 @@ export default class MongoAPI {
 
 
     // ------------------ Account -------------------
+
+    async isAdmin(accountId: string){
+        try {
+            const account = await Account.findById(accountId)
+            if(account == null) return false
+            if(account.role == 'CEO' || account.role == 'CO') return true
+
+        } catch (error) {
+            console.log(error)
+        }
+
+        return false
+    }
 
     async isAccountExist(accountId: string){
         try {
@@ -85,7 +98,7 @@ export default class MongoAPI {
             if(profile == null) return null
             profile!!.password = ''
 
-            const projects = await Project.find() as Array<ProjectData>
+            const projects = await Project.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProjectBasicData>
             const accounts = await Account.find().select('_id firstName lastName profileImage role projects joinedAt') as Array<AccountBasicData>
 
             const data: DashboardData = {
@@ -96,6 +109,27 @@ export default class MongoAPI {
 
             return data
 
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
+    async addProject(projectData: ProjectData){
+        try {
+            const project = await Project.create(projectData)
+            return project
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
+
+    async updateProject(projectData: ProjectData){
+        try {
+            const project = await Project.create(projectData)
+            return project
         } catch (error) {
             console.error('Error in account:', error);
             return null

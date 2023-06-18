@@ -38,19 +38,6 @@ export interface AccountBasicData {
     joinedAt: number,
 }
 
-export interface ProjectData{
-    _id: string,
-    name: string,
-    iconUrl: string,
-    description: string,
-
-    platform: string,
-    teamLead: string,
-    startedAt: number,
-    completedAt: number,
-    status: number,
-}
-
 export interface PendingAccountData {
     firstName: string,
     lastName: string,
@@ -68,10 +55,48 @@ export interface PendingResetPassword {
 }
 
 
-export interface DashboardData{
+export interface DashboardData {
     members: Array<AccountBasicData>,
-    projects: Array<ProjectData>,
+    projects: Array<ProjectBasicData>,
     profile: AccountData
+}
+
+
+export interface ProjectBasicData {
+    _id: string,
+    name: string,
+    dashIconUrl: string,
+    dashDescription: string,
+    dashPlatform: string,
+    dashTeamLead: string,
+    dashStartedAt: number,
+    dashCompletedAt: number,
+    dashStatus: number
+}
+
+export interface ProjectData {
+    _id: string,
+    name: string,
+    dashIconUrl: string,
+    dashDescription: string,
+    dashPlatform: string,
+    dashTeamLead: string,
+    dashStartedAt: number,
+    dashCompletedAt: number,
+    dashStatus: number,
+
+    landingDescription: string,
+    landingImageUrl: string,
+    playStoreUrl: string,
+    productSeoTitle: string,
+    productSeoDesc: string,
+    productAboutDesc: string,
+    productAboutEndDesc: string,
+    productFeatures: string,
+
+    privacySeoTitle: string,
+    privacySeoDescription: string,
+    privacyAboutDesc: string
 }
 
 
