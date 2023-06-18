@@ -93,7 +93,7 @@ function countActiveProjects() {
                                     <span>{{ product.dashPlatform }}</span>
                                 </div>
                             </div>
-                            <p class="detail">StartedAt: {{ dateTimeString(product.dashStartedAt) }} | {{
+                            <p class="detail">Started At: {{ dateTimeString(product.dashStartedAt) }} | {{
                                 product.dashTeamLead }}</p>
                             <p class="description">{{ product.dashDescription }}</p>
                         </div>
@@ -535,13 +535,12 @@ section h2 {
 }
 
 section .projects-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 50% 50%;
     gap: 1rem;
 }
 
 .projects-container .card {
-    max-width: 18rem;
     background-color: white;
     color: var(--color-on-secondary);
     padding: 1rem;
