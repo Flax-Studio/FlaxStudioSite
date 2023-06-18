@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { DashboardData } from '~/data/DataType';
 import Api from '~/data/api';
-import {dateTimeString} from '~/data/utils'
+import { dateTimeString } from '~/data/utils'
 
 
 const activeTabIndex = ref(0)
@@ -42,23 +42,23 @@ async function fetchDataFromServer() {
     }
 }
 
-function getProjectStatus(value: number){
-    if(value == 0){
+function getProjectStatus(value: number) {
+    if (value == 0) {
         return 'active'
-    }else if(value == 1){
+    } else if (value == 1) {
         return 'success'
-    }else if(value == 2){
+    } else if (value == 2) {
         return 'failed'
-    }else{
+    } else {
         return 'pending'
     }
 }
 
-function countActiveProjects(){
-    if(dashboardData.value == undefined) return 0
+function countActiveProjects() {
+    if (dashboardData.value == undefined) return 0
     let count = 0
     dashboardData.value!!.projects.forEach(element => {
-        if(element.dashStatus == 0){
+        if (element.dashStatus == 0) {
             count++
         }
     });
@@ -75,11 +75,22 @@ function countActiveProjects(){
         <Sidebar :onClick="(index) => changeActiveTab(index)" />
 
         <main>
-            <DashboardNav :icon-url="dashboardData?.profile.profileImage || ''" :role="dashboardData?.profile.role || ''" :name="dashboardData?.profile.firstName + ' ' + dashboardData?.profile.lastName" />
+            <DashboardNav :icon-url="dashboardData?.profile.profileImage || ''" :role="dashboardData?.profile.role || ''"
+                :name="dashboardData?.profile.firstName + ' ' + dashboardData?.profile.lastName" />
 
             <!-- Home -->
             <section v-if="activeTabIndex == 0">
                 <h2>Active Projects</h2>
+                <button v-if="dashboardData?.profile.role == 'CEO' || dashboardData?.profile.role == 'CO'">
+                    <NuxtLink to="./product-add">
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M11.883 3.007 12 3a1 1 0 0 1 .993.883L13 4v7h7a1 1 0 0 1 .993.883L21 12a1 1 0 0 1-.883.993L20 13h-7v7a1 1 0 0 1-.883.993L12 21a1 1 0 0 1-.993-.883L11 20v-7H4a1 1 0 0 1-.993-.883L3 12a1 1 0 0 1 .883-.993L4 11h7V4a1 1 0 0 1 .883-.993L12 3l-.117.007Z" />
+                        </svg>
+                        <span>Add Project</span>
+                    </NuxtLink>
+                </button>
+                
                 <div class="projects-container">
                     <p class="text-center" v-if="countActiveProjects() == 0">No active project found</p>
                     <template v-for="project in dashboardData?.projects">
@@ -91,7 +102,8 @@ function countActiveProjects(){
                                     <span>{{ project.dashPlatform }}</span>
                                 </div>
                             </div>
-                            <p class="detail">StartedAt: {{ dateTimeString(project.dashStartedAt) }} | {{ project.dashTeamLead }}</p>
+                            <p class="detail">StartedAt: {{ dateTimeString(project.dashStartedAt) }} | {{
+                                project.dashTeamLead }}</p>
                             <p class="description">{{ project.dashDescription }}</p>
                         </div>
                     </template>
@@ -133,7 +145,7 @@ function countActiveProjects(){
                                 <td>{{ project.name }}</td>
                                 <td>{{ project.dashPlatform }}</td>
                                 <td>{{ project.dashTeamLead }}</td>
-                                <td>{{ dateTimeString(project.dashStartedAt)}}</td>
+                                <td>{{ dateTimeString(project.dashStartedAt) }}</td>
                                 <td>{{ dateTimeString(project.dashCompletedAt) }}</td>
                                 <td>
                                     <button>
@@ -325,12 +337,38 @@ function countActiveProjects(){
     </div>
 </template>
 <style scoped>
-.text-center{
+
+section>button{
+    border-radius: var(--default-border-radius);
+    border: none;
+    background-color: var(--color-primary-variant);
+}
+
+section>button:hover{
+    background-color: var(--color-primary-variant-dark);
+}
+
+section>button svg{
+    fill: var(--color-secondary);
+}
+section>button a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    color: var(--color-secondary);
+    font-size: var(--medium-font);
+    gap: 1rem;
+    
+}
+.text-center {
     text-align: center !important;
     color: var(--color-on-secondary);
     width: 100%;
     margin-top: 10rem;
 }
+
 .loader-container {
     min-height: 100vh;
     display: flex;
