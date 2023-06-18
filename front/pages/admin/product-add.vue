@@ -3,63 +3,148 @@
 <template>
     <main>
         <form>
-            <h2>Product</h2>
+            <h2>Project</h2>
 
-            <h3>SEO Part</h3>
+            <!-- ---------- dashboard data -------------- -->
+            <h3>Dashboard Part</h3>
             <div class="input-holder">
-                <input type="text" placeholder="Title which is visible on google search">
-                <label>Product Name</label>
+                <input type="text" placeholder="Name of project" required>
+                <label>Project Name*</label>
             </div>
 
             <div class="input-holder">
-                <textarea placeholder="Description which is visible on google search"></textarea>
-                <label>Landing description</label>
-            </div>
-
-            <h3>Landing Part</h3>
-            <div class="input-holder">
-                <input type="text" placeholder="Product name">
-                <label>Product Name</label>
+                <textarea placeholder="Project description which is only visible on dashboard" required></textarea>
+                <label>Project Description*</label>
             </div>
 
             <div class="input-holder">
-                <textarea placeholder="Landing description"></textarea>
-                <label>Landing description</label>
+                <select>
+                    <option value="Android">Android</option>
+                    <option value="Website">Website</option>
+                    <option value="Web App">Web App</option>
+                    <option value="Game">Game</option>
+                    <option value="Flutter">Flutter</option>
+                    <option value="React Native">React Native</option>
+                </select>
+                <label>Platform</label>
+            </div>
+
+            <div class="input-holder">
+                <input type="text" placeholder="Name of person who will lead the team" required>
+                <label>Team Lead*</label>
+            </div>
+
+            <div class="input-holder">
+                <input type="date" placeholder="Start date" required>
+                <label>Project Start Date*</label>
+            </div>
+
+            <div class="input-holder">
+                <input type="date" placeholder="End date" required>
+                <label>Project End Date*</label>
+            </div>
+
+            <div class="input-holder">
+                <select>
+                    <option value="0">Active</option>
+                    <option value="1">Completed</option>
+                    <option value="2">Failed</option>
+                    <option value="3">Pending</option>
+                </select>
+                <label>Project Status</label>
             </div>
 
             <div class="col-2">
                 <div class="input-holder">
-                    <input type="url" readonly placeholder="Landing image url">
-                    <label>Landing Image</label>
+                    <input type="url" readonly placeholder="Project Icon url">
+                    <label>Project Icon</label>
                 </div>
 
                 <div class="upload">
-                    <input type="file" >
+                    <input type="file">
                     <button type="button">Upload</button>
                 </div>
             </div>
 
 
+
+
+
+            <!-- --------- Project page ------------ -->
+            <h3>Project Page Part</h3>
+
             <div class="input-holder">
-                <input type="url" placeholder="https://play.google.com/store/apps/details?id=com.flaxstudio.drawon">
+                <textarea
+                    placeholder="Landing description for project page, it will be visible to the users who visit this page."></textarea>
+                <label>Landing description</label>
+            </div>
+
+            <div class="input-holder">
+                <input type="url" placeholder="Playstore url">
                 <label>Playstore url</label>
             </div>
 
-            <h3>Content Part</h3>
+
             <div class="input-holder">
                 <textarea
-                    placeholder="Write markdown here..."></textarea>
-                <label>About description</label>
-            </div>
-            <div class="input-holder">
-                <textarea placeholder="Write small ending lines..."></textarea>
-                <label>About end description</label>
+                    placeholder="Description for project page, it will be visible to the users who visit this page (Markdown supported)"></textarea>
+                <label>Project description</label>
             </div>
 
-            <h3>Features</h3>
+            <div class="input-holder">
+                <textarea placeholder="Second description (Markdown supported)"></textarea>
+                <label>Project second description</label>
+            </div>
+
             <div class="input-holder">
                 <textarea placeholder="e.g: <Title> --: <Content>"></textarea>
                 <label>Features</label>
+            </div>
+
+            <div class="col-2">
+                <div class="input-holder">
+                    <input type="url" readonly placeholder="Landing image url">
+                    <label>Landing image</label>
+                </div>
+
+                <div class="upload">
+                    <input type="file">
+                    <button type="button">Upload</button>
+                </div>
+            </div>
+
+            <div class="input-holder">
+                <input type="text" placeholder="SEO title for project page">
+                <label>Project SEO title</label>
+            </div>
+
+
+            <div class="input-holder">
+                <textarea placeholder="SEO description for project page"></textarea>
+                <label>Project SEO description</label>
+            </div>
+
+
+
+
+
+
+
+            <h3>Privacy Page Part</h3>
+            <div class="input-holder">
+                <input type="text" placeholder="SEO title for project privacy page">
+                <label>Project privacy SEO title</label>
+            </div>
+
+
+            <div class="input-holder">
+                <textarea placeholder="SEO description for project privacy page"></textarea>
+                <label>Project privacy SEO description</label>
+            </div>
+
+            <div class="input-holder">
+                <textarea placeholder="Project privacy about description"></textarea>
+                <label>Project privacy about description </label>
             </div>
 
             <button type="submit">Send</button>
@@ -101,20 +186,24 @@ form .input-holder {
 }
 
 
-form .col-2{
+form .col-2 {
     display: grid;
     grid-template-columns: auto max-content;
     gap: 1rem;
     align-items: center;
 }
 
-form .upload{
+form .col-2 .input-holder {
+    margin: 0;
+}
+
+form .upload {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-form button{
+form button {
     width: 100%;
     height: 40px;
     background-color: var(--color-primary-variant);
@@ -126,7 +215,7 @@ form button{
     transition: all 200ms;
 }
 
-form button:hover{
+form button:hover {
     box-shadow: 0px 4px 8px #9707606e;
 }
 
@@ -143,7 +232,8 @@ form .input-holder label {
 
 
 form .input-holder input,
-form textarea {
+form textarea,
+form select {
     width: 100%;
     font-size: var(--medium-font);
     padding: 1.5rem 1rem;
@@ -159,5 +249,4 @@ form input:focus,
 form textarea:focus {
     outline: 2px solid var(--color-primary);
 }
-
 </style>
