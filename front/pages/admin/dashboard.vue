@@ -1,14 +1,65 @@
 <script setup lang='ts'>
+import { DashboardData } from '~/data/DataType';
+import Api from '~/data/api';
+import {dateTimeString} from '~/data/utils'
+
 
 const activeTabIndex = ref(0)
+const dashboardData = ref<DashboardData>()
+const isLoading = ref(true)
+const isAuthenticated = ref(false)
 
 
 function changeActiveTab(index: number) {
     activeTabIndex.value = index
 }
+
+onMounted(function () {
+    fetchDataFromServer()
+})
+
+
+async function fetchDataFromServer() {
+
+    const token = localStorage.getItem('token')
+    console.log(token)
+    if (token == null) {
+        alert("You don't have access to server, please signin")
+        return
+    }
+
+    const res = await Api.getDashboardData(token!!)
+    if (res.isError) {
+        alert(res.error)
+    } else {
+        if (res.result != null) {
+            dashboardData.value = res.result
+            isLoading.value = false
+            isAuthenticated.value = true
+        } else {
+            alert('Something went wrong, please refresh the page')
+        }
+    }
+}
+
+function getProjectStatus(value: number){
+    if(value == 0){
+        return 'active'
+    }else if(value == 1){
+        return 'success'
+    }else if(value == 2){
+        return 'failed'
+    }else{
+        return 'pending'
+    }
+}
+
 </script>
 <template>
-    <div class="dashboard">
+    <div v-if="isLoading" class="loader-container">
+        <div class="loader2 dark"></div>
+    </div>
+    <div v-if="isAuthenticated" class="dashboard">
         <Sidebar :onClick="(index) => changeActiveTab(index)" />
 
         <main>
@@ -19,17 +70,19 @@ function changeActiveTab(index: number) {
                 <h2>Active Projects</h2>
                 <div class="projects-container">
 
-                    <div class="card" v-for="i in 4">
-                        <div class="header">
-                            <img src="../../public/extra/no_image.png" alt="no_image">
-                            <div>
-                                <h3>Task Planner</h3>
-                                <span>Android</span>
+                    <template v-for="project in dashboardData?.projects">
+                        <div v-if="project.status == 0" class="card">
+                            <div class="header">
+                                <img :src="project.iconUrl" :alt="project.name">
+                                <div>
+                                    <h3>{{ project.name }}</h3>
+                                    <span>{{ project.platform }}</span>
+                                </div>
                             </div>
+                            <p class="detail">StartedAt: {{ dateTimeString(project.startedAt) }} | {{ project.teamLead }}</p>
+                            <p class="description">{{ project.description }}</p>
                         </div>
-                        <p class="detail">Started: 20 Jun 2023 | Sayam</p>
-                        <p class="description">A simple android app to track and manage your work easily.</p>
-                    </div>
+                    </template>
 
                 </div>
             </section>
@@ -63,13 +116,13 @@ function changeActiveTab(index: number) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="status, index in ['active', 'failed', 'success']" :class="status">
+                            <tr v-for="project in dashboardData?.projects" :class="getProjectStatus(project.status)">
                                 <td><img src="../../public/extra/no_image.png" alt="no_image"></td>
-                                <td>Task Planner</td>
-                                <td>Android</td>
-                                <td>Sayam</td>
-                                <td>10 Jan 2022</td>
-                                <td>20 Feb 2022</td>
+                                <td>{{ project.name }}</td>
+                                <td>{{ project.platform }}</td>
+                                <td>{{ project.teamLead }}</td>
+                                <td>{{ dateTimeString(project.startedAt)}}</td>
+                                <td>{{ dateTimeString(project.completedAt) }}</td>
                                 <td>
                                     <button>
                                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
@@ -104,14 +157,12 @@ function changeActiveTab(index: number) {
                             <col style="width: auto;">
                             <col style="width: auto;">
                             <col style="width: auto;">
-                            <col style="width: auto;">
                             <col style="width: 6rem;">
                         </colgroup>
                         <thead>
                             <tr>
                                 <th>Icon</th>
                                 <th>Name</th>
-                                <th>Platform</th>
                                 <th>Role</th>
                                 <th>Projects</th>
                                 <th>Joined At</th>
@@ -120,13 +171,12 @@ function changeActiveTab(index: number) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="status, index in 5">
+                            <tr v-for="member in dashboardData?.members">
                                 <td><img src="../../public/extra/no_image.png" alt="no_image"></td>
-                                <td>Nitesh Kumar</td>
-                                <td>Android</td>
-                                <td>CEO</td>
-                                <td>5</td>
-                                <td>10 Jan 2022</td>
+                                <td>{{ member.firstName }} {{ member.lastName }}</td>
+                                <td>{{ member.role }}</td>
+                                <td>{{ member.projects.split(' ').length }}</td>
+                                <td>{{ dateTimeString(member.joinedAt) }}</td>
 
                                 <td>
                                     <button>
@@ -167,13 +217,11 @@ function changeActiveTab(index: number) {
                     <div class="heading">
                         <img src="../../public/extra/no_image.png" alt="no_image">
                         <div>
-                            <h3>Nitesh Kumar</h3>
+                            <h3>{{ dashboardData?.profile.firstName }} {{ dashboardData?.profile.lastName }}</h3>
                             <span>Android & Web fullstack Developer</span>
                         </div>
                     </div>
-                    <p>As an intermediate developer, I recognize that there is always room for improvement and growth. I am
-                        constantly seeking out new challenges and opportunities to expand my skillset and knowledge base.
-                    </p>
+                    <p>{{ dashboardData?.profile.smallInfo || 'Detail not added yet' }}</p>
                 </div>
 
 
@@ -183,19 +231,19 @@ function changeActiveTab(index: number) {
                         <tbody>
                             <tr>
                                 <th>Availability: </th>
-                                <td>Full-Time</td>
+                                <td>{{ dashboardData?.profile.extraInfo.split('|')[0] || 'Not added yet' }}</td>
                             </tr>
                             <tr>
                                 <th>Age: </th>
-                                <td>19</td>
+                                <td>{{ dashboardData?.profile.extraInfo.split('|')[1] || 'Not added yet' }}</td>
                             </tr>
                             <tr>
                                 <th>Location: </th>
-                                <td>India, Bihar</td>
+                                <td>{{ dashboardData?.profile.extraInfo.split('|')[2] || 'Not added yet' }}</td>
                             </tr>
                             <tr>
                                 <th>Experience: </th>
-                                <td>2 years</td>
+                                <td>{{ dashboardData?.profile.extraInfo.split('|')[3] || 'Not added yet' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -230,21 +278,8 @@ function changeActiveTab(index: number) {
 
                 <h4>About</h4>
                 <div class="card">
-                    <p>As an intermediate Android, game, and web developer, I am constantly honing my skills and expanding
-                        my knowledge in the ever-evolving world of digital technology. I have always been fascinated by the
-                        ability of technology to connect people and empower them to accomplish incredible things, and that
-                        is what motivates me every day.
-                    </p>
-                    <p>In my journey as a developer, I have gained a solid foundation in developing mobile applications for
-                        the Android operating system. I have learned how to build applications that leverage the full
-                        potential of the platform, from designing intuitive user interfaces to implementing complex features
-                        that enhance user engagement and interactivity.
-                    </p>
-                    <p>As a game developer, I have been able to express my creativity and imagination through designing
-                        immersive gaming experiences. I enjoy the challenge of crafting compelling gameplay mechanics,
-                        creating visually stunning graphics, and incorporating new technologies and trends to make my games
-                        stand out.
-                    </p>
+                    <p v-if="dashboardData?.profile.about.trim() == ''">Not added yet</p>
+                    <p v-for="content in dashboardData?.profile.about">{{ content }}</p>
                 </div>
 
                 <h4>External Projects</h4>
@@ -278,6 +313,18 @@ function changeActiveTab(index: number) {
     </div>
 </template>
 <style scoped>
+.loader-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-container .loader2 {
+    width: 30px;
+    height: 30px;
+}
+
 .dashboard {
     display: grid;
     grid-template-columns: 20% 80%;
@@ -395,13 +442,15 @@ function changeActiveTab(index: number) {
 
 
 /* ----------- chips -------- */
-.profile .chip-container{
+.profile .chip-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
     margin: 1rem 0;
 }
-.profile .chip-container a, .profile .chip-container span{
+
+.profile .chip-container a,
+.profile .chip-container span {
     text-decoration: none;
     padding: 0.6rem 1.5rem;
     border: 1px solid var(--color-primary-variant);
@@ -411,7 +460,8 @@ function changeActiveTab(index: number) {
     font-weight: 600;
 }
 
-.profile .chip-container a:hover, .profile .chip-container span:hover{
+.profile .chip-container a:hover,
+.profile .chip-container span:hover {
     background-color: var(--color-primary-variant);
     color: var(--color-secondary);
 

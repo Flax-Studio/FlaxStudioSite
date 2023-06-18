@@ -1,3 +1,4 @@
+import { DashboardData } from "./DataType"
 
 
 interface Result<T> {
@@ -67,7 +68,17 @@ namespace Api {
     }
 
 
-    
+
+    // -------------------------- admin ------------------------------
+
+    export async function getDashboardData(token: string) {
+        var myHeaders = new Headers();
+        myHeaders.append("x-access-token", token);
+        return get<DashboardData>("admin/dashboard", ``, myHeaders)
+    }
+
+
+
 
 
     // export async function getCategoryProducts(categoryId: number, limit: number) {
@@ -113,10 +124,11 @@ namespace Api {
 
 
 
-    async function get<T>(path: string, query: string) {
+    async function get<T>(path: string, query: string, headers: HeadersInit | undefined = undefined) {
         const requestOptions: RequestInit = {
             method: "GET",
             redirect: "follow",
+            headers: headers
         };
 
         // console.log(`${apiURL}/${path}?${query}`)

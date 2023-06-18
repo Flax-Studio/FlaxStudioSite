@@ -26,3 +26,58 @@ export interface FeaturesData{
 export interface ProductPageData{
     
 }
+
+
+export interface AccountData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    mode: 'none' | 'google',
+    profileImage: string,
+    role: 'CEO' | 'CO' | 'Member',
+    smallInfo: string,
+    extraInfo: string,
+    socialLinks: string,
+    about: string,
+    externalProjectsLinks: string,
+    skills: string,
+    languages: string,
+    joinedAt: number,
+    projects: string,
+}
+
+
+
+// ---------------- server ----------------
+
+export interface AccountBasicData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    profileImage: string,
+    role: 'CEO' | 'CO' | 'Member',
+    projects: string,
+    joinedAt: number,
+}
+
+export interface ProjectData{
+    _id: string,
+    name: string,
+    iconUrl: string,
+    description: string,
+
+    platform: string,
+    teamLead: string,
+    startedAt: number,
+    completedAt: number,
+    status: number,
+}
+
+export interface DashboardData{
+    members: Array<AccountBasicData>,
+    projects: Array<ProjectData>,
+    profile: AccountData
+}
+

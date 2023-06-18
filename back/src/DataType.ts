@@ -46,7 +46,7 @@ export interface ProjectData{
 
     platform: string,
     teamLead: string,
-    startedAt: string,
+    startedAt: number,
     completedAt: number,
     status: number,
 }
