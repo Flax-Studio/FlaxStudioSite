@@ -85,6 +85,10 @@ namespace Api {
         return post<{status: number}>("admin/addProduct", "", data)
     }
 
+    export async function uploadImage(token: string, formData: FormData){
+        return imagePost<{url: string}>("admin/upload", formData, token)
+    }
+
 
 
 
@@ -129,7 +133,27 @@ namespace Api {
 
 
 
+    async function imagePost<T>(path: string, formData: FormData, token: string) {
+        const requestOptions: RequestInit = {
+            headers: {
+                "x-access-token": token
+            },
+            method: "POST",
+            redirect: "follow",
+            body: formData
+        };
 
+        try {
+            const res = await fetch(`${apiURL}/${path}`, requestOptions);
+            if (res.ok) {
+                return createResult<T>(await res.json(), false)
+            } else {
+                return createResult(null, true, await res.text())
+            }
+        } catch (error) {
+            return createResult<T>(null, true, "fetch error")
+        }
+    }
 
 
 

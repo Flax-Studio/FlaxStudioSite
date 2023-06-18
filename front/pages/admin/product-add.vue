@@ -42,8 +42,8 @@ async function addProduct() {
     isSubmitting.value = true
 
     // convert string date to number
-    if(startDate.value != '') product.value.dashStartedAt = new Date(startDate.value).getTime()
-    if(endDate.value != '') product.value.dashCompletedAt = new Date(endDate.value).getTime()
+    if (startDate.value != '') product.value.dashStartedAt = new Date(startDate.value).getTime()
+    if (endDate.value != '') product.value.dashCompletedAt = new Date(endDate.value).getTime()
 
     const res = await Api.addProduct(token, product.value)
     isSubmitting.value = false
@@ -56,6 +56,48 @@ async function addProduct() {
             alert('Something went wrong')
         }
     }
+}
+
+async function uploadImage(eventTarget: EventTarget | null) {
+    if(eventTarget == null) return
+
+}
+
+async function uploadIcon(eventTarget: EventTarget | null) {
+    if(eventTarget == null) return
+    if(isIconUploading.value) return
+    const token = localStorage.getItem('token')
+    if(token == null){
+        alert('You are not authorized for submitting this form.')
+        return
+    }
+
+    const input  = (eventTarget as HTMLElement).parentElement!!.querySelector('input') as HTMLInputElement
+
+    const files = input.files
+    if(files == null || files.length == 0){
+        alert('Please select file first!')
+        return
+    }
+
+    const file = files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+  
+    isIconUploading.value = true
+    const res = await Api.uploadImage(token, formData)
+    isIconUploading.value = false
+    
+    if(res.isError){
+        alert(res.error)
+    }else{
+        if(res.result != null){
+            product.value.dashIconUrl = res.result.url
+        }else{
+            alert('Something went wrong!')
+        }
+    }
+
 }
 
 </script>
@@ -124,7 +166,7 @@ async function addProduct() {
 
                 <div class="upload">
                     <input type="file">
-                    <button type="button">
+                    <button type="button" @click="event => uploadIcon(event.target)">
                         <div class="loader2" v-if="isIconUploading"></div>
                         <span v-else>Upload</span>
                     </button>
@@ -292,6 +334,10 @@ form button {
     transition: all 200ms;
 }
 
+form button *{
+    pointer-events: none;
+}
+
 form button:hover {
     box-shadow: 0px 4px 8px #9707606e;
 }
@@ -325,4 +371,5 @@ form select {
 form input:focus,
 form textarea:focus {
     outline: 2px solid var(--color-primary);
-}</style>
+}
+</style>

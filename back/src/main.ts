@@ -8,6 +8,24 @@ import MongoAPI from './Mongo.js'
 import { generateId, generateOTP, getEmailVerifyHtml, getResetPasswordHtml } from './Utils.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import multer from 'multer'
+
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads/')
+    },
+    filename: function (req, file, cb) {
+        const index = (file.originalname as string).lastIndexOf('.')
+        const ext = (file.originalname as string).slice(index)
+
+        const filename = generateId() + ext
+        cb(null, filename);
+    }
+})
+
+const upload = multer({ storage: storage })
 
 dotenv.config()
 
@@ -15,6 +33,7 @@ const port = process.env.EXPRESS_PORT || 3001
 const tokenKey = process.env.TOKEN_KEY || 'test'
 const atlas = process.env.ATLAS_URI || '';
 const mailerEmail = process.env.NODE_MAILER_EMAIL || ''
+const serverUrl = process.env.SERVER_URL || 'http://localhost:3001'
 
 const app = express()
 app.use(cors())
@@ -43,13 +62,15 @@ app.use('/public', express.static('public'));
 
 // auth middleware
 app.get('/admin/*', async (req, res, next) => {
-    const token =
-        req.body.token || req.query.token || req.headers["x-access-token"];
 
-    if (!token) {
-        return res.status(403).send("A token is required for authentication");
-    }
     try {
+        const token =
+            req.body.token || req.query.token || req.headers["x-access-token"];
+
+        if (!token) {
+            return res.status(403).send("A token is required for authentication");
+        }
+
         const decoded = jwt.verify(token, tokenKey)
         res.locals.accountId = decoded
         if (await mongoApi.isAccountExist(decoded as string)) {
@@ -65,13 +86,15 @@ app.get('/admin/*', async (req, res, next) => {
 })
 
 app.post('/admin/*', async (req, res, next) => {
-    const token =
-        req.body.token || req.query.token || req.headers["x-access-token"];
 
-    if (!token) {
-        return res.status(403).send("A token is required for authentication");
-    }
     try {
+        const token =
+            req.body.token || req.query.token || req.headers["x-access-token"];
+
+        if (!token) {
+            return res.status(403).send("A token is required for authentication");
+        }
+
         const decoded = jwt.verify(token, tokenKey)
         res.locals.accountId = decoded
         if (await mongoApi.isAccountExist(decoded as string)) {
@@ -356,7 +379,7 @@ app.get('/admin/dashboard', async (req, res) => {
 app.post('/admin/addProduct', async (req, res) => {
     try {
         const accountId = res.locals.accountId as string
-        if(!await mongoApi.isAdmin(accountId)){
+        if (!await mongoApi.isAdmin(accountId)) {
             res.status(400).send('You are not the admin. Only the admin can do this type of request.')
             return
         }
@@ -365,10 +388,10 @@ app.post('/admin/addProduct', async (req, res) => {
         productData._id = generateId()
 
         const data = await mongoApi.addProject(productData)
-        
-        if(data != null){
-            res.status(200).send({status: 200})
-        }else{
+
+        if (data != null) {
+            res.status(200).send({ status: 200 })
+        } else {
             res.status(400).send('Bad request')
         }
 
@@ -378,6 +401,17 @@ app.post('/admin/addProduct', async (req, res) => {
         res.status(400).send('Bad request')
     }
 })
+
+
+app.post('/admin/upload', upload.single('image'), async (req, res) => {
+    if (req.file == undefined){
+        res.status(400).send('Unable to upload')
+    }else{
+        res.status(200).send({ url: serverUrl + '/public/uploads/' + req.file!!.filename })
+    }
+    console.log('upload image request')
+})
+
 
 
 
