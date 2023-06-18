@@ -75,7 +75,7 @@ function countActiveProjects(){
         <Sidebar :onClick="(index) => changeActiveTab(index)" />
 
         <main>
-            <DashboardNav />
+            <DashboardNav :icon-url="dashboardData?.profile.profileImage || ''" :role="dashboardData?.profile.role || ''" :name="dashboardData?.profile.firstName + ' ' + dashboardData?.profile.lastName" />
 
             <!-- Home -->
             <section v-if="activeTabIndex == 0">

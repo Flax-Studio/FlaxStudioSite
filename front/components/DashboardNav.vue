@@ -1,4 +1,9 @@
 <script setup lang='ts'>
+defineProps<{
+    name: string,
+    role: string,
+    iconUrl: string
+}>()
 </script>
 <template>
     <nav>
@@ -9,10 +14,11 @@
             </svg>
         </div>
         <div class="profile">
-            <img src="../public/extra/no_image.png" alt="profile image">
+            <img v-if="iconUrl == ''" src="../public/extra/no_image.png" alt="profile image">
+            <img v-else :src="iconUrl" alt="profile image">
             <div>
-                <span>Nitesh Kr</span>
-                <span>CEO</span>
+                <span>{{ name }}</span>
+                <span>{{ role }}</span>
             </div>
         </div>
     </nav>
