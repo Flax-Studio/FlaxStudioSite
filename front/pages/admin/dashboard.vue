@@ -333,6 +333,7 @@ section>button{
     border-radius: var(--default-border-radius);
     border: none;
     background-color: var(--color-primary-variant);
+    margin-bottom: 3rem;
 }
 
 section>button:hover{
@@ -545,6 +546,7 @@ section .projects-container {
     color: var(--color-on-secondary);
     padding: 1rem;
     border-radius: var(--border-radius-medium);
+    margin: 0;
 }
 
 .projects-container .header {
