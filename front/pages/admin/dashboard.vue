@@ -58,7 +58,7 @@ function countActiveProjects(){
     if(dashboardData.value == undefined) return 0
     let count = 0
     dashboardData.value!!.projects.forEach(element => {
-        if(element.status == 0){
+        if(element.dashStatus == 0){
             count++
         }
     });
@@ -83,16 +83,16 @@ function countActiveProjects(){
                 <div class="projects-container">
                     <p class="text-center" v-if="countActiveProjects() == 0">No active project found</p>
                     <template v-for="project in dashboardData?.projects">
-                        <div v-if="project.status == 0" class="card">
+                        <div v-if="project.dashStatus == 0" class="card">
                             <div class="header">
-                                <img :src="project.iconUrl" :alt="project.name">
+                                <img :src="project.dashIconUrl" :alt="project.name">
                                 <div>
                                     <h3>{{ project.name }}</h3>
-                                    <span>{{ project.platform }}</span>
+                                    <span>{{ project.dashPlatform }}</span>
                                 </div>
                             </div>
-                            <p class="detail">StartedAt: {{ dateTimeString(project.startedAt) }} | {{ project.teamLead }}</p>
-                            <p class="description">{{ project.description }}</p>
+                            <p class="detail">StartedAt: {{ dateTimeString(project.dashStartedAt) }} | {{ project.dashTeamLead }}</p>
+                            <p class="description">{{ project.dashDescription }}</p>
                         </div>
                     </template>
 
@@ -128,13 +128,13 @@ function countActiveProjects(){
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="project in dashboardData?.projects" :class="getProjectStatus(project.status)">
+                            <tr v-for="project in dashboardData?.projects" :class="getProjectStatus(project.dashStatus)">
                                 <td><img src="../../public/extra/no_image.png" alt="no_image"></td>
                                 <td>{{ project.name }}</td>
-                                <td>{{ project.platform }}</td>
-                                <td>{{ project.teamLead }}</td>
-                                <td>{{ dateTimeString(project.startedAt)}}</td>
-                                <td>{{ dateTimeString(project.completedAt) }}</td>
+                                <td>{{ project.dashPlatform }}</td>
+                                <td>{{ project.dashTeamLead }}</td>
+                                <td>{{ dateTimeString(project.dashStartedAt)}}</td>
+                                <td>{{ dateTimeString(project.dashCompletedAt) }}</td>
                                 <td>
                                     <button>
                                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24"

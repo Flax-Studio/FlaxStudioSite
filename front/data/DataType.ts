@@ -62,22 +62,47 @@ export interface AccountBasicData {
     joinedAt: number,
 }
 
-export interface ProjectData{
+export interface ProjectData {
     _id: string,
     name: string,
-    iconUrl: string,
-    description: string,
+    dashIconUrl: string,
+    dashDescription: string,
+    dashPlatform: string,
+    dashTeamLead: string,
+    dashStartedAt: number,
+    dashCompletedAt: number,
+    dashStatus: number,
 
-    platform: string,
-    teamLead: string,
-    startedAt: number,
-    completedAt: number,
-    status: number,
+    landingDescription: string,
+    landingImageUrl: string,
+    playStoreUrl: string,
+    productSeoTitle: string,
+    productSeoDesc: string,
+    productAboutDesc: string,
+    productAboutEndDesc: string,
+    productFeatures: string,
+
+    privacySeoTitle: string,
+    privacySeoDescription: string,
+    privacyAboutDesc: string
 }
+
+export interface ProjectBasicData {
+    _id: string,
+    name: string,
+    dashIconUrl: string,
+    dashDescription: string,
+    dashPlatform: string,
+    dashTeamLead: string,
+    dashStartedAt: number,
+    dashCompletedAt: number,
+    dashStatus: number
+}
+
 
 export interface DashboardData{
     members: Array<AccountBasicData>,
-    projects: Array<ProjectData>,
+    projects: Array<ProjectBasicData>,
     profile: AccountData
 }
 
