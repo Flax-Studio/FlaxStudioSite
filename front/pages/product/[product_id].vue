@@ -1,21 +1,49 @@
 <script setup lang='ts'>
 import { releasedAppsData } from '../../data/CommonData';
+import { ProductPageData } from '../../data/DataType'
 import drawOnImage from '../../public/app_images/draw_on_image.png'
+const router = useRouter()
+const { params } = router.currentRoute.value
 const bigPara = "Draw On is a versatile drawing app that lets you create stunning illustrations and designs with ease. With its intuitive interface and powerful tools, you can draw rectangles, lines, circles, curves, and more with just a few taps and swipes."
 
+const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
+const dataUrl = serverUrl + '/product/' + params.product_id
+
+const pageData = ref<ProductPageData>({
+    _id: '',
+    name: '',
+    landingDescription: '',
+    landingImageUrl: '',
+    playStoreUrl: '',
+    productSeoTitle: '',
+    productSeoDesc: '',
+    productAboutDesc: '',
+    productAboutEndDesc: '',
+    productFeatures: ''
+})
 
 
-onMounted(function(){
-    // console.log(params.name)
+// fetch data from server for ssr
+const { data, error } = await useFetch(dataUrl)
+if (data.value != null) {
+    pageData.value = data.value as ProductPageData
+
+} else {
+    throw { message: 'Requested page could not be found.', statusCode: error.value?.statusCode || 404 }
+}
+
+
+onMounted(function () {
+
 })
 
 
 </script>
 <template>
-    <HeaderComponent/>
-    <AppLanding :app-name="'Draw On'" :small-para="'A simple & easy drawing app to show your creativity.'"
-        :big-para="bigPara" :app-link="'https://play.google.com/store/apps/details?id=com.flaxstudio.drawon'"
-        :app-images-link="drawOnImage" :privacy-link="'/draw-on/privacy'" />
+    <HeaderComponent />
+    <AppLanding :app-name="pageData.name" :small-para="pageData.landingDescription"
+        :big-para="bigPara" :app-link="pageData.playStoreUrl"
+        :app-images-link="drawOnImage" :privacy-link="'/privacy/' + pageData._id" />
 
     <AboutApp :app-paragraphs="[
         '**Draw On** is a versatile drawing app that lets you create stunning illustrations and designs with ease. With its intuitive interface and powerful tools, you can draw **rectangles, lines, circles, curves**, and more with just a few taps and swipes.',
@@ -34,6 +62,6 @@ onMounted(function(){
 
     <AppsAndGames :data="releasedAppsData" />
     <!-- <AppPrivacyCard :privacy-link="'./draw-on/privacy'" /> -->
-    <FooterComponent/>
+    <FooterComponent />
 </template>
 <style scoped></style>

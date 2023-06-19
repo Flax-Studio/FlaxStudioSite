@@ -435,6 +435,18 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
 
 
 
+// ---------------------- public requests -------------------
+
+app.get('/product/:product_id', async (req, res) => {
+    const data = await mongoApi.getProductPageData(req.params.product_id)
+    if(data != null){
+        res.status(200).send(data)
+    }else{
+        res.status(404).send('Not found')
+    }
+})
+
+
 // app.post('/admin/*', async (req, res, next) => {
 //     if (!isMongoConnected) {
 //         res.status(400).send("Database connection error")

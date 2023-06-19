@@ -74,6 +74,32 @@ export interface ProductBasicData {
     dashStatus: string
 }
 
+export interface ProductPageData {
+    _id: string,
+    name: string,
+    landingDescription: string,
+    landingImageUrl: string,
+    playStoreUrl: string,
+    productSeoTitle: string,
+    productSeoDesc: string,
+    productAboutDesc: string,
+    productAboutEndDesc: string,
+    productFeatures: string,
+}
+
+
+export interface ProductPrivacyPageData {
+    _id: string,
+    name: string,
+    landingDescription: string,
+    landingImageUrl: string,
+    playStoreUrl: string,
+    
+    privacySeoTitle: string,
+    privacySeoDescription: string,
+    privacyAboutDesc: string
+}
+
 export interface ProductData {
     _id: string,
     name: string,

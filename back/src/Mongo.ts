@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Account, Product } from "./Model.js";
-import { AccountBasicData, AccountData, DashboardData, ProductBasicData, ProductData} from "./DataType.js";
+import { AccountBasicData, AccountData, DashboardData, ProductBasicData, ProductData, ProductPageData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -26,11 +26,11 @@ export default class MongoAPI {
 
     // ------------------ Account -------------------
 
-    async isAdmin(accountId: string){
+    async isAdmin(accountId: string) {
         try {
             const account = await Account.findById(accountId)
-            if(account == null) return false
-            if(account.role == 'CEO' || account.role == 'CO') return true
+            if (account == null) return false
+            if (account.role == 'CEO' || account.role == 'CO') return true
 
         } catch (error) {
             console.log(error)
@@ -39,10 +39,10 @@ export default class MongoAPI {
         return false
     }
 
-    async isAccountExist(accountId: string){
+    async isAccountExist(accountId: string) {
         try {
             const account = await Account.findById(accountId)
-            if(account != null) return true
+            if (account != null) return true
 
         } catch (error) {
             console.log(error)
@@ -88,14 +88,14 @@ export default class MongoAPI {
     }
 
 
-    
+
     // ----------------------- Dashboard ---------------------
 
-    async getDashboardData(accountId: string){
+    async getDashboardData(accountId: string) {
         try {
             const profile = await Account.findById(accountId)
 
-            if(profile == null) return null
+            if (profile == null) return null
             profile!!.password = ''
 
             const products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductBasicData>
@@ -114,7 +114,7 @@ export default class MongoAPI {
         }
     }
 
-    async addProject(productData: ProductData){
+    async addProject(productData: ProductData) {
         try {
             const project = await Product.create(productData)
             return project
@@ -125,9 +125,23 @@ export default class MongoAPI {
     }
 
 
-    async updateProject(productData: ProductData){
+    async updateProject(productData: ProductData) {
         try {
             const product = await Product.create(productData)
+            return product
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
+
+
+    // -------------------------- public requests ---------------------
+
+    async getProductPageData(productId: string) {
+        try {
+            const product = await Product.findById(productId).select('_id name landingDescription landingImageUrl playStoreUrl productSeoTitle productSeoDesc productAboutDesc productAboutEndDesc productFeatures') as ProductPageData | null
             return product
         } catch (error) {
             console.error('Error in account:', error);

@@ -1,4 +1,9 @@
 
+export interface ErrorData {
+    message: string;
+    statusCode: number;
+}
+
 // ----------------------------- For apps and games -------------------------------
 export interface AppsAndGamesData {
     heading: string, description: string, apps: Array<AppDetail>
@@ -10,21 +15,21 @@ export interface AppDetail {
 
 
 // ----------------------------- For profile -------------------------------
-export interface ProfileData{
+export interface ProfileData {
     heading: string, description: string, profiles: Array<ProfileDetail>
 }
 
-export interface ProfileDetail{
+export interface ProfileDetail {
     imageUrl: string, pageUrl: string, name: string, about: string, role: string
 }
 
 
-export interface FeaturesData{
+export interface FeaturesData {
     heading: string, description: string
 }
 
-export interface ProductPageData{
-    
+export interface ProductPageData {
+
 }
 
 
@@ -87,6 +92,32 @@ export interface ProductData {
     privacyAboutDesc: string
 }
 
+export interface ProductPageData {
+    _id: string,
+    name: string,
+    landingDescription: string,
+    landingImageUrl: string,
+    playStoreUrl: string,
+    productSeoTitle: string,
+    productSeoDesc: string,
+    productAboutDesc: string,
+    productAboutEndDesc: string,
+    productFeatures: string,
+}
+
+
+export interface ProductPrivacyPageData {
+    _id: string,
+    name: string,
+    landingDescription: string,
+    landingImageUrl: string,
+    playStoreUrl: string,
+
+    privacySeoTitle: string,
+    privacySeoDescription: string,
+    privacyAboutDesc: string
+}
+
 export interface ProductBasicData {
     _id: string,
     name: string,
@@ -100,7 +131,7 @@ export interface ProductBasicData {
 }
 
 
-export interface DashboardData{
+export interface DashboardData {
     members: Array<AccountBasicData>,
     products: Array<ProductBasicData>,
     profile: AccountData

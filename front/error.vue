@@ -1,13 +1,15 @@
 <script setup lang='ts'>
-const props = defineProps({
-    error: Object
-})
+import { ErrorData } from './data/DataType';
+
+const props = defineProps<{
+    error: ErrorData
+}>()
 
 </script>
 <template>
     <div class="not-found">
-        <h1>404</h1>
-        <p>The requested page could not be found.</p>
+        <h1>{{ error.statusCode }}</h1>
+        <p>{{ error.message }}</p>
         <NuxtLink to="/">Go to Home</NuxtLink>
     </div>
 </template>
