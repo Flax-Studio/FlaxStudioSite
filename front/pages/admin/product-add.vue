@@ -58,14 +58,12 @@ async function addProduct() {
     }
 }
 
-async function uploadImage(eventTarget: EventTarget | null) {
+
+
+async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
     if(eventTarget == null) return
 
-}
-
-async function uploadIcon(eventTarget: EventTarget | null) {
-    if(eventTarget == null) return
-    if(isIconUploading.value) return
+    if(isIconUploading.value || isLandingImageUploading.value) return
     const token = localStorage.getItem('token')
     if(token == null){
         alert('You are not authorized for submitting this form.')
@@ -81,10 +79,19 @@ async function uploadIcon(eventTarget: EventTarget | null) {
     }
 
     // find previous uploaded image name
-    const index = product.value.dashIconUrl.lastIndexOf('/')
+    let imageUrl = ''
+    if(isIcon){
+        imageUrl = product.value.dashIconUrl
+    }else{
+        imageUrl = product.value.landingImageUrl
+    }
+
+
+    const index = imageUrl.lastIndexOf('/')
+
     let fileName = ''
     if(index != -1){
-        fileName = product.value.dashIconUrl.slice(index + 1)
+        fileName = imageUrl.slice(index + 1)
     }
 
     const file = files[0]
@@ -92,15 +99,28 @@ async function uploadIcon(eventTarget: EventTarget | null) {
     formData.append('image', file)
     formData.append('prevImageName', fileName)
   
-    isIconUploading.value = true
+    if(isIcon){
+        isIconUploading.value = true
+    }else{
+        isLandingImageUploading.value = true
+    }
     const res = await Api.uploadImage(token, formData)
-    isIconUploading.value = false
+    
+    if(isIcon){
+        isIconUploading.value = false
+    }else{
+        isLandingImageUploading.value = false
+    }
     
     if(res.isError){
         alert(res.error)
     }else{
         if(res.result != null){
-            product.value.dashIconUrl = res.result.url
+            if(isIcon){
+                product.value.dashIconUrl = res.result.url
+            }else{
+                product.value.landingImageUrl = res.result.url
+            }
         }else{
             alert('Something went wrong!')
         }
@@ -174,7 +194,7 @@ async function uploadIcon(eventTarget: EventTarget | null) {
 
                 <div class="upload">
                     <input type="file">
-                    <button type="button" @click="event => uploadIcon(event.target)">
+                    <button type="button" @click="event => uploadImage(event.target, true)">
                         <div class="loader2" v-if="isIconUploading"></div>
                         <span v-else>Upload</span>
                     </button>
@@ -225,7 +245,7 @@ async function uploadIcon(eventTarget: EventTarget | null) {
 
                 <div class="upload">
                     <input type="file">
-                    <button type="button">
+                    <button type="button" @click="event => uploadImage(event.target, false)">
                         <div class="loader2" v-if="isLandingImageUploading"></div>
                         <span v-else>Upload</span>
                     </button>
