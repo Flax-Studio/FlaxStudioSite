@@ -80,9 +80,17 @@ async function uploadIcon(eventTarget: EventTarget | null) {
         return
     }
 
+    // find previous uploaded image name
+    const index = product.value.dashIconUrl.lastIndexOf('/')
+    let fileName = ''
+    if(index != -1){
+        fileName = product.value.dashIconUrl.slice(index + 1)
+    }
+
     const file = files[0]
     const formData = new FormData()
     formData.append('image', file)
+    formData.append('prevImageName', fileName)
   
     isIconUploading.value = true
     const res = await Api.uploadImage(token, formData)

@@ -406,9 +406,22 @@ app.post('/admin/addProduct', async (req, res) => {
 app.post('/admin/upload', upload.single('image'), async (req, res) => {
     console.log('upload image request')
     try {
+
         if (req.file == undefined){
             res.status(400).send('Unable to upload')
         }else{
+
+            // delete previous uploaded file, if found
+            if(req.body.prevImageName != ''){
+                const fileUrl = './public/uploads/' + req.body.prevImageName
+                try {
+                    await fs.access(fileUrl)      //  check file exist or not
+                    await fs.unlink(fileUrl)      // delete the file
+                } catch (error) {
+                    console.log('File not found')
+                }
+            }
+
             res.status(200).send({ url: serverUrl + '/public/uploads/' + req.file!!.filename })
         }
         
