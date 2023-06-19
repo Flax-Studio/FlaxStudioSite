@@ -1,7 +1,9 @@
 {
     "files.exclude": {
         "*/.nuxt": true,
-        "*/node_modules": true
+        "*/node_modules": true,
+        "**/*.js": true
+
     },
     "cSpell.words": [
         "Playstore",

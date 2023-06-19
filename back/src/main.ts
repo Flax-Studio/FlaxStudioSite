@@ -9,6 +9,7 @@ import { generateId, generateOTP, getEmailVerifyHtml, getResetPasswordHtml } fro
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import multer from 'multer'
+import fs from 'fs/promises'
 
 
 
@@ -360,7 +361,6 @@ app.post('/reset-password', async (req, res) => {
 
 
 
-
 // ------------------------ Admin ----------------------------
 
 // app.get('/admin')
@@ -404,12 +404,19 @@ app.post('/admin/addProduct', async (req, res) => {
 
 
 app.post('/admin/upload', upload.single('image'), async (req, res) => {
-    if (req.file == undefined){
-        res.status(400).send('Unable to upload')
-    }else{
-        res.status(200).send({ url: serverUrl + '/public/uploads/' + req.file!!.filename })
-    }
     console.log('upload image request')
+    try {
+        if (req.file == undefined){
+            res.status(400).send('Unable to upload')
+        }else{
+            res.status(200).send({ url: serverUrl + '/public/uploads/' + req.file!!.filename })
+        }
+        
+        
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Bad request')
+    }
 })
 
 

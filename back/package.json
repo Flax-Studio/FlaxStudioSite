@@ -4,7 +4,7 @@
     "description": "A server to manage the Flaxstudio backend part.",
     "main": "main.js",
     "scripts": {
-        "dev": "nodemon out/main.js"
+        "dev": "nodemon src/main.js"
     },
     "author": "Nitesh",
     "license": "ISC",
