@@ -2,6 +2,7 @@
 import { DashboardData } from '~/data/DataType';
 import Api from '~/data/api';
 import { dateTimeString } from '~/data/utils'
+import noImage from '../../public/extra/no_image.png'
 
 
 const activeTabIndex = ref(0)
@@ -56,6 +57,12 @@ function countActiveProjects() {
     return count
 }
 
+
+async function onImageLoadError(element: any){
+    element.onerror=null;
+    element.src= noImage
+}
+
 </script>
 <template>
     <div v-if="isLoading" class="loader-container">
@@ -86,8 +93,7 @@ function countActiveProjects() {
                     <template v-for="product in dashboardData?.products">
                         <div v-if="product.dashStatus == 'active'" class="card">
                             <div class="header">
-                                <img v-if="product.dashIconUrl == ''" src="../../public/extra/no_image.png" alt="no_image">
-                                <img v-else :src="product.dashIconUrl" :alt="product.name">
+                                <img :src="product.dashIconUrl"  @error="event => onImageLoadError(event.target)" :alt="product.name">
                                 <div>
                                     <h3>{{ product.name }}</h3>
                                     <span>{{ product.dashPlatform }}</span>
@@ -132,8 +138,7 @@ function countActiveProjects() {
                         </thead>
                         <tbody>
                             <tr v-for="product in dashboardData?.products" :class="product.dashStatus">
-                                <td v-if="product.dashIconUrl == ''"><img src="../../public/extra/no_image.png" :alt="product.name"></td>
-                                <td v-else><img :src="product.dashIconUrl" :alt="product.name"></td>
+                                <td><img :src="product.dashIconUrl"  @error="event => onImageLoadError(event.target)" :alt="product.name"></td>
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.dashPlatform }}</td>
                                 <td>{{ product.dashTeamLead }}</td>
@@ -173,7 +178,6 @@ function countActiveProjects() {
                             <col style="width: auto;">
                             <col style="width: auto;">
                             <col style="width: auto;">
-                            <col style="width: 6rem;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -182,8 +186,7 @@ function countActiveProjects() {
                                 <th>Role</th>
                                 <th>Projects</th>
                                 <th>Joined At</th>
-                                <th>Profile</th>
-                                <th style="text-align: center;">Delete</th>
+                                <th style="text-align: center;">Profile</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -200,15 +203,6 @@ function countActiveProjects() {
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M13.267 4.209a.75.75 0 0 0-1.034 1.086l6.251 5.955H3.75a.75.75 0 0 0 0 1.5h14.734l-6.251 5.954a.75.75 0 0 0 1.034 1.087l7.42-7.067a.996.996 0 0 0 .3-.58.758.758 0 0 0-.001-.29.995.995 0 0 0-.3-.578l-7.419-7.067Z" />
-                                        </svg>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="delete">
-                                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M12 1.75a3.25 3.25 0 0 1 3.245 3.066L15.25 5h5.25a.75.75 0 0 1 .102 1.493L20.5 6.5h-.796l-1.28 13.02a2.75 2.75 0 0 1-2.561 2.474l-.176.006H8.313a2.75 2.75 0 0 1-2.714-2.307l-.023-.174L4.295 6.5H3.5a.75.75 0 0 1-.743-.648L2.75 5.75a.75.75 0 0 1 .648-.743L3.5 5h5.25A3.25 3.25 0 0 1 12 1.75Zm6.197 4.75H5.802l1.267 12.872a1.25 1.25 0 0 0 1.117 1.122l.127.006h7.374c.6 0 1.109-.425 1.225-1.002l.02-.126L18.196 6.5ZM13.75 9.25a.75.75 0 0 1 .743.648L14.5 10v7a.75.75 0 0 1-1.493.102L13 17v-7a.75.75 0 0 1 .75-.75Zm-3.5 0a.75.75 0 0 1 .743.648L11 10v7a.75.75 0 0 1-1.493.102L9.5 17v-7a.75.75 0 0 1 .75-.75Zm1.75-6a1.75 1.75 0 0 0-1.744 1.606L10.25 5h3.5A1.75 1.75 0 0 0 12 3.25Z" />
                                         </svg>
                                     </button>
                                 </td>

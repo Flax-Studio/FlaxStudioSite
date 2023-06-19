@@ -1,15 +1,21 @@
 <script setup lang='ts'>
+import noImage from '../public/extra/no_image.png'
 defineProps<{
     name: string,
     role: string,
     iconUrl: string
 }>()
+
+async function onImageLoadError(element: any){
+    element.onerror=null;
+    element.src= noImage
+}
 </script>
 <template>
     <nav>
         <div class="profile">
-            <img v-if="iconUrl == ''" src="../public/extra/no_image.png" alt="profile image">
-            <img v-else :src="iconUrl" alt="profile image">
+            <img :src="iconUrl" @error="event => onImageLoadError(event.target)" alt="profile image">
+            
             <div>
                 <span>{{ name }}</span>
                 <span>{{ role }}</span>
