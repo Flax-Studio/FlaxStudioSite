@@ -132,7 +132,8 @@ function countActiveProjects() {
                         </thead>
                         <tbody>
                             <tr v-for="product in dashboardData?.products" :class="product.dashStatus">
-                                <td><img src="../../public/extra/no_image.png" alt="no_image"></td>
+                                <td v-if="product.dashIconUrl == ''"><img src="../../public/extra/no_image.png" :alt="product.name"></td>
+                                <td v-else><img :src="product.dashIconUrl" :alt="product.name"></td>
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.dashPlatform }}</td>
                                 <td>{{ product.dashTeamLead }}</td>
