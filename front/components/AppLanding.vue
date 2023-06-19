@@ -9,16 +9,10 @@ const props = defineProps<{
     privacyLink: string
 }>()
 
-const markdownCont = ref<HTMLDivElement>()
 
-onMounted(() => {
-    markdownToHtml(props.description)
-})
 function markdownToHtml(markdown: string) {
-
-    markdownCont.value!!.innerHTML = marked(markdown)
+    return marked(markdown)
 }
-
 
 
 
@@ -30,7 +24,7 @@ function markdownToHtml(markdown: string) {
             <div class="content">
                 <div class="detail">
                     <h1>{{ appName }}</h1>
-                    <div ref="markdownCont"></div>
+                    <div v-html="markdownToHtml(description)"></div>
                     <a :href="appLink">Get from Playstore</a>
                 </div>
 
@@ -43,7 +37,6 @@ function markdownToHtml(markdown: string) {
     </div>
 </template>
 
-<!-- v-html="markdownToHtml(description)" -->
 
 <style>
 .landing-top {
