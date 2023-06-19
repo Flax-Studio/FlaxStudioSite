@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { ProductPageData } from '../../data/DataType'
+import { marked } from 'marked'
 
 const router = useRouter()
 const { params } = router.currentRoute.value
@@ -49,11 +50,16 @@ useServerSeoMeta({
     twitterCard: 'summary_large_image',
 })
 
+function markdownToHtml(markdown: string) {
+    return marked(markdown)
+}
+
+
 
 </script>
 <template>
     <HeaderComponent />
-    <AppLanding :description="pageData.landingDescription" :app-name="pageData.name" :app-link="pageData.playStoreUrl"
+    <AppLanding :description="markdownToHtml(pageData.landingDescription)" :app-name="pageData.name" :app-link="pageData.playStoreUrl"
         :app-images-link="pageData.landingImageUrl" :privacy-link="'/privacy/' + pageData._id" />
 
     <AboutApp :about="pageData.productAboutDesc" />

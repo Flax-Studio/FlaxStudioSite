@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-const props = defineProps({
+defineProps({
     privacyLink: String
 })
 </script>
@@ -7,7 +7,7 @@ const props = defineProps({
     <div class="app-privacy">
         <div>
             <p>See our app privacy policy</p>
-            <a :href="privacyLink">Privacy Policy</a>
+            <NuxtLink :to="privacyLink">Privacy Policy</NuxtLink>
             
         </div>
     </div>

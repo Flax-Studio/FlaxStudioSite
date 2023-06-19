@@ -45,8 +45,8 @@ function markdownToHtml(markdown: string) {
 <template>
     <HeaderComponent />
     <PrivacyLanding :description="markdownToHtml(pageData.landingDescription)" :app-name="pageData.name"
-        :app-link="'https://play.google.com/store/apps/details?id=com.flaxstudio.drawon'"
-        :app-page-link="'/draw-on/' + pageData._id" />
+        :app-link="pageData.playStoreUrl"
+        :app-page-link="'/product/' + pageData._id" />
     <div class="privacy-content" v-html="markdownToHtml(pageData.privacyAboutDesc)"></div>
     <FooterComponent />
 </template>
