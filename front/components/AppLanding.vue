@@ -1,14 +1,26 @@
 <script setup lang="ts">
+import {marked} from 'marked'
 
-const props = defineProps({
-    appName: String,
-    smallPara: String,
-    bigPara: String,
-    appLink: String,
-    appImagesLink: String,
-    privacyLink: String
+const props = defineProps<{
+    appName: string,
+    description: string,
+    appLink: string,
+    appImagesLink: string,
+    privacyLink: string
+}>()
 
+const markdownCont = ref<HTMLDivElement>()
+
+onMounted(() => {
+    markdownToHtml(props.description)
 })
+function markdownToHtml(markdown: string) {
+
+    markdownCont.value!!.innerHTML = marked(markdown)
+}
+
+
+
 
 </script>
 
@@ -18,11 +30,10 @@ const props = defineProps({
             <div class="content">
                 <div class="detail">
                     <h1>{{ appName }}</h1>
-                    <p>{{ smallPara }}</p>
-                    <p>{{ bigPara }}</p>
-
+                    <div ref="markdownCont"></div>
                     <a :href="appLink">Get from Playstore</a>
                 </div>
+
                 <div class="images">
                     <img :src="appImagesLink" alt="our apps">
                 </div>
@@ -32,7 +43,9 @@ const props = defineProps({
     </div>
 </template>
 
-<style scoped>
+<!-- v-html="markdownToHtml(description)" -->
+
+<style>
 .landing-top {
     width: 100%;
     overflow-y: auto;
@@ -40,51 +53,12 @@ const props = defineProps({
 }
 
 
-.header-parent {
-    background-color: rgba(255, 255, 255, 0.13);
-}
-
-.header {
-    max-width: var(--max-page-width);
-    margin: auto;
-    height: 60px;
-    display: grid;
-    grid-template-columns: 1fr max-content;
-    align-items: center;
-}
-
-.header h2 {
-    font-size: 24px;
-    margin-left: var(--page-margin);
-    font-weight: 600;
-}
-
-.header a {
-    color: white;
-    text-decoration: none;
-}
-
-.header div {
-    margin-right: 12px;
-}
-
-.header div a {
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    margin: 0 12px;
-    font-size: medium;
-}
-
-.header div a:hover {
-    text-decoration: underline;
-}
-
-.content-parent {
+.landing-top .content-parent {
     max-width: var(--max-page-width);
     margin: auto;
 }
 
-.content {
+.landing-top .content {
     margin: 40px var(--page-margin);
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -93,18 +67,18 @@ const props = defineProps({
     align-items: center;
 }
 
-.content h1 {
+.landing-top .content h1 {
     font-weight: 600;
     margin-top: 40px;
     font-size: 40px;
 }
 
-.content p {
+.landing-top .content p{
     margin: 24px 0;
 }
 
 
-.content a {
+.landing-top .content a {
     display: inline-block;
     margin-top: 30px;
     text-decoration: none;
@@ -119,13 +93,13 @@ const props = defineProps({
 }
 
 
-.content a:hover {
+.landing-top .content a:hover {
     background-color: white;
     border: 2px solid White;
     color: var(--color-primary);
 }
 
-.content img {
+.landing-top .content img {
     display: block;
     margin: auto;
     height: auto;
@@ -135,22 +109,22 @@ const props = defineProps({
 
 
 @media only screen and (max-width: 700px) {
-    .content {
+    .landing-top .content {
         grid-template-columns: 100%;
         text-align: center;
     }
 
-    .header h2 {
+    .landing-top .header h2 {
         font-size: 22px;
         margin-left: var(--page-margin);
         font-weight: 600;
     }
 
-    .content h1 {
+    .landing-top .content h1 {
         font-size: 36px;
     }
 
-    .content img {
+    .landing-top .content img {
         margin-top: 30px;
         width: 100%;
         height: auto;
@@ -159,7 +133,7 @@ const props = defineProps({
 }
 
 @media only screen and (max-width: 400px) {
-    .hide-responsive {
+    .landing-top .hide-responsive {
         display: none;
     }
 }

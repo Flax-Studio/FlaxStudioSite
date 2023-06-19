@@ -9,10 +9,12 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@types/marked": "^5.0.0",
     "@types/node": "^18",
     "nuxt": "^3.5.2"
   },
   "dependencies": {
+    "marked": "^5.1.0",
     "vercel": "^30.1.2"
   }
 }

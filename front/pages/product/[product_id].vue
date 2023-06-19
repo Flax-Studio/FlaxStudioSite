@@ -41,9 +41,9 @@ onMounted(function () {
 </script>
 <template>
     <HeaderComponent />
-    <AppLanding :app-name="pageData.name" :small-para="pageData.landingDescription"
-        :big-para="bigPara" :app-link="pageData.playStoreUrl"
-        :app-images-link="drawOnImage" :privacy-link="'/privacy/' + pageData._id" />
+    <AppLanding :description="pageData.landingDescription" :app-name="pageData.name"
+        :app-link="pageData.playStoreUrl"
+        :app-images-link="pageData.landingImageUrl" :privacy-link="'/privacy/' + pageData._id" />
 
     <AboutApp :app-paragraphs="[
         '**Draw On** is a versatile drawing app that lets you create stunning illustrations and designs with ease. With its intuitive interface and powerful tools, you can draw **rectangles, lines, circles, curves**, and more with just a few taps and swipes.',
