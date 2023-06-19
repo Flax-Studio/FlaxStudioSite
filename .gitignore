@@ -10,5 +10,5 @@ dist
 .fleet
 .idea
 out
-uploads
+uploads/*.png
 *.js
