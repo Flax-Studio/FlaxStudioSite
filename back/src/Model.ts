@@ -41,14 +41,12 @@ const productSchema = new Schema({
     landingDescription: { type: String, required: false },
     landingImageUrl: { type: String, required: false },
     playStoreUrl: { type: String, required: false },
-    productSeoTitle: { type: String, required: false },
     productSeoDesc: { type: String, required: false },
     productAboutDesc: { type: String, require: false },
     productAboutEndDesc: { type: String, require: false },
     productFeatures: { type: String, require: false },
 
     // ------------- privacy page ---------------
-    privacySeoTitle: { type: String, require: false },
     privacySeoDescription: { type: String, require: false },
     privacyAboutDesc: { type: String, require: false },
 

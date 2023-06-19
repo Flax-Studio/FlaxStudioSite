@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import {marked} from 'marked'
 
-const props = defineProps<{
+
+defineProps<{
     appName: string,
     description: string,
     appLink: string,
     appImagesLink: string,
     privacyLink: string
 }>()
-
-
-function markdownToHtml(markdown: string) {
-    return marked(markdown)
-}
 
 
 
@@ -24,7 +19,7 @@ function markdownToHtml(markdown: string) {
             <div class="content">
                 <div class="detail">
                     <h1>{{ appName }}</h1>
-                    <div v-html="markdownToHtml(description)"></div>
+                    <div v-html="description"></div>
                     <a :href="appLink">Get from Playstore</a>
                 </div>
 

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Account, Product } from "./Model.js";
-import { AccountBasicData, AccountData, DashboardData, ProductBasicData, ProductData, ProductPageData } from "./DataType.js";
+import { AccountBasicData, AccountData, DashboardData, ProductBasicData, ProductData, ProductPageData, ProductPrivacyPageData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -142,6 +142,16 @@ export default class MongoAPI {
     async getProductPageData(productId: string) {
         try {
             const product = await Product.findById(productId).select('_id name landingDescription landingImageUrl playStoreUrl productSeoTitle productSeoDesc productAboutDesc productAboutEndDesc productFeatures') as ProductPageData | null
+            return product
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
+    async getProductPrivacyPageData(productId: string) {
+        try {
+            const product = await Product.findById(productId).select('_id name landingDescription playStoreUrl privacySeoDescription privacyAboutDesc') as ProductPrivacyPageData | null
             return product
         } catch (error) {
             console.error('Error in account:', error);

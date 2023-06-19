@@ -438,7 +438,18 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
 // ---------------------- public requests -------------------
 
 app.get('/product/:product_id', async (req, res) => {
+    console.log('Requested product page data')
     const data = await mongoApi.getProductPageData(req.params.product_id)
+    if(data != null){
+        res.status(200).send(data)
+    }else{
+        res.status(404).send('Not found')
+    }
+})
+
+app.get('/privacy/:product_id', async (req, res) => {
+    console.log('Requested product privacy page data')
+    const data = await mongoApi.getProductPrivacyPageData(req.params.product_id)
     if(data != null){
         res.status(200).send(data)
     }else{

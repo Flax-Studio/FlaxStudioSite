@@ -98,7 +98,6 @@ export interface ProductPageData {
     landingDescription: string,
     landingImageUrl: string,
     playStoreUrl: string,
-    productSeoTitle: string,
     productSeoDesc: string,
     productAboutDesc: string,
     productAboutEndDesc: string,
@@ -110,10 +109,7 @@ export interface ProductPrivacyPageData {
     _id: string,
     name: string,
     landingDescription: string,
-    landingImageUrl: string,
     playStoreUrl: string,
-
-    privacySeoTitle: string,
     privacySeoDescription: string,
     privacyAboutDesc: string
 }

@@ -13,7 +13,6 @@ let pageData: ProductPageData = {
     landingDescription: '',
     landingImageUrl: '',
     playStoreUrl: '',
-    productSeoTitle: '',
     productSeoDesc: '',
     productAboutDesc: '',
     productAboutEndDesc: '',
@@ -42,8 +41,8 @@ if (data.value != null) {
 }
 
 useServerSeoMeta({
-    title: pageData.productSeoTitle,
-    ogTitle: pageData.productSeoTitle,
+    title: pageData.name,
+    ogTitle: pageData.name,
     description: pageData.productSeoDesc,
     ogDescription: pageData.productSeoDesc,
     ogImage: pageData.landingImageUrl,
