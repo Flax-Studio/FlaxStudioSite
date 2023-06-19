@@ -1,15 +1,14 @@
 <script setup lang='ts'>
 import { releasedAppsData } from '../../data/CommonData';
 import { ProductPageData } from '../../data/DataType'
-import drawOnImage from '../../public/app_images/draw_on_image.png'
+
 const router = useRouter()
 const { params } = router.currentRoute.value
-const bigPara = "Draw On is a versatile drawing app that lets you create stunning illustrations and designs with ease. With its intuitive interface and powerful tools, you can draw rectangles, lines, circles, curves, and more with just a few taps and swipes."
 
 const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
 const dataUrl = serverUrl + '/product/' + params.product_id
 
-const pageData = ref<ProductPageData>({
+let pageData: ProductPageData = {
     _id: '',
     name: '',
     landingDescription: '',
@@ -20,41 +19,47 @@ const pageData = ref<ProductPageData>({
     productAboutDesc: '',
     productAboutEndDesc: '',
     productFeatures: ''
-})
+}
+
+const productFeatures = Array<{ heading: string, description: string }>()
 
 
 // fetch data from server for ssr
 const { data, error } = await useFetch(dataUrl)
 if (data.value != null) {
-    pageData.value = data.value as ProductPageData
+    pageData = data.value as ProductPageData
+
+    // extracting features
+    const features = pageData.productFeatures.split('|')
+    features.forEach(item => {
+        const sub = item.split('--:')
+        if (sub.length == 2) {
+            productFeatures.push({ heading: sub[0], description: sub[1] })
+        }
+    });
 
 } else {
     throw { message: 'Requested page could not be found.', statusCode: error.value?.statusCode || 404 }
 }
 
-
-onMounted(function () {
-
+useServerSeoMeta({
+    title: pageData.productSeoTitle,
+    ogTitle: pageData.productSeoTitle,
+    description: pageData.productSeoDesc,
+    ogDescription: pageData.productSeoDesc,
+    ogImage: pageData.landingImageUrl,
+    twitterCard: 'summary_large_image',
 })
 
 
 </script>
 <template>
     <HeaderComponent />
-    <AppLanding :description="pageData.landingDescription" :app-name="pageData.name"
-        :app-link="pageData.playStoreUrl"
+    <AppLanding :description="pageData.landingDescription" :app-name="pageData.name" :app-link="pageData.playStoreUrl"
         :app-images-link="pageData.landingImageUrl" :privacy-link="'/privacy/' + pageData._id" />
 
-    <AboutApp :about="pageData.productAboutDesc"/>
-    <AppFeatures :details="[
-        { heading: 'Drawing Tools', description: 'The app should offer a variety of drawing tools such as a pen, pencil, brush, eraser, and more. Users should be able to easily switch between tools and customize the thickness and color of each.' },
-        { heading: 'Shapes', description: 'The app should allow users to draw different shapes like rectangles, circles, and triangles, as well as free-form shapes like curves and lines. Users should be able to easily adjust the size and position of these shapes.' },
-        { heading: 'Export & Import', description: 'The app should allow users to export their drawings in different formats like PNG, JPG, or SVG, and share them via email, social media, or other apps. It should also allow users to import images or photos to use as a reference or as a part of their drawing. ' },
-        { heading: 'Undo & Redo', description: 'The app should offer the ability to undo and redo actions, giving users the freedom to experiment and make changes without fear of losing their work.' },
-        { heading: 'Save & Favorites', description: 'The app should allow users to save their drawings and create a favorite list for easy access.' },
-        { heading: 'User-friendly Interface', description: 'The app should have a user-friendly interface, with easy-to-use tools and clear instructions to help users get started quickly and efficiently. It should also be optimized for different screen sizes and orientations.' },
-    ]"
-        :ending="'By incorporating these features, your Draw On app can provide users with a powerful and enjoyable drawing experience.'" />
+    <AboutApp :about="pageData.productAboutDesc" />
+    <AppFeatures :details="productFeatures" :ending="pageData.productAboutEndDesc" />
 
     <AppsAndGames :data="releasedAppsData" />
     <!-- <AppPrivacyCard :privacy-link="'./draw-on/privacy'" /> -->
