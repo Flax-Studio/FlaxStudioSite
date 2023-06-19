@@ -1,54 +1,22 @@
 <script setup lang='ts'>
+import { marked } from 'marked'
+defineProps<{
+    about: string
+}>()
 
-const props = defineProps({
-    appParagraphs: {
-        type: Array<String>,
-        default: () => [],
-        required: true
-    },
-})
-
-function marked(text: String) {
-    var markedText = ""
-    var catchText = ""
-    var index = 0
-    var isCatching = false
-    while (index < text.length) {
-
-        if (text[index] == "*" && text[index + 1] == "*") {
-            isCatching = !isCatching
-            index += 2
-            continue
-        }
-
-        if (isCatching) {
-            catchText += text[index]
-        } else {
-            if (catchText.length != 0) {
-                markedText += "<b>" + catchText + "</b>"
-                catchText = ""
-            }
-            markedText += text[index]
-        }
-
-        index++
-    }
-
-    if (catchText.length != 0) {
-        markedText += "<b>" + catchText + "</b>"
-    }
-
-    return markedText
+function markdownToHtml(markdown: string) {
+    return marked(markdown)
 }
+
 
 </script>
 <template>
     <div class="about-container">
         <h2>About App</h2>
-        <p v-for="(text) in appParagraphs" v-html="marked(text)"></p>
+        <div v-html="markdownToHtml(about)"></div>
     </div>
 </template>
-<style scoped>
+<style>
 .about-container {
     max-width: var(--max-page-width);
     margin: 60px auto;

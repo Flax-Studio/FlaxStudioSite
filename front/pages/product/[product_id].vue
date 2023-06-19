@@ -45,11 +45,7 @@ onMounted(function () {
         :app-link="pageData.playStoreUrl"
         :app-images-link="pageData.landingImageUrl" :privacy-link="'/privacy/' + pageData._id" />
 
-    <AboutApp :app-paragraphs="[
-        '**Draw On** is a versatile drawing app that lets you create stunning illustrations and designs with ease. With its intuitive interface and powerful tools, you can draw **rectangles, lines, circles, curves**, and more with just a few taps and swipes.',
-        'Whether you\'re a **professional artist**, a **hobbyist**, or a **student**, Draw On has everything you need to unleash your creativity. You can choose from a wide range of **colors, brush sizes**, and textures to bring your ideas to life. You can also **save** your drawings and create a favorite list for easy access.',
-        'With its simple yet powerful features, Draw On is perfect for anyone who loves to draw, doodle, or sketch on the go. So why wait? Download Draw On today and **start creating beautiful art!**'
-    ]" />
+    <AboutApp :about="pageData.productAboutDesc"/>
     <AppFeatures :details="[
         { heading: 'Drawing Tools', description: 'The app should offer a variety of drawing tools such as a pen, pencil, brush, eraser, and more. Users should be able to easily switch between tools and customize the thickness and color of each.' },
         { heading: 'Shapes', description: 'The app should allow users to draw different shapes like rectangles, circles, and triangles, as well as free-form shapes like curves and lines. Users should be able to easily adjust the size and position of these shapes.' },
