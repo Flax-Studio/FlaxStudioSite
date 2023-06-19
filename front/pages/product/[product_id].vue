@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-import { releasedAppsData } from '../../data/CommonData';
 import { ProductPageData } from '../../data/DataType'
 
 const router = useRouter()
@@ -61,8 +60,8 @@ useServerSeoMeta({
     <AboutApp :about="pageData.productAboutDesc" />
     <AppFeatures :details="productFeatures" :ending="pageData.productAboutEndDesc" />
 
-    <AppsAndGames :data="releasedAppsData" />
-    <!-- <AppPrivacyCard :privacy-link="'./draw-on/privacy'" /> -->
+    <!-- <AppsAndGames :data="releasedAppsData" /> -->
+    <AppPrivacyCard :privacy-link="'/privacy/' + pageData._id" />
     <FooterComponent />
 </template>
 <style scoped></style>
