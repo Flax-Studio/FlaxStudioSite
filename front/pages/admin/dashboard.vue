@@ -125,8 +125,8 @@ function markdownToHtml(markdown: string | undefined) {
                             <col style="width: auto;">
                             <col style="width: auto;">
                             <col style="width: auto;">
-                            <col style="width: 6rem;">
-                            <col style="width: 6rem;">
+                            <col v-if="dashboardData?.profile.role != 'MEMBER'" style="width: 6rem;">
+                            <col v-if="dashboardData?.profile.role != 'MEMBER'" style="width: 6rem;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -136,8 +136,8 @@ function markdownToHtml(markdown: string | undefined) {
                                 <th>Team Lead</th>
                                 <th>Started At</th>
                                 <th>Completed At</th>
-                                <th style="text-align: center;">Edit</th>
-                                <th style="text-align: center;">Delete</th>
+                                <th v-if="dashboardData?.profile.role != 'MEMBER'" style="text-align: center;">Edit</th>
+                                <th v-if="dashboardData?.profile.role != 'MEMBER'" style="text-align: center;">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -148,7 +148,7 @@ function markdownToHtml(markdown: string | undefined) {
                                 <td>{{ product.dashTeamLead }}</td>
                                 <td>{{ dateTimeString(product.dashStartedAt) }}</td>
                                 <td>{{ dateTimeString(product.dashCompletedAt) }}</td>
-                                <td>
+                                <td v-if="dashboardData?.profile.role != 'MEMBER'">
                                     <button>
                                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -157,7 +157,7 @@ function markdownToHtml(markdown: string | undefined) {
                                         </svg>
                                     </button>
                                 </td>
-                                <td>
+                                <td v-if="dashboardData?.profile.role != 'MEMBER'">
                                     <button class="delete">
                                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
