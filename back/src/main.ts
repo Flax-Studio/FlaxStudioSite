@@ -482,6 +482,16 @@ app.get('/profile/:user_id', async (req, res) => {
     }
 })
 
+app.get('/home', async (req, res) => {
+    console.log('Requested home page data')
+    const data = await mongoApi.getHomePageData()
+    if (data != null) {
+        res.status(200).send(data)
+    } else {
+        res.status(404).send('Not found')
+    }
+})
+
 
 
 

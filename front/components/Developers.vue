@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { ProfileData } from '../data/DataType'
 
-const props = defineProps<{
+defineProps<{
     data: ProfileData
 }>()
 
@@ -9,14 +9,14 @@ const props = defineProps<{
 
 <template>
     <div class="developers-container">
-        <h2>{{ data?.heading }}</h2>
-        <p>{{ data?.description }}</p>
+        <h2>{{ data.heading }}</h2>
+        <p>{{ data.description }}</p>
         <div class="cards-container">
-            <div class="profile-card reveal" v-for="(profile, index) in data?.profiles">
-                <a :href="profile.pageUrl">
-                    <img :src="profile.imageUrl" :alt="profile.name">
-                    <h3>{{ profile.name }}</h3>
-                    <p>{{ profile.about }}</p>
+            <div class="profile-card reveal" v-for="(profile, index) in data.profiles">
+                <a :href="'/profile/' + profile._id">
+                    <img :src="profile.profileImage" :alt="profile.firstName + ' ' + profile.lastName + ' Image'">
+                    <h3>{{ profile.firstName }} {{ profile.lastName }}</h3>
+                    <p>{{ profile.smallInfo }}</p>
                 </a>
             </div>
         </div>
@@ -55,7 +55,8 @@ const props = defineProps<{
 }
 
 .profile-card {
-    width: 200px;
+    max-width: 250px;
+    width: 100%;
     background-color: white;
     border-radius: 6px;
     box-shadow: 0px 4px 26px rgba(115, 64, 188, 0.2);

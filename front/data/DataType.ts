@@ -6,34 +6,27 @@ export interface ErrorData {
 
 // ----------------------------- For apps and games -------------------------------
 export interface AppsAndGamesData {
-    heading: string, description: string, apps: Array<AppDetail>
-}
-
-export interface AppDetail {
-    imageUrl: string, pageUrl: string, title: string, description: string
+    heading: string, description: string, apps: Array<ProductBasicData>
 }
 
 
 // ----------------------------- For profile -------------------------------
 export interface ProfileData {
-    heading: string, description: string, profiles: Array<ProfileDetail>
+    heading: string, description: string, profiles: Array<AccountBasicData>
 }
 
-export interface ProfileDetail {
-    imageUrl: string, pageUrl: string, name: string, about: string, role: string
-}
 
 
 export interface FeaturesData {
     heading: string, description: string
 }
 
-export interface SocialLink{
+export interface SocialLink {
     name: string,
     url: string
 }
 
-export interface ProjectLink{
+export interface ProjectLink {
     name: string,
     url: string
 }
@@ -91,7 +84,7 @@ export interface AccountPublicData {
 
 
 
-export interface AccountBasicData {
+export interface AccountDashboardData {
     _id: string
     firstName: string,
     lastName: string,
@@ -111,6 +104,29 @@ export interface AccountSmallData {
 }
 
 
+export interface HomePageData {
+    members: Array<AccountBasicData>,
+    products: Array<ProductBasicData>
+
+}
+
+export interface AccountBasicData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    profileImage: string,
+    role: 'CEO' | 'CO' | 'MEMBER',
+    expertIn: string,
+    smallInfo: string
+}
+
+export interface ProductBasicData {
+    _id: string,
+    name: string,
+    dashIconUrl: string,
+    dashDescription: string,
+    dashStatus: string
+}
 
 
 
@@ -161,7 +177,14 @@ export interface ProductPrivacyPageData {
     privacyAboutDesc: string
 }
 
-export interface ProductBasicData {
+export interface DashboardData {
+    members: Array<AccountDashboardData>,
+    products: Array<ProductDashboardData>,
+    profile: AccountData
+}
+
+
+export interface ProductDashboardData {
     _id: string,
     name: string,
     dashIconUrl: string,
@@ -171,12 +194,5 @@ export interface ProductBasicData {
     dashStartedAt: number,
     dashCompletedAt: number,
     dashStatus: string
-}
-
-
-export interface DashboardData {
-    members: Array<AccountBasicData>,
-    products: Array<ProductBasicData>,
-    profile: AccountData
 }
 

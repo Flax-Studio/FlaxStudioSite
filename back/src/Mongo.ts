@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Account, Product } from "./Model.js";
-import { AccountBasicData, AccountData, AccountPublicData, AccountSmallData, DashboardData, ProductBasicData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
+import { AccountBasicData, AccountDashboardData, AccountData, AccountPublicData, AccountSmallData, DashboardData, HomePageData, ProductBasicData, ProductDashboardData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -98,8 +98,8 @@ export default class MongoAPI {
             if (profile == null) return null
             profile!!.password = ''
 
-            const products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductBasicData>
-            const accounts = await Account.find().select('_id firstName lastName profileImage role expertIn projects joinedAt') as Array<AccountBasicData>
+            const products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductDashboardData>
+            const accounts = await Account.find().select('_id firstName lastName profileImage role expertIn projects joinedAt') as Array<AccountDashboardData>
 
             const data: DashboardData = {
                 members: accounts,
@@ -169,6 +169,23 @@ export default class MongoAPI {
                 members: allAccounts
             }
             return profilePageData
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
+
+    async getHomePageData() {
+        try {
+            const accounts = await Account.find().select('_id firstName lastName profileImage role expertIn smallInfo') as AccountBasicData[]
+            const products = await Product.find().select('_id name dashIconUrl dashDescription dashStatus') as ProductBasicData[]
+            
+            const homePageData: HomePageData = {
+                members: accounts,
+                products: products
+            }
+            return homePageData
         } catch (error) {
             console.error('Error in account:', error);
             return null

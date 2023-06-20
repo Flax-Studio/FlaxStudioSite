@@ -16,6 +16,13 @@ export interface ProjectLink{
 }
 
 
+export interface HomePageData{
+    members: Array<AccountBasicData>,
+    products: Array<ProductBasicData>
+
+}
+
+
 
 export interface AccountData {
     _id: string
@@ -70,8 +77,17 @@ export interface AccountSmallData {
     expertIn: string
 }
 
-
 export interface AccountBasicData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    profileImage: string,
+    role: 'CEO' | 'CO' | 'MEMBER',
+    expertIn: string,
+    smallInfo: string
+}
+
+export interface AccountDashboardData {
     _id: string
     firstName: string,
     lastName: string,
@@ -106,13 +122,13 @@ export interface PendingResetPassword {
 
 
 export interface DashboardData {
-    members: Array<AccountBasicData>,
-    products: Array<ProductBasicData>,
+    members: Array<AccountDashboardData>,
+    products: Array<ProductDashboardData>,
     profile: AccountData
 }
 
 
-export interface ProductBasicData {
+export interface ProductDashboardData {
     _id: string,
     name: string,
     dashIconUrl: string,
@@ -121,6 +137,14 @@ export interface ProductBasicData {
     dashTeamLead: string,
     dashStartedAt: number,
     dashCompletedAt: number,
+    dashStatus: string
+}
+
+export interface ProductBasicData {
+    _id: string,
+    name: string,
+    dashIconUrl: string,
+    dashDescription: string,
     dashStatus: string
 }
 
