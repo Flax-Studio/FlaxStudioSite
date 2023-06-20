@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Account, Product } from "./Model.js";
-import { AccountBasicData, AccountData, DashboardData, ProductBasicData, ProductData, ProductPageData, ProductPrivacyPageData } from "./DataType.js";
+import { AccountBasicData, AccountData, AccountPageData, AccountSmallData, DashboardData, ProductBasicData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -93,18 +93,18 @@ export default class MongoAPI {
 
     async getDashboardData(accountId: string) {
         try {
-            const profile = await Account.findById(accountId)
+            const profile = await Account.findById(accountId) as AccountData | null
 
             if (profile == null) return null
             profile!!.password = ''
 
             const products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductBasicData>
-            const accounts = await Account.find().select('_id firstName lastName profileImage role projects joinedAt') as Array<AccountBasicData>
+            const accounts = await Account.find().select('_id firstName lastName profileImage role expertIn projects joinedAt') as Array<AccountBasicData>
 
             const data: DashboardData = {
                 members: accounts,
                 products: products,
-                profile: profile as AccountData
+                profile: profile
             }
 
             return data
@@ -144,7 +144,7 @@ export default class MongoAPI {
             const product = await Product.findById(productId).select('_id name landingDescription landingImageUrl playStoreUrl productSeoTitle productSeoDesc productAboutDesc productAboutEndDesc productFeatures') as ProductPageData | null
             return product
         } catch (error) {
-            console.error('Error in account:', error);
+            console.error('Error in product:', error);
             return null
         }
     }
@@ -153,6 +153,22 @@ export default class MongoAPI {
         try {
             const product = await Product.findById(productId).select('_id name landingDescription playStoreUrl privacySeoDescription privacyAboutDesc') as ProductPrivacyPageData | null
             return product
+        } catch (error) {
+            console.error('Error in product:', error);
+            return null
+        }
+    }
+
+    async getProfilePageData(accountId: string) {
+        try {
+            const account = await Account.findById(accountId).select('-password -mode -projects -__v') as AccountPageData | null
+            if(account == null) return null
+            const allAccounts = await Account.find({ _id: { $ne: accountId } }).select('_id firstName lastName profileImage expertIn') as AccountSmallData[]
+            const profilePageData: ProfilePageData = {
+                profile: account,
+                members: allAccounts
+            }
+            return profilePageData
         } catch (error) {
             console.error('Error in account:', error);
             return null

@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import mongoose from 'mongoose';
+import { ProjectLink, SocialLink } from './DataType';
 
 const accountSchema = new Schema({
 
@@ -10,12 +11,15 @@ const accountSchema = new Schema({
     password: { type: String, required: false },
     mode: { type: String, required: true, enum: ['none', 'google'] },
     profileImage: { type: String, required: false },
-    role: { type: String, required: true, enum: ['CEO', 'CO', 'Member'] },
+    role: { type: String, required: true, enum: ['CEO', 'CO', 'MEMBER'] },
+    expertIn: { type: String, required: false },
     smallInfo: { type: String, required: false },
-    extraInfo: { type: String, required: false },
-    socialLinks: { type: String, required: false },
+    dob: { type: Number, required: false },
+    location: { type: String, required: false },
+    experience: { type: Number, required: false },
+    socialLinks: { type: Array<SocialLink>, required: false },
     about: { type: String, required: false },
-    externalProjectsLinks: { type: String, required: false },
+    externalProjectsLinks: { type: Array<ProjectLink>, required: false },
     skills: { type: String, required: false },
     languages: { type: String, required: false },
     joinedAt: { type: Number, required: true },

@@ -5,6 +5,16 @@ export interface MailData {
     html: string
 }
 
+export interface SocialLink{
+    name: string,
+    url: string
+}
+
+export interface ProjectLink{
+    name: string,
+    url: string
+}
+
 
 
 export interface AccountData {
@@ -15,16 +25,47 @@ export interface AccountData {
     password: string,
     mode: 'none' | 'google',
     profileImage: string,
-    role: 'CEO' | 'CO' | 'Member',
+    role: 'CEO' | 'CO' | 'MEMBER',
+    expertIn: string,
     smallInfo: string,
-    extraInfo: string,
-    socialLinks: string,
+    dob: number,
+    location: string,
+    experience: number,
+    socialLinks: Array<SocialLink>,
     about: string,
-    externalProjectsLinks: string,
+    externalProjectsLinks: Array<ProjectLink>,
     skills: string,
     languages: string,
     joinedAt: number,
     projects: string,
+}
+
+export interface AccountPageData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    email: string,
+    profileImage: string,
+    role: 'CEO' | 'CO' | 'MEMBER',
+    expertIn: string,
+    smallInfo: string,
+    dob: number,
+    location: string,
+    experience: number,
+    socialLinks: SocialLink,
+    about: string,
+    externalProjectsLinks: Array<ProjectLink>,
+    skills: string,
+    languages: string,
+    joinedAt: number
+}
+
+export interface AccountSmallData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    profileImage: string,
+    expertIn: string
 }
 
 
@@ -33,9 +74,16 @@ export interface AccountBasicData {
     firstName: string,
     lastName: string,
     profileImage: string,
-    role: 'CEO' | 'CO' | 'Member',
+    role: 'CEO' | 'CO' | 'MEMBER',
+    expertIn: string,
     projects: string,
     joinedAt: number,
+}
+
+
+export interface ProfilePageData{
+    profile: AccountPageData,
+    members: Array<AccountSmallData>
 }
 
 export interface PendingAccountData {
@@ -92,7 +140,7 @@ export interface ProductPrivacyPageData {
     name: string,
     landingDescription: string,
     playStoreUrl: string,
-    
+
     privacySeoDescription: string,
     privacyAboutDesc: string
 }

@@ -41,9 +41,12 @@ export interface AccountData {
     password: string,
     mode: 'none' | 'google',
     profileImage: string,
-    role: 'CEO' | 'CO' | 'Member',
+    role: 'CEO' | 'CO' | 'MEMBER',
+    expertIn : string,
     smallInfo: string,
-    extraInfo: string,
+    dob: number,
+    location: string,
+    experience: number,
     socialLinks: string,
     about: string,
     externalProjectsLinks: string,
@@ -53,19 +56,54 @@ export interface AccountData {
     projects: string,
 }
 
+export interface AccountPageData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    email: string,
+    profileImage: string,
+    role: 'CEO' | 'CO' | 'MEMBER',
+    expertIn : string,
+    smallInfo: string,
+    dob: number,
+    location: string,
+    experience: number,
+    socialLinks: string,
+    about: string,
+    externalProjectsLinks: string,
+    skills: string,
+    languages: string,
+    joinedAt: number
+}
 
-
-// ---------------- server ----------------
 
 export interface AccountBasicData {
     _id: string
     firstName: string,
     lastName: string,
     profileImage: string,
-    role: 'CEO' | 'CO' | 'Member',
+    role: 'CEO' | 'CO' | 'MEMBER',
+    expertIn: string,
     projects: string,
     joinedAt: number,
 }
+
+export interface AccountSmallData {
+    _id: string
+    firstName: string,
+    lastName: string,
+    profileImage: string,
+    expertIn: string
+}
+
+export interface ProfilePageData{
+    profile: AccountPageData,
+    members: Array<AccountSmallData>
+}
+
+
+
+
 
 export interface ProductData {
     _id: string,

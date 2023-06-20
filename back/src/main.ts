@@ -3,7 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { sendMail } from './EmailManger.js'
-import { AccountData, MailData, PendingAccountData, PendingResetPassword, ProductData } from './DataType.js'
+import { AccountData, MailData, PendingAccountData, PendingResetPassword, ProductData, ProjectLink, SocialLink } from './DataType.js'
 import MongoAPI from './Mongo.js'
 import { generateId, generateOTP, getEmailVerifyHtml, getResetPasswordHtml } from './Utils.js'
 import bcrypt from 'bcryptjs'
@@ -206,6 +206,14 @@ app.post('/verify-signup', async (req, res) => {
             let reg = pendingReg[index]
             if (reg.token == token && reg.otp == otp) {
 
+                const socialLinks = Array<SocialLink>()
+                socialLinks.push({ name: 'github', url: '' })
+                socialLinks.push({ name: 'facebook', url: '' })
+                socialLinks.push({ name: 'twitter', url: '' })
+                socialLinks.push({ name: 'instagram', url: '' })
+                socialLinks.push({ name: 'linkedin', url: '' })
+                socialLinks.push({ name: 'hackerRank', url: '' })
+
                 let account: AccountData = {
                     _id: generateId(),
                     firstName: reg.firstName,
@@ -214,16 +222,19 @@ app.post('/verify-signup', async (req, res) => {
                     password: reg.password,
                     mode: 'none',
                     profileImage: '',
-                    role: 'Member',
+                    role: 'MEMBER',
                     smallInfo: '',
-                    extraInfo: '',
-                    socialLinks: '',
                     about: '',
-                    externalProjectsLinks: '',
                     skills: '',
                     languages: '',
                     joinedAt: new Date().getTime(),
-                    projects: ''
+                    projects: '',
+                    dob: 0,
+                    location: '',
+                    experience: 0,
+                    expertIn: '',
+                    socialLinks: socialLinks,
+                    externalProjectsLinks: Array<ProjectLink>()
                 }
                 let response = await mongoApi.createAccount(account)
 
@@ -407,12 +418,12 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
     console.log('upload image request')
     try {
 
-        if (req.file == undefined){
+        if (req.file == undefined) {
             res.status(400).send('Unable to upload')
-        }else{
+        } else {
 
             // delete previous uploaded file, if found
-            if(req.body.prevImageName != ''){
+            if (req.body.prevImageName != '') {
                 const fileUrl = './public/uploads/' + req.body.prevImageName
                 try {
                     await fs.access(fileUrl)      //  check file exist or not
@@ -424,8 +435,8 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
 
             res.status(200).send({ url: serverUrl + '/public/uploads/' + req.file!!.filename })
         }
-        
-        
+
+
     } catch (error) {
         console.log(error)
         res.status(400).send('Bad request')
@@ -440,9 +451,9 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
 app.get('/product/:product_id', async (req, res) => {
     console.log('Requested product page data')
     const data = await mongoApi.getProductPageData(req.params.product_id)
-    if(data != null){
+    if (data != null) {
         res.status(200).send(data)
-    }else{
+    } else {
         res.status(404).send('Not found')
     }
 })
@@ -450,31 +461,27 @@ app.get('/product/:product_id', async (req, res) => {
 app.get('/privacy/:product_id', async (req, res) => {
     console.log('Requested product privacy page data')
     const data = await mongoApi.getProductPrivacyPageData(req.params.product_id)
-    if(data != null){
+    if (data != null) {
         res.status(200).send(data)
-    }else{
+    } else {
+        res.status(404).send('Not found')
+    }
+})
+
+app.get('/profile/:user_id', async (req, res) => {
+    console.log('Requested product privacy page data')
+    const data = await mongoApi.getProfilePageData(req.params.user_id)
+    if (data != null) {
+        res.status(200).send(data)
+    } else {
         res.status(404).send('Not found')
     }
 })
 
 
-// app.post('/admin/*', async (req, res, next) => {
-//     if (!isMongoConnected) {
-//         res.status(400).send("Database connection error")
-//     } else {
-//         try {
-//             let adminId = req.body.adminId
-//             if (await isAdmin(adminId)) {
-//                 next()
-//             } else {
-//                 res.status(403).send("You don't have access")
-//             }
 
-//         } catch (error) {
-//             res.status(400).send(error)
-//         }
-//     }
-// })
+
+
 
 // app.put('/admin/*', async (req, res, next) => {
 //     if (!isMongoConnected) {
