@@ -3,7 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import { sendMail } from './EmailManger.js'
-import { AccountData, MailData, PendingAccountData, PendingResetPassword, ProductData, ProjectLink, SocialLink } from './DataType.js'
+import { AccountData, AccountUpdateData, MailData, PendingAccountData, PendingResetPassword, ProductData, ProjectLink, SocialLink } from './DataType.js'
 import MongoAPI from './Mongo.js'
 import { generateId, generateOTP, getEmailVerifyHtml, getResetPasswordHtml } from './Utils.js'
 import bcrypt from 'bcryptjs'
@@ -87,6 +87,30 @@ app.get('/admin/*', async (req, res, next) => {
 })
 
 app.post('/admin/*', async (req, res, next) => {
+
+    try {
+        const token =
+            req.body.token || req.query.token || req.headers["x-access-token"];
+
+        if (!token) {
+            return res.status(403).send("A token is required for authentication");
+        }
+
+        const decoded = jwt.verify(token, tokenKey)
+        res.locals.accountId = decoded
+        if (await mongoApi.isAccountExist(decoded as string)) {
+            next()
+        } else {
+            return res.status(401).send("Invalid Token");
+        }
+
+
+    } catch (err) {
+        return res.status(401).send("Invalid Token");
+    }
+})
+
+app.put('/admin/*', async (req, res, next) => {
 
     try {
         const token =
@@ -388,6 +412,36 @@ app.get('/admin/dashboard', async (req, res) => {
     }
 })
 
+app.get('/admin/updateProfile', async (req, res) => {
+    console.log('profile data requested')
+    const accountId = res.locals.accountId as string
+    const data = await mongoApi.getUpdateProfileData(accountId)
+    if (data != null) {
+        res.status(200).send(data)
+    } else {
+        res.status(404).send('Not found')
+    }
+})
+
+
+app.put('/admin/updateProfile', async (req, res) => {
+    console.log('update profile data requested')
+
+    try {
+        const accountId = res.locals.accountId as string
+        const data = await mongoApi.updateProfile(accountId, req.body.data as AccountUpdateData)
+        if (data != null) {
+            res.status(200).send('')
+        } else {
+            res.status(404).send('Not found')
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Bad request')
+    }
+
+})
+
 app.post('/admin/addProduct', async (req, res) => {
     try {
         const accountId = res.locals.accountId as string
@@ -398,11 +452,11 @@ app.post('/admin/addProduct', async (req, res) => {
 
         const productData = req.body.productData as ProductData
         productData._id = generateId()
-        if(productData.dashIconUrl == ''){
+        if (productData.dashIconUrl == '') {
             productData.dashIconUrl = '/public/uploads/no_image.png'
         }
 
-        if(productData.landingImageUrl == ''){
+        if (productData.landingImageUrl == '') {
             productData.landingImageUrl = '/public/uploads/no_image.png'
         }
 
@@ -501,9 +555,9 @@ app.get('/home', async (req, res) => {
 app.get('/public/uploads/:filename', async (req, res) => {
     const dirPath = process.cwd() + '/public/uploads/'
 
-    if(fs.existsSync(dirPath + req.params.filename)){
+    if (fs.existsSync(dirPath + req.params.filename)) {
         res.sendFile(dirPath + req.params.filename)
-    }else{
+    } else {
         res.sendFile(dirPath + 'no_image.png')
     }
 })

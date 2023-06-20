@@ -61,6 +61,23 @@ export interface AccountData {
     seoDescription: string
 }
 
+export interface AccountUpdateData {
+    firstName: string,
+    lastName: string,
+    profileImage: string,
+    expertIn: string,
+    smallInfo: string,
+    dob: number,
+    location: string,
+    experience: number,
+    socialLinks: Array<SocialLink>,
+    about: string,
+    externalProjectsLinks: Array<ProjectLink>,
+    skills: string,
+    languages: string,
+    seoDescription: string
+}
+
 export interface AccountPublicData {
     _id: string
     firstName: string,

@@ -1,4 +1,4 @@
-import { DashboardData, ProductData } from "./DataType"
+import { AccountUpdateData, DashboardData, ProductData } from "./DataType"
 
 
 interface Result<T> {
@@ -82,11 +82,27 @@ namespace Api {
             token: token,
             productData: productData
         }
-        return post<{status: number}>("admin/addProduct", "", data)
+        return post<{ status: number }>("admin/addProduct", "", data)
     }
 
-    export async function uploadImage(token: string, formData: FormData){
-        return imagePost<{url: string}>("admin/upload", formData, token)
+    export async function uploadImage(token: string, formData: FormData) {
+        return imagePost<{ url: string }>("admin/upload", formData, token)
+    }
+
+
+    export async function getUpdateProfileData(token: string) {
+        var myHeaders = new Headers();
+        myHeaders.append("x-access-token", token);
+        return get<AccountUpdateData>("admin/updateProfile", ``, myHeaders)
+    }
+
+    export async function updateProfile(token: string, data: AccountUpdateData) {
+
+        let updateData = {
+            token: token,
+            data: data
+        }
+        return put("admin/updateProfile", "", updateData)
     }
 
 

@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { marked } from 'marked'
 import { ProfilePageData, AccountPublicData } from '~/data/DataType';
+import {getAgeFromTimestamp} from '~/data/utils'
 
 const router = useRouter()
 const { params } = router.currentRoute.value
@@ -81,7 +82,7 @@ function markdownToHtml(markdown: string) {
                     </div>
                     <div class="info">
                         <p>Age:</p>
-                        <p>{{ pageData.profile.dob }}</p>
+                        <p>{{ getAgeFromTimestamp(pageData.profile.dob) }}</p>
                     </div>
                     <div class="info">
                         <p>Location:</p>

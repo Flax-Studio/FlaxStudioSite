@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Account, Product } from "./Model.js";
-import { AccountBasicData, AccountDashboardData, AccountData, AccountPublicData, AccountSmallData, DashboardData, HomePageData, ProductBasicData, ProductDashboardData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
+import { AccountBasicData, AccountDashboardData, AccountData, AccountPublicData, AccountSmallData, AccountUpdateData, DashboardData, HomePageData, ProductBasicData, ProductDashboardData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -108,6 +108,28 @@ export default class MongoAPI {
             }
 
             return data
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
+
+    async updateProfile(accountId: string, data: AccountUpdateData){
+        try {
+            const account = await Account.findByIdAndUpdate(accountId, data)
+            return account
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+
+    }
+
+    async getUpdateProfileData(accountId: string) {
+        try {
+            const account = await Account.findById(accountId).select('-_id -__v -email -role -joinedAt') as AccountUpdateData | null
+            return account
         } catch (error) {
             console.error('Error in account:', error);
             return null

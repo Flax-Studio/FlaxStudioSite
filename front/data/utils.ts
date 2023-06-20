@@ -35,3 +35,14 @@ export function dateTimeString(unixMilliseconds: number) {
 
     return dateString;
 }
+
+
+export function getAgeFromTimestamp(milliseconds: number) {
+    const now = Date.now();
+    const millisecondsPerYear = 1000 * 60 * 60 * 24 * 365.25; // Accounting for leap years
+    
+    const ageMilliseconds = now - milliseconds;
+    const ageYears = Math.floor(ageMilliseconds / millisecondsPerYear);
+  
+    return ageYears;
+  }

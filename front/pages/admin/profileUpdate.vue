@@ -1,37 +1,62 @@
 <script setup lang='ts'>
-import { ProductData } from '~/data/DataType';
+import { AccountUpdateData, ProductData } from '~/data/DataType';
 import Api from '~/data/api';
 
 const isSubmitting = ref(false)
 const isIconUploading = ref(false)
-const isLandingImageUploading = ref(false)
+const isLoading = ref(true)
 
-const startDate = ref('')
-const endDate = ref('')
-const product = ref<ProductData>({
-    _id: '',
-    name: '',
-    dashIconUrl: '',
-    dashDescription: '',
-    dashPlatform: 'Android',
-    dashTeamLead: '',
-    dashStartedAt: 0,
-    dashCompletedAt: 0,
-    dashStatus: 'active',
-    landingDescription: '',
-    landingImageUrl: '',
-    playStoreUrl: '',
-    productSeoDesc: '',
-    productSeoTitle: '',
-    productAboutDesc: '',
-    productAboutEndDesc: '',
-    productFeatures: '',
-    privacySeoTitle: '',
-    privacySeoDescription: '',
-    privacyAboutDesc: ''
+const dob = ref('')
+
+
+onMounted(function () {
+
+    // fetching data
+    fetchDataFromServer()
 })
 
-async function addProduct() {
+
+async function fetchDataFromServer() {
+
+    const token = localStorage.getItem('token')
+    if (token == null) {
+        alert("You don't have access to server, please signin")
+        return
+    }
+
+    const res = await Api.getUpdateProfileData(token!!)
+    if (res.isError) {
+        alert(res.error)
+    } else {
+        if (res.result != null) {
+            profileData.value = res.result
+            console.log(res.result)
+            isLoading.value = false
+        } else {
+            alert('Something went wrong, please refresh the page')
+        }
+    }
+}
+
+const profileData = ref<AccountUpdateData>({
+    firstName: '',
+    lastName: '',
+    profileImage: '',
+    expertIn: 'Web developer',
+    smallInfo: '',
+    dob: 0,
+    location: '',
+    experience: 0,
+    socialLinks: [],
+    about: '',
+    externalProjectsLinks: [],
+    skills: '',
+    languages: '',
+    seoDescription: ''
+})
+
+
+async function updateProfile() {
     if (isSubmitting.value) return
     const token = localStorage.getItem('token')
     if (token == null) {
@@ -42,11 +67,11 @@ async function addProduct() {
     isSubmitting.value = true
 
     // convert string date to number
-    if (startDate.value != '') product.value.dashStartedAt = new Date(startDate.value).getTime()
-    if (endDate.value != '') product.value.dashCompletedAt = new Date(endDate.value).getTime()
+    if (dob.value != '') profileData.value.dob = new Date(dob.value).getTime()
 
-    const res = await Api.addProduct(token, product.value)
+    const res = await Api.updateProfile(token, profileData.value)
     isSubmitting.value = false
+
     if (res.isError) {
         alert(res.error)
     } else {
@@ -60,141 +85,145 @@ async function addProduct() {
 
 
 
-async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
-    if(eventTarget == null) return
+async function uploadImage(eventTarget: EventTarget | null) {
 
-    if(isIconUploading.value || isLandingImageUploading.value) return
+    if (eventTarget == null) return
+
+    if (isIconUploading.value) return
     const token = localStorage.getItem('token')
-    if(token == null){
+    if (token == null) {
         alert('You are not authorized for submitting this form.')
         return
     }
 
-    const input  = (eventTarget as HTMLElement).parentElement!!.querySelector('input') as HTMLInputElement
+    const input = (eventTarget as HTMLElement).parentElement!!.querySelector('input') as HTMLInputElement
 
     const files = input.files
-    if(files == null || files.length == 0){
+    if (files == null || files.length == 0) {
         alert('Please select file first!')
         return
     }
 
     // find previous uploaded image name
-    let imageUrl = ''
-    if(isIcon){
-        imageUrl = product.value.dashIconUrl
-    }else{
-        imageUrl = product.value.landingImageUrl
-    }
-
-
+    let imageUrl = profileData.value.profileImage
     const index = imageUrl.lastIndexOf('/')
 
     let fileName = ''
-    if(index != -1){
+    if (index != -1) {
         fileName = imageUrl.slice(index + 1)
     }
 
     const file = files[0]
+    // limit file size
+    const maxFileSizeInBytes = 1024 * 1024; // 1 MB
+
+    if (file.size > maxFileSizeInBytes) {
+        alert('File size exceeds the limit ( 1mb ). Please choose a smaller file.');
+        return
+    }
+
+
     const formData = new FormData()
     formData.append('image', file)
     formData.append('prevImageName', fileName)
-  
-    if(isIcon){
-        isIconUploading.value = true
-    }else{
-        isLandingImageUploading.value = true
-    }
+
+    isIconUploading.value = true
     const res = await Api.uploadImage(token, formData)
-    
-    if(isIcon){
-        isIconUploading.value = false
-    }else{
-        isLandingImageUploading.value = false
-    }
-    
-    if(res.isError){
+    isIconUploading.value = false
+
+    if (res.isError) {
         alert(res.error)
-    }else{
-        if(res.result != null){
-            if(isIcon){
-                product.value.dashIconUrl = res.result.url
-            }else{
-                product.value.landingImageUrl = res.result.url
-            }
-        }else{
+    } else {
+        if (res.result != null) {
+            profileData.value.profileImage = res.result.url
+        } else {
             alert('Something went wrong!')
         }
     }
 
 }
 
+
 </script>
 
 <template>
-    <main>
-        <form method="post" @submit.prevent="addProduct">
-            <h2>Project</h2>
+    <div v-if="isLoading" class="loader-container">
+        <div class="loader2 dark"></div>
+    </div>
+    <main v-else>
+        <form method="post" @submit.prevent="updateProfile">
+            <h2>Update Profile</h2>
 
             <!-- ---------- dashboard data -------------- -->
-            <h3>Dashboard Part</h3>
+            <h3>Basic Information</h3>
             <div class="input-holder">
-                <input v-model="product.name" type="text" placeholder="Name of project" required>
-                <label>Project Name*</label>
+                <input v-model="profileData.firstName" type="text" placeholder="First name" required>
+                <label>First name*</label>
             </div>
 
             <div class="input-holder">
-                <textarea v-model="product.dashDescription"
-                    placeholder="Project description which is only visible on dashboard" required></textarea>
-                <label>Project Description*</label>
+                <input v-model="profileData.lastName" type="text" placeholder="Last name" required>
+                <label>Last name*</label>
             </div>
 
             <div class="input-holder">
-                <select v-model="product.dashPlatform">
-                    <option value="Android" selected>Android</option>
-                    <option value="Website">Website</option>
-                    <option value="Web App">Web App</option>
-                    <option value="Game">Game</option>
-                    <option value="Flutter">Flutter</option>
-                    <option value="React Native">React Native</option>
+                <select v-model="profileData.expertIn" required>
+                    <option value="Web developer">Web developer</option>
+                    <option value="Fullstack web developer">Fullstack web developer</option>
+                    <option value="Backend developer">Backend developer</option>
+                    <option value="Frontend developer">Frontend developer</option>
+                    <option value="Android developer">Android developer</option>
+                    <option value="IOS developer">IOS developer</option>
+                    <option value="Android & IOS developer">Android & IOS developer</option>
+                    <option value="Android & Web developer">Android & Web developer</option>
+                    <option value="Game developer">Game developer</option>
+                    <option value="Android, Web & Game developer">Android, Web & Game developer</option>
+                    <option value="Machine learning">Machine learning</option>
+                    <option value="UI & UX designer">UI & UX designer</option>
                 </select>
-                <label>Platform</label>
+                <label>Expert in*</label>
             </div>
 
             <div class="input-holder">
-                <input v-model="product.dashTeamLead" type="text" placeholder="Name of person who will lead the team"
-                    required>
-                <label>Team Lead*</label>
+                <textarea v-model="profileData.smallInfo"
+                    placeholder="The description for your profile, it will visible on home page." maxlength="130"
+                    required></textarea>
+                <label>Small description*</label>
             </div>
 
             <div class="input-holder">
-                <input v-model="startDate" type="date" placeholder="Start date" required>
-                <label>Project Start Date*</label>
+                <input v-model="dob" type="date" placeholder="Your date of birth" required>
+                <label>DOB*</label>
             </div>
 
             <div class="input-holder">
-                <input v-model="endDate" type="date" placeholder="End date" required>
-                <label>Project End Date*</label>
+                <input v-model="profileData.location" type="text" placeholder="Your address" required>
+                <label>Address*</label>
             </div>
 
             <div class="input-holder">
-                <select v-model="product.dashStatus">
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
-                    <option value="failed">Failed</option>
-                    <option value="pending">Pending</option>
-                </select>
-                <label>Project Status</label>
+                <input v-model="profileData.experience" type="number"
+                    placeholder="Your working experience in this field (in years)" required>
+                <label>Experience (years)*</label>
             </div>
+
+            <div class="input-holder">
+                <textarea v-model="profileData.about"
+                    placeholder="Your profile page description, it must be long. (Markdown Supported)" required></textarea>
+                <label>Profile description*</label>
+            </div>
+
+
 
             <div class="col-2">
                 <div class="input-holder">
-                    <input v-model="product.dashIconUrl" type="url" readonly placeholder="Project Icon url">
-                    <label>Project Icon</label>
+                    <input v-model="profileData.profileImage" type="url" readonly placeholder="Profile Icon url">
+                    <label>Profile Icon (Max 1mb)</label>
                 </div>
 
                 <div class="upload">
-                    <input type="file">
-                    <button type="button" @click="event => uploadImage(event.target, true)">
+                    <input type="file" accept=".jpg, .jpeg, .png">
+                    <button type="button" @click="event => uploadImage(event.target)">
                         <div class="loader2" v-if="isIconUploading"></div>
                         <span v-else>Upload</span>
                     </button>
@@ -205,87 +234,61 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
 
 
 
-            <!-- --------- Project page ------------ -->
-            <h3>Project Page Part</h3>
+            <h3>Socials Profiles</h3>
+            <template v-for="social, index in profileData.socialLinks">
 
-            <div class="input-holder">
-                <textarea v-model="product.landingDescription"
-                    placeholder="Landing description for project page, it will be visible to the users who visit this page."></textarea>
-                <label>Landing description</label>
-            </div>
-
-            <div class="input-holder">
-                <input v-model="product.playStoreUrl" type="url" placeholder="Playstore url">
-                <label>Playstore url</label>
-            </div>
-
-
-            <div class="input-holder">
-                <textarea v-model="product.productAboutDesc"
-                    placeholder="Description for project page, it will be visible to the users who visit this page (Markdown supported)"></textarea>
-                <label>Project description</label>
-            </div>
-
-            <div class="input-holder">
-                <textarea v-model="product.productAboutEndDesc"
-                    placeholder="Second description (Markdown supported)"></textarea>
-                <label>Project second description</label>
-            </div>
-
-            <div class="input-holder">
-                <textarea v-model="product.productFeatures" placeholder="e.g: <Title> --: <Content>"></textarea>
-                <label>Features</label>
-            </div>
-
-            <div class="col-2">
-                <div class="input-holder">
-                    <input v-model="product.landingImageUrl" type="url" readonly placeholder="Landing image url">
-                    <label>Landing image</label>
+                <div v-if="social.name == 'github'" class="input-holder">
+                    <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.github.com">
+                    <label>Github url</label>
                 </div>
 
-                <div class="upload">
-                    <input type="file">
-                    <button type="button" @click="event => uploadImage(event.target, false)">
-                        <div class="loader2" v-if="isLandingImageUploading"></div>
-                        <span v-else>Upload</span>
-                    </button>
+                <div v-else-if="social.name == 'facebook'" class="input-holder">
+                    <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.facebook.com">
+                    <label>Facebook url</label>
                 </div>
+
+                <div v-else-if="social.name == 'instagram'" class="input-holder">
+                    <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.insta.com">
+                    <label>Instagram url</label>
+                </div>
+
+                <div v-else-if="social.name == 'linkedin'" class="input-holder">
+                    <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.linkedin.com">
+                    <label>Linkedin url</label>
+                </div>
+
+                <div v-else-if="social.name == 'hackerRank'" class="input-holder">
+                    <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.hackerrank.com">
+                    <label>HackerRank url</label>
+                </div>
+
+            </template>
+
+
+
+
+
+            <h3>Extra Details</h3>
+            <div class="input-holder">
+                <input v-model="profileData.skills" type="text"
+                    placeholder="Add your skills and separate each skills with '|' e.g : android | css">
+                <label>Skills</label>
             </div>
 
             <div class="input-holder">
-                <input v-model="product.productSeoTitle" type="text" placeholder="SEO title for project page">
-                <label>Project SEO title</label>
-            </div>
-
-
-            <div class="input-holder">
-                <textarea v-model="product.productSeoDesc" placeholder="SEO description for project page"></textarea>
-                <label>Project SEO description</label>
+                <input v-model="profileData.languages" type="text"
+                    placeholder="Add your languages and separate each with '|' e.g : english | hindi">
+                <label>Languages</label>
             </div>
 
 
 
 
-
-
-
-            <h3>Privacy Page Part</h3>
+            <h3>SEO</h3>
             <div class="input-holder">
-                <input v-model="product.privacySeoTitle" type="text" placeholder="SEO title for project privacy page">
-                <label>Project privacy SEO title</label>
-            </div>
-
-
-            <div class="input-holder">
-                <textarea v-model="product.privacySeoDescription"
-                    placeholder="SEO description for project privacy page"></textarea>
-                <label>Project privacy SEO description</label>
-            </div>
-
-            <div class="input-holder">
-                <textarea v-model="product.privacyAboutDesc"
-                    placeholder="Project privacy about description (Markdown Supported)"></textarea>
-                <label>Project privacy about description </label>
+                <textarea v-model="profileData.seoDescription"
+                    placeholder="Your description for the seo, it will be visible on google search."></textarea>
+                <label>SEO description </label>
             </div>
 
             <button type="submit">
@@ -296,7 +299,22 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
         </form>
     </main>
 </template>
+
 <style scoped>
+.loader-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-container .loader2 {
+    width: 30px;
+    height: 30px;
+}
+</style>
+
+<style>
 main {
     background-color: var(--surface-color);
     overflow: auto;
@@ -362,7 +380,7 @@ form button {
     transition: all 200ms;
 }
 
-form button *{
+form button * {
     pointer-events: none;
 }
 
