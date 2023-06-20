@@ -221,7 +221,7 @@ app.post('/verify-signup', async (req, res) => {
                     email: reg.email,
                     password: reg.password,
                     mode: 'none',
-                    profileImage: '',
+                    profileImage: '/public/uploads/no_image.png',
                     role: 'MEMBER',
                     smallInfo: '',
                     about: '',
@@ -398,6 +398,13 @@ app.post('/admin/addProduct', async (req, res) => {
 
         const productData = req.body.productData as ProductData
         productData._id = generateId()
+        if(productData.dashIconUrl == ''){
+            productData.dashIconUrl = '/public/uploads/no_image.png'
+        }
+
+        if(productData.landingImageUrl == ''){
+            productData.landingImageUrl = '/public/uploads/no_image.png'
+        }
 
         const data = await mongoApi.addProject(productData)
 
@@ -436,7 +443,7 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
                 }
             }
 
-            res.status(200).send({ url: serverUrl + '/public/uploads/' + req.file!!.filename })
+            res.status(200).send({ url: '/public/uploads/' + req.file!!.filename })
         }
 
 

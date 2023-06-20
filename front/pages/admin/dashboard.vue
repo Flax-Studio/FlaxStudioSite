@@ -59,10 +59,6 @@ function countActiveProjects() {
 }
 
 
-async function onImageLoadError(element: any) {
-    element.onerror = null;
-    element.src = noImage
-}
 
 function markdownToHtml(markdown: string | undefined) {
     if (markdown == undefined) return ''
@@ -99,8 +95,7 @@ function markdownToHtml(markdown: string | undefined) {
                     <template v-for="product in dashboardData?.products">
                         <div v-if="product.dashStatus == 'active'" class="card">
                             <div class="header">
-                                <img :src="product.dashIconUrl" @error="event => onImageLoadError(event.target)"
-                                    :alt="product.name">
+                                <img :src="product.dashIconUrl" :alt="product.name">
                                 <div>
                                     <h3>{{ product.name }}</h3>
                                     <span>{{ product.dashPlatform }}</span>
@@ -145,7 +140,7 @@ function markdownToHtml(markdown: string | undefined) {
                         </thead>
                         <tbody>
                             <tr v-for="product in dashboardData?.products" :class="product.dashStatus">
-                                <td><img :src="product.dashIconUrl" @error="event => onImageLoadError(event.target)"
+                                <td><img :src="product.dashIconUrl"
                                         :alt="product.name"></td>
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.dashPlatform }}</td>
