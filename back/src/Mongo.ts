@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Account, Product } from "./Model.js";
-import { AccountBasicData, AccountData, AccountPageData, AccountSmallData, DashboardData, ProductBasicData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
+import { AccountBasicData, AccountData, AccountPublicData, AccountSmallData, DashboardData, ProductBasicData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -161,7 +161,7 @@ export default class MongoAPI {
 
     async getProfilePageData(accountId: string) {
         try {
-            const account = await Account.findById(accountId).select('-password -mode -projects -__v') as AccountPageData | null
+            const account = await Account.findById(accountId).select('-password -mode -projects -__v') as AccountPublicData | null
             if(account == null) return null
             const allAccounts = await Account.find({ _id: { $ne: accountId } }).select('_id firstName lastName profileImage expertIn') as AccountSmallData[]
             const profilePageData: ProfilePageData = {

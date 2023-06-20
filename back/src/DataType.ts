@@ -38,9 +38,10 @@ export interface AccountData {
     languages: string,
     joinedAt: number,
     projects: string,
+    seoDescription: string
 }
 
-export interface AccountPageData {
+export interface AccountPublicData {
     _id: string
     firstName: string,
     lastName: string,
@@ -52,12 +53,13 @@ export interface AccountPageData {
     dob: number,
     location: string,
     experience: number,
-    socialLinks: SocialLink,
+    socialLinks: Array<SocialLink>,
     about: string,
     externalProjectsLinks: Array<ProjectLink>,
     skills: string,
     languages: string,
-    joinedAt: number
+    joinedAt: number,
+    seoDescription: string
 }
 
 export interface AccountSmallData {
@@ -82,7 +84,7 @@ export interface AccountBasicData {
 
 
 export interface ProfilePageData{
-    profile: AccountPageData,
+    profile: AccountPublicData,
     members: Array<AccountSmallData>
 }
 

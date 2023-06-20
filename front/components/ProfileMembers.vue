@@ -1,19 +1,19 @@
 <script setup lang='ts'>
-import { ProfileDetail } from '../data/DataType';
+import { AccountSmallData } from '../data/DataType';
 defineProps<{
-    userProfiles: ProfileDetail[]
+    userProfiles: AccountSmallData[]
 }>()
 </script>
 <template>
     <div class="members">
         <h3>Members</h3>
 
-        <a v-for="(user) in userProfiles" :href="user.pageUrl">
+        <a v-for="user in userProfiles" :href="'/profile/' + user._id">
             <div>
-                <img :src="user.imageUrl" :alt="user.name">
+                <img :src="user.profileImage" :alt="user.firstName + ' ' + user.lastName + ' Image'">
                 <div>
-                    <h4>{{ user.name }}</h4>
-                    <p>{{ user.role }}</p>
+                    <h4>{{ user.firstName + ' ' + user.lastName}}</h4>
+                    <p>{{ user.expertIn }}</p>
                 </div>
             </div>
         </a>

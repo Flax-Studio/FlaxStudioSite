@@ -1,52 +1,56 @@
 <script setup lang='ts'>
 import { marked } from 'marked'
-import { ProductPageData } from '~/data/DataType';
+import { ProfilePageData, AccountPublicData } from '~/data/DataType';
 
 const router = useRouter()
 const { params } = router.currentRoute.value
 
 const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
-const dataUrl = serverUrl + '/product/' + params.product_id
+const dataUrl = serverUrl + '/profile/' + params.username
 
-let pageData: ProductPageData = {
+
+const accountPublicData: AccountPublicData = {
     _id: '',
-    name: '',
-    landingDescription: '',
-    landingImageUrl: '',
-    playStoreUrl: '',
-    productSeoDesc: '',
-    productAboutDesc: '',
-    productAboutEndDesc: '',
-    productFeatures: ''
+    firstName: '',
+    lastName: '',
+    email: '',
+    profileImage: '',
+    role: 'MEMBER',
+    expertIn: '',
+    smallInfo: '',
+    dob: 0,
+    location: '',
+    experience: 0,
+    socialLinks: [],
+    about: '',
+    externalProjectsLinks: [],
+    skills: '',
+    languages: '',
+    joinedAt: 0,
+    seoDescription: ''
 }
 
-const productFeatures = Array<{ heading: string, description: string }>()
+let pageData: ProfilePageData = {
+    profile: accountPublicData,
+    members: []
+}
 
 
 // fetch data from server for ssr
 const { data, error } = await useFetch(dataUrl)
 if (data.value != null) {
-    pageData = data.value as ProductPageData
-
-    // extracting features
-    const features = pageData.productFeatures.split('|')
-    features.forEach(item => {
-        const sub = item.split('--:')
-        if (sub.length == 2) {
-            productFeatures.push({ heading: sub[0], description: sub[1] })
-        }
-    });
+    pageData = data.value as ProfilePageData
 
 } else {
     throw { message: 'Requested page could not be found.', statusCode: error.value?.statusCode || 404 }
 }
 
 useServerSeoMeta({
-    title: pageData.name,
-    ogTitle: pageData.name,
-    description: pageData.productSeoDesc,
-    ogDescription: pageData.productSeoDesc,
-    ogImage: pageData.landingImageUrl,
+    title: pageData.profile.firstName + ' ' + pageData.profile.lastName,
+    ogTitle: pageData.profile.firstName + ' ' + pageData.profile.lastName,
+    description: pageData.profile.seoDescription,
+    ogDescription: pageData.profile.seoDescription,
+    ogImage: pageData.profile.profileImage,
     twitterCard: 'summary_large_image',
 })
 
@@ -62,14 +66,12 @@ function markdownToHtml(markdown: string) {
         <div class="profile-parent">
             <div class="profile-bio">
                 <div class="left">
-                    <img src="../../public/profiles/nitesh_image.png" alt="nitesh">
+                    <img :src="pageData.profile.profileImage" :alt="pageData.profile.firstName + ' Image'">
                     <div>
-                        <h2>Nitesh Kumar</h2>
-                        <p class="info">Android, Web & Game developer</p>
-                        <p class="small-info">As an intermediate developer, I recognize that there is always room for
-                            improvement and growth. I am constantly seeking out new challenges and opportunities to expand
-                            my skillset and knowledge base.</p>
-                        <a href="mailto:niteshdev547@gmail.com">Contact</a>
+                        <h2>{{ pageData.profile.firstName }} {{ pageData.profile.lastName }}</h2>
+                        <p class="info">{{ pageData.profile.expertIn }}</p>
+                        <p class="small-info">{{ pageData.profile.smallInfo }}</p>
+                        <a :href="'mailto:' + pageData.profile.email">Contact</a>
                     </div>
                 </div>
                 <div class="right">
@@ -79,23 +81,26 @@ function markdownToHtml(markdown: string) {
                     </div>
                     <div class="info">
                         <p>Age:</p>
-                        <p>19</p>
+                        <p>{{ pageData.profile.dob }}</p>
                     </div>
                     <div class="info">
                         <p>Location:</p>
-                        <p>India, Bihar</p>
+                        <p>{{ pageData.profile.location }}</p>
                     </div>
                     <div class="info">
                         <p>Experience:</p>
-                        <p>1.5 years</p>
+                        <p>{{ pageData.profile.experience }} years</p>
                     </div>
                     <div class="profile-icons">
-                        <a href="https://github.com/nitesh-dev/"><img src="../../public/extra/github.svg" alt="github"></a>
-                        <a href="https://twitter.com/niteshdev547"><img src="../../public/extra/twitter.svg"
-                                alt="twitter"></a>
-                        <!-- <a href="#"><img src="../../assets/extra/instagram.svg" alt="instagram"></a> -->
-                        <!-- <a href="#"><img src="../../assets/extra/linkedin.svg" alt="linkedin"></a>
-                            <a href="#"><img src="../../assets/extra/facebook.svg" alt="facebook"></a> -->
+                        <template v-for="link in pageData.profile.socialLinks">
+                            <a v-if="link.name == 'github' && link.url != ''" :href="link.url"><img src="../../public/extra/github.svg" alt="Github"></a>
+                            <a v-if="link.name == 'facebook' && link.url != ''" :href="link.url"><img src="../../public/extra/facebook.svg" alt="Facebook"></a>
+                            <a v-if="link.name == 'twitter' && link.url != ''" :href="link.url"><img src="../../public/extra/github.svg" alt="twitter"></a>
+                            <a v-if="link.name == 'instagram' && link.url != ''" :href="link.url"><img src="../../public/extra/github.svg" alt="Instagram"></a>
+                            <a v-if="link.name == 'linkedin' && link.url != ''" :href="link.url"><img src="../../public/extra/github.svg" alt="Linkedin"></a>
+                            <a v-if="link.name == 'hackerRank' && link.url != ''" :href="link.url"><img src="../../public/extra/github.svg" alt="Hacker Rank"></a>
+                        </template>
+
                     </div>
                 </div>
             </div>
@@ -105,59 +110,36 @@ function markdownToHtml(markdown: string) {
             <div class="profile-detail">
                 <div class="profile-about">
                     <h2 id="about">About</h2>
-                    <p>As an intermediate Android, game, and web developer, I am constantly honing my skills and expanding
-                        my knowledge in the ever-evolving world of digital technology. I have always been fascinated by the
-                        ability of technology to connect people and empower them to accomplish incredible things, and that
-                        is what motivates me every day.</p>
-                    <p>In my journey as a developer, I have gained a solid foundation in developing mobile applications for
-                        the Android operating system. I have learned how to build applications that leverage the full
-                        potential of the platform, from designing intuitive user interfaces to implementing complex features
-                        that enhance user engagement and interactivity.</p>
-                    <p>As a game developer, I have been able to express my creativity and imagination through designing
-                        immersive gaming experiences. I enjoy the challenge of crafting compelling gameplay mechanics,
-                        creating visually stunning graphics, and incorporating new technologies and trends to make my games
-                        stand out.</p>
-                    <p>In addition to my Android and game development skills, I have also developed proficiency in web
-                        development. I have learned how to create responsive and user-friendly websites that deliver an
-                        exceptional user experience across multiple devices and platforms.</p>
-                    <p>As an intermediate developer, I recognize that there is always room for improvement and growth. I am
-                        constantly seeking out new challenges and opportunities to expand my skillset and knowledge base. I
-                        am excited to continue on this journey of exploration and discovery, pushing the limits of what I
-                        can achieve as a developer and contributing to the digital world in meaningful ways.</p>
+                    <div v-html="markdownToHtml(pageData.profile.about)"></div>
+
+                    <hr>
+                    <h2>External Projects</h2>
+                    <div class="chip-container">
+                        <a v-for="project in pageData.profile.externalProjectsLinks" :href="project.url">{{ project.name }}</a>
+                    </div>
 
                     <hr>
                     <h2>Skills</h2>
                     <div class="chip-container">
-                        <span>Python</span>
-                        <span>Android</span>
-                        <span>Javascript</span>
-                        <span>Typescript</span>
-                        <span>Figma</span>
-                        <span>C++</span>
-                        <span>Kotlin</span>
-                        <span>Mysql</span>
-                        <span>HTML</span>
-                        <span>Unity</span>
-                        <span>Vue</span>
+                        <span v-for="skill in pageData.profile.skills.split('|')">{{ skill }}</span>
                     </div>
 
                     <hr>
                     <h2>Languages</h2>
                     <div class="chip-container">
-                        <span>English</span>
-                        <span>Hindi</span>
+                        <span v-for="lang in pageData.profile.languages.split('|')">{{ lang }}</span>
                     </div>
 
                 </div>
 
 
-                <!-- <ProfileMembers :user-profiles="userProfiles" /> -->
+                <ProfileMembers :user-profiles="pageData.members" />
             </div>
         </div>
     </div>
-    <FooterComponent/>
+    <FooterComponent />
 </template>
-<style scoped>
+<style>
 .profile-container {
     overflow: auto;
     background-color: var(--surface-color);
@@ -284,16 +266,17 @@ function markdownToHtml(markdown: string) {
     gap: 16px;
 }
 
-.profile-about .chip-container span {
-    border-radius: var(--default-border-radius);
-    font-size: 16px;
-    border: 1px solid rgb(136, 136, 136);
-    cursor: pointer;
-    padding: 4px 24px;
-    transition: all 200ms;
+.profile-about .chip-container span, .profile-about .chip-container a {
+    text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--color-primary-variant);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--medium-font);
+    color: var(--color-primary-variant);
+    font-weight: 600;
 }
 
-.profile-about .chip-container span:hover {
+.profile-about .chip-container span:hover, .profile-about .chip-container a:hover {
 
     background-color: var(--color-primary);
     color: white;

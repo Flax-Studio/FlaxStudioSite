@@ -28,10 +28,21 @@ export interface FeaturesData {
     heading: string, description: string
 }
 
-export interface ProductPageData {
-
+export interface SocialLink{
+    name: string,
+    url: string
 }
 
+export interface ProjectLink{
+    name: string,
+    url: string
+}
+
+
+export interface ProfilePageData {
+    profile: AccountPublicData,
+    members: Array<AccountSmallData>
+}
 
 export interface AccountData {
     _id: string
@@ -42,39 +53,42 @@ export interface AccountData {
     mode: 'none' | 'google',
     profileImage: string,
     role: 'CEO' | 'CO' | 'MEMBER',
-    expertIn : string,
+    expertIn: string,
     smallInfo: string,
     dob: number,
     location: string,
     experience: number,
-    socialLinks: string,
+    socialLinks: Array<SocialLink>,
     about: string,
-    externalProjectsLinks: string,
+    externalProjectsLinks: Array<ProjectLink>,
     skills: string,
     languages: string,
     joinedAt: number,
     projects: string,
+    seoDescription: string
 }
 
-export interface AccountPageData {
+export interface AccountPublicData {
     _id: string
     firstName: string,
     lastName: string,
     email: string,
     profileImage: string,
     role: 'CEO' | 'CO' | 'MEMBER',
-    expertIn : string,
+    expertIn: string,
     smallInfo: string,
     dob: number,
     location: string,
     experience: number,
-    socialLinks: string,
+    socialLinks: Array<SocialLink>,
     about: string,
-    externalProjectsLinks: string,
+    externalProjectsLinks: Array<ProjectLink>,
     skills: string,
     languages: string,
-    joinedAt: number
+    joinedAt: number,
+    seoDescription: string
 }
+
 
 
 export interface AccountBasicData {
@@ -94,11 +108,6 @@ export interface AccountSmallData {
     lastName: string,
     profileImage: string,
     expertIn: string
-}
-
-export interface ProfilePageData{
-    profile: AccountPageData,
-    members: Array<AccountSmallData>
 }
 
 

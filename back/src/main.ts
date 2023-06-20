@@ -9,7 +9,8 @@ import { generateId, generateOTP, getEmailVerifyHtml, getResetPasswordHtml } fro
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import multer from 'multer'
-import fs from 'fs/promises'
+import fs from 'fs'
+import path from 'path'
 
 
 
@@ -234,7 +235,8 @@ app.post('/verify-signup', async (req, res) => {
                     experience: 0,
                     expertIn: '',
                     socialLinks: socialLinks,
-                    externalProjectsLinks: Array<ProjectLink>()
+                    externalProjectsLinks: Array<ProjectLink>(),
+                    seoDescription: ''
                 }
                 let response = await mongoApi.createAccount(account)
 
@@ -426,8 +428,10 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
             if (req.body.prevImageName != '') {
                 const fileUrl = './public/uploads/' + req.body.prevImageName
                 try {
-                    await fs.access(fileUrl)      //  check file exist or not
-                    await fs.unlink(fileUrl)      // delete the file
+                    if (fs.existsSync(fileUrl)) {    // check file exist or not
+                        fs.unlinkSync(fileUrl)       // delete the file
+                    }
+
                 } catch (error) {
                     console.log('File not found')
                 }

@@ -3,6 +3,7 @@ import { DashboardData } from '~/data/DataType';
 import Api from '~/data/api';
 import { dateTimeString } from '~/data/utils'
 import noImage from '../../public/extra/no_image.png'
+import { marked } from 'marked'
 
 
 const activeTabIndex = ref(0)
@@ -58,9 +59,14 @@ function countActiveProjects() {
 }
 
 
-async function onImageLoadError(element: any){
-    element.onerror=null;
-    element.src= noImage
+async function onImageLoadError(element: any) {
+    element.onerror = null;
+    element.src = noImage
+}
+
+function markdownToHtml(markdown: string | undefined) {
+    if (markdown == undefined) return ''
+    return marked(markdown)
 }
 
 </script>
@@ -87,13 +93,14 @@ async function onImageLoadError(element: any){
                         <span>Add Project</span>
                     </NuxtLink>
                 </button>
-                
+
                 <div class="projects-container">
                     <p class="text-center" v-if="countActiveProjects() == 0">No active project found</p>
                     <template v-for="product in dashboardData?.products">
                         <div v-if="product.dashStatus == 'active'" class="card">
                             <div class="header">
-                                <img :src="product.dashIconUrl"  @error="event => onImageLoadError(event.target)" :alt="product.name">
+                                <img :src="product.dashIconUrl" @error="event => onImageLoadError(event.target)"
+                                    :alt="product.name">
                                 <div>
                                     <h3>{{ product.name }}</h3>
                                     <span>{{ product.dashPlatform }}</span>
@@ -138,7 +145,8 @@ async function onImageLoadError(element: any){
                         </thead>
                         <tbody>
                             <tr v-for="product in dashboardData?.products" :class="product.dashStatus">
-                                <td><img :src="product.dashIconUrl"  @error="event => onImageLoadError(event.target)" :alt="product.name"></td>
+                                <td><img :src="product.dashIconUrl" @error="event => onImageLoadError(event.target)"
+                                        :alt="product.name"></td>
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.dashPlatform }}</td>
                                 <td>{{ product.dashTeamLead }}</td>
@@ -241,19 +249,19 @@ async function onImageLoadError(element: any){
                         <tbody>
                             <tr>
                                 <th>Availability: </th>
-                                <td>{{ dashboardData?.profile.extraInfo.split('|')[0] || 'Not added yet' }}</td>
+                                <td>{{ 'Full-Time' }}</td>
                             </tr>
                             <tr>
                                 <th>Age: </th>
-                                <td>{{ dashboardData?.profile.extraInfo.split('|')[1] || 'Not added yet' }}</td>
+                                <td>{{ dashboardData?.profile.dob || 'Not added yet' }}</td>
                             </tr>
                             <tr>
                                 <th>Location: </th>
-                                <td>{{ dashboardData?.profile.extraInfo.split('|')[2] || 'Not added yet' }}</td>
+                                <td>{{ dashboardData?.profile.location || 'Not added yet' }}</td>
                             </tr>
                             <tr>
                                 <th>Experience: </th>
-                                <td>{{ dashboardData?.profile.extraInfo.split('|')[3] || 'Not added yet' }}</td>
+                                <td>{{ dashboardData?.profile.experience + ' Years' || 'Not added yet' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -287,10 +295,8 @@ async function onImageLoadError(element: any){
                 </div>
 
                 <h4>About</h4>
-                <div class="card">
-                    <p v-if="dashboardData?.profile.about.trim() == ''">Not added yet</p>
-                    <p v-for="content in dashboardData?.profile.about">{{ content }}</p>
-                </div>
+                <p v-if="dashboardData?.profile.about.trim() == ''">Not added yet</p>
+                <div class="card" v-html="markdownToHtml(dashboardData?.profile.about)"></div>
 
                 <h4>External Projects</h4>
                 <div class="card">
@@ -322,23 +328,23 @@ async function onImageLoadError(element: any){
         </main>
     </div>
 </template>
-<style scoped>
-
-section>button{
+<style >
+.dashboard section>button {
     border-radius: var(--default-border-radius);
     border: none;
     background-color: var(--color-primary-variant);
     margin-bottom: 3rem;
 }
 
-section>button:hover{
+.dashboard section>button:hover {
     background-color: var(--color-primary-variant-dark);
 }
 
-section>button svg{
+.dashboard section>button svg {
     fill: var(--color-secondary);
 }
-section>button a{
+
+.dashboard section>button a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -347,23 +353,24 @@ section>button a{
     color: var(--color-secondary);
     font-size: var(--medium-font);
     gap: 1rem;
-    
+
 }
-.text-center {
+
+.dashboard .text-center {
     text-align: center !important;
     color: var(--color-on-secondary);
     width: 100%;
     margin-top: 10rem;
 }
 
-.loader-container {
+.dashboard .loader-container {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.loader-container .loader2 {
+.dashboard .loader-container .loader2 {
     width: 30px;
     height: 30px;
 }
@@ -378,7 +385,7 @@ section>button a{
 
 /* ----------------- profile ------------------- */
 
-.card {
+.dashboard .card {
     background-color: var(--surface-variant-color);
     border-radius: var(--border-radius-medium);
     padding: 1rem;
@@ -386,7 +393,7 @@ section>button a{
     margin-bottom: 2rem;
 }
 
-.profile .basic button {
+.dashboard .profile .basic button {
     border: none;
     position: absolute;
     top: 1rem;
@@ -400,52 +407,52 @@ section>button a{
     justify-content: center;
 }
 
-.profile .basic button svg {
+.dashboard .profile .basic button svg {
     fill: white;
     width: 28px;
 }
 
-.profile {
+.dashboard .profile {
     color: var(--color-on-secondary);
 }
 
-.profile h4 {
+.dashboard .profile h4 {
     color: var(--color-tertiary);
 }
 
-.profile .basic {
+.dashboard .profile .basic {
     position: relative;
 }
 
-.profile .heading img {
+.dashboard .profile .heading img {
     width: 80px;
     border-radius: 50%;
 }
 
-.profile .heading {
+.dashboard .profile .heading {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
 
-.profile .heading h3 {
+.dashboard .profile .heading h3 {
     margin-bottom: 0.2em;
     font-size: var(--average-font);
     color: var(--color-tertiary);
 }
 
-.profile .heading span {
+.dashboard .profile .heading span {
     color: var(--color-primary-variant);
     font-size: var(--medium-font);
 }
 
-.profile p {
+.dashboard .profile p {
     margin: 1em 0;
     font-size: var(--medium-font);
 }
 
-.profile table td,
-.profile table th {
+.dashboard .profile table td,
+.dashboard .profile table th {
     padding: 0.5rem 2rem;
     padding-left: 0;
     text-align: left;
@@ -455,13 +462,13 @@ section>button a{
 
 /* -----------extra details */
 
-.profile .icons {
+.dashboard .profile .icons {
     margin-top: 1rem;
     display: flex;
     gap: 0.4rem;
 }
 
-.profile .icons a {
+.dashboard .profile .icons a {
     width: 40px;
     height: 40px;
     display: flex;
@@ -472,12 +479,12 @@ section>button a{
     border-radius: var(--default-border-radius);
 }
 
-.profile .icons a:hover {
+.dashboard .profile .icons a:hover {
     background-color: var(--color-primary-variant);
     fill: var(--color-secondary);
 }
 
-.profile .icons svg {
+.dashboard .profile .icons svg {
     width: 24px;
     fill: inherit;
 
@@ -485,15 +492,15 @@ section>button a{
 
 
 /* ----------- chips -------- */
-.profile .chip-container {
+.dashboard .profile .chip-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
     margin: 1rem 0;
 }
 
-.profile .chip-container a,
-.profile .chip-container span {
+.dashboard .profile .chip-container a,
+.dashboard .profile .chip-container span {
     text-decoration: none;
     padding: 0.6rem 1.5rem;
     border: 1px solid var(--color-primary-variant);
@@ -503,8 +510,8 @@ section>button a{
     font-weight: 600;
 }
 
-.profile .chip-container a:hover,
-.profile .chip-container span:hover {
+.dashboard .profile .chip-container a:hover,
+.dashboard .profile .chip-container span:hover {
     background-color: var(--color-primary-variant);
     color: var(--color-secondary);
 
@@ -517,26 +524,26 @@ section>button a{
 
 
 
-section {
+.dashboard section {
     max-width: 1000px;
     width: 100%;
     padding: 0 2rem;
     margin: 3rem auto;
 }
 
-section h2 {
+.dashboard section h2 {
     color: var(--color-tertiary);
     font-size: var(--big-font);
     margin: 1em 0;
 }
 
-section .projects-container {
+.dashboard section .projects-container {
     display: grid;
     grid-template-columns: 50% 50%;
     gap: 1rem;
 }
 
-.projects-container .card {
+.dashboard .projects-container .card {
     background-color: white;
     color: var(--color-on-secondary);
     padding: 1rem;
@@ -544,25 +551,25 @@ section .projects-container {
     margin: 0;
 }
 
-.projects-container .header {
+.dashboard .projects-container .header {
     display: flex;
     align-items: center;
     gap: 1rem;
     margin-bottom: 1rem;
 }
 
-.projects-container .header img {
+.dashboard .projects-container .header img {
     width: 60px;
     border-radius: var(--border-radius-medium);
 }
 
-.projects-container .header h3 {
+.dashboard .projects-container .header h3 {
     font-size: var(--medium-2-font);
     font-weight: 600;
     margin-bottom: 0.4em;
 }
 
-.projects-container .header span {
+.dashboard .projects-container .header span {
     font-size: var(--small-font);
     background-color: var(--color-primary-variant);
     padding: 0.4em 1em;
@@ -570,14 +577,14 @@ section .projects-container {
     color: white;
 }
 
-.projects-container .detail {
+.dashboard .projects-container .detail {
     font-size: var(--small-font);
     color: var(--color-primary);
     font-weight: 600;
     margin: 0.7rem 0;
 }
 
-.projects-container .description {
+.dashboard .projects-container .description {
     font-size: var(--medium-font);
     line-height: 1.5;
 }
@@ -622,5 +629,4 @@ section .projects-container {
 
 .dashboard table tr.success::before {
     background-color: var(--color-success)
-}
-</style>
+}</style>
