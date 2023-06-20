@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { AccountSmallData } from '../data/DataType';
+const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
 defineProps<{
     userProfiles: AccountSmallData[]
 }>()
@@ -10,7 +11,7 @@ defineProps<{
 
         <a v-for="user in userProfiles" :href="'/profile/' + user._id">
             <div>
-                <img :src="user.profileImage" :alt="user.firstName + ' ' + user.lastName + ' Image'">
+                <img :src="serverUrl + user.profileImage" :alt="user.firstName + ' ' + user.lastName + ' Image'">
                 <div>
                     <h4>{{ user.firstName + ' ' + user.lastName}}</h4>
                     <p>{{ user.expertIn }}</p>

@@ -103,6 +103,8 @@
     align-items: center;
     gap: 1rem;
     justify-content: center;
+    background-color: var(--surface-color);
+    box-shadow: 0px 2px 4px #96969648;
 }
 
 .auth button.secondary:hover {
