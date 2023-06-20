@@ -55,8 +55,7 @@ defineProps<{
 }
 
 .profile-card {
-    max-width: 250px;
-    width: 100%;
+    width: 220px;
     background-color: white;
     border-radius: 6px;
     box-shadow: 0px 4px 26px rgba(115, 64, 188, 0.2);

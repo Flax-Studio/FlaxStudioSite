@@ -63,7 +63,7 @@ const props = defineProps<{
 }
 
 .app-cards-container .card {
-    width: 250px;
+    width: 220px;
     background-color: white;
     box-shadow: 0px 4px 26px rgba(115, 64, 188, 0.2);
     border-radius: 6px;
