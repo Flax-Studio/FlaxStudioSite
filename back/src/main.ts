@@ -10,7 +10,6 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import multer from 'multer'
 import fs from 'fs'
-import path from 'path'
 
 
 
@@ -58,7 +57,7 @@ app.use((req, res, next) => {
 })
 
 // serve static content
-app.use('/public', express.static('public'));
+// app.use('/public', express.static('public'));
 
 
 
@@ -489,6 +488,16 @@ app.get('/home', async (req, res) => {
         res.status(200).send(data)
     } else {
         res.status(404).send('Not found')
+    }
+})
+
+app.get('/public/uploads/:filename', async (req, res) => {
+    const dirPath = process.cwd() + '/public/uploads/'
+
+    if(fs.existsSync(dirPath + req.params.filename)){
+        res.sendFile(dirPath + req.params.filename)
+    }else{
+        res.sendFile(dirPath + 'no_image.png')
     }
 })
 
