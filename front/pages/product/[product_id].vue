@@ -60,7 +60,7 @@ function markdownToHtml(markdown: string) {
 <template>
     <HeaderComponent />
     <AppLanding :description="markdownToHtml(pageData.landingDescription)" :app-name="pageData.name" :app-link="pageData.playStoreUrl"
-        :app-images-link="pageData.landingImageUrl" :privacy-link="'/privacy/' + pageData._id" />
+        :app-images-link="serverUrl + pageData.landingImageUrl" :privacy-link="'/privacy/' + pageData._id" />
 
     <AboutApp :about="pageData.productAboutDesc" />
     <AppFeatures :details="productFeatures" :ending="pageData.productAboutEndDesc" />

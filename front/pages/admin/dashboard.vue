@@ -2,8 +2,8 @@
 import { DashboardData } from '~/data/DataType';
 import Api from '~/data/api';
 import { dateTimeString } from '~/data/utils'
-import noImage from '../../public/extra/no_image.png'
 import { marked } from 'marked'
+const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
 
 
 const activeTabIndex = ref(0)
@@ -33,6 +33,7 @@ async function fetchDataFromServer() {
     const res = await Api.getDashboardData(token!!)
     if (res.isError) {
         alert(res.error)
+        window.location.href = '/signin'
     } else {
         if (res.result != null) {
             dashboardData.value = res.result
@@ -74,7 +75,8 @@ function markdownToHtml(markdown: string | undefined) {
         <Sidebar :onClick="(index) => changeActiveTab(index)" />
 
         <main>
-            <DashboardNav :icon-url="dashboardData?.profile.profileImage || ''" :role="dashboardData?.profile.role || ''"
+            <DashboardNav :icon-url="serverUrl + dashboardData?.profile.profileImage"
+                :role="dashboardData?.profile.role || ''"
                 :name="dashboardData?.profile.firstName + ' ' + dashboardData?.profile.lastName" />
 
             <!-- Home -->
@@ -95,7 +97,7 @@ function markdownToHtml(markdown: string | undefined) {
                     <template v-for="product in dashboardData?.products">
                         <div v-if="product.dashStatus == 'active'" class="card">
                             <div class="header">
-                                <img :src="product.dashIconUrl" :alt="product.name">
+                                <img :src="serverUrl + product.dashIconUrl" :alt="product.name">
                                 <div>
                                     <h3>{{ product.name }}</h3>
                                     <span>{{ product.dashPlatform }}</span>
@@ -140,8 +142,7 @@ function markdownToHtml(markdown: string | undefined) {
                         </thead>
                         <tbody>
                             <tr v-for="product in dashboardData?.products" :class="product.dashStatus">
-                                <td><img :src="product.dashIconUrl"
-                                        :alt="product.name"></td>
+                                <td><img :src="serverUrl + product.dashIconUrl" :alt="product.name"></td>
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.dashPlatform }}</td>
                                 <td>{{ product.dashTeamLead }}</td>
@@ -194,7 +195,8 @@ function markdownToHtml(markdown: string | undefined) {
                         </thead>
                         <tbody>
                             <tr v-for="member in dashboardData?.members">
-                                <td><img src="../../public/extra/no_image.png" alt="no_image"></td>
+                                <td><img :src="serverUrl + member.profileImage"
+                                        :alt="member.firstName + ' ' + member.lastName"></td>
                                 <td>{{ member.firstName }} {{ member.lastName }}</td>
                                 <td>{{ member.role }}</td>
                                 <td>{{ member.projects.split(' ').length }}</td>
@@ -228,7 +230,8 @@ function markdownToHtml(markdown: string | undefined) {
                         </svg>
                     </button>
                     <div class="heading">
-                        <img src="../../public/extra/no_image.png" alt="no_image">
+                        <img :src="serverUrl + dashboardData?.profile.profileImage"
+                            :alt="dashboardData?.profile.firstName + ' ' + dashboardData?.profile.lastName">
                         <div>
                             <h3>{{ dashboardData?.profile.firstName }} {{ dashboardData?.profile.lastName }}</h3>
                             <span>Android & Web fullstack Developer</span>
@@ -290,32 +293,29 @@ function markdownToHtml(markdown: string | undefined) {
                 </div>
 
                 <h4>About</h4>
-                <p v-if="dashboardData?.profile.about.trim() == ''">Not added yet</p>
                 <div class="card" v-html="markdownToHtml(dashboardData?.profile.about)"></div>
 
                 <h4>External Projects</h4>
                 <div class="card">
                     <div class="chip-container">
-                        <a href="#">DrawOn</a>
-                        <a href="#">DrawOn</a>
-                        <a href="#">DrawOn</a>
+                        <a v-for="project in dashboardData?.profile.externalProjectsLinks" :href="project.url">{{
+                            project.name }}</a>
                     </div>
                 </div>
 
                 <h4>Skills</h4>
                 <div class="card">
                     <div class="chip-container">
-                        <span>Android</span>
-                        <span>Android</span>
-                        <span>Android</span>
+                        <span v-if="dashboardData?.profile.skills.trim() != ''"
+                            v-for="skill in dashboardData?.profile.skills.split('|')">{{ skill }}</span>
                     </div>
                 </div>
 
                 <h4>Languages</h4>
                 <div class="card">
                     <div class="chip-container">
-                        <span>Hindi</span>
-                        <span>English</span>
+                        <span v-if="dashboardData?.profile.languages.trim() != ''"
+                            v-for="lang in dashboardData?.profile.languages.split('|')">{{ lang }}</span>
                     </div>
                 </div>
 
@@ -323,6 +323,22 @@ function markdownToHtml(markdown: string | undefined) {
         </main>
     </div>
 </template>
+
+
+<style scoped>
+.loader-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-container .loader2 {
+    width: 30px;
+    height: 30px;
+}
+</style>
+
 <style >
 .dashboard section>button {
     border-radius: var(--default-border-radius);
@@ -358,17 +374,6 @@ function markdownToHtml(markdown: string | undefined) {
     margin-top: 10rem;
 }
 
-.dashboard .loader-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.dashboard .loader-container .loader2 {
-    width: 30px;
-    height: 30px;
-}
 
 .dashboard {
     display: grid;

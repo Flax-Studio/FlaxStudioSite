@@ -68,6 +68,7 @@ aside {
     top: 0;
     background-color: var(--surface-variant-color);
     height: 100vh;
+    cursor: context-menu;
 }
 
 aside h2 {

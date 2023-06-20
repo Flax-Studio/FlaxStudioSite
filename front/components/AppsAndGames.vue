@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { AppsAndGamesData } from '../data/DataType'
+const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
 
 const props = defineProps<{
     data: AppsAndGamesData
@@ -16,7 +17,7 @@ const props = defineProps<{
             <div class="app-cards-container">
                 <a :href="'/product/' + appDetail._id" v-for="appDetail in props.data.apps">
                     <div class="card reveal">
-                        <img :src="appDetail.dashIconUrl" :alt="appDetail.name">
+                        <img :src="serverUrl + appDetail.dashIconUrl" :alt="appDetail.name">
                         <h3>{{ appDetail.name }}</h3>
                         <p>{{ appDetail.dashDescription }}</p>
                     </div>

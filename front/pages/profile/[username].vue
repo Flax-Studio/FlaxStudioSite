@@ -66,7 +66,7 @@ function markdownToHtml(markdown: string) {
         <div class="profile-parent">
             <div class="profile-bio">
                 <div class="left">
-                    <img :src="pageData.profile.profileImage" :alt="pageData.profile.firstName + ' Image'">
+                    <img :src="serverUrl + pageData.profile.profileImage" :alt="pageData.profile.firstName + ' Image'">
                     <div>
                         <h2>{{ pageData.profile.firstName }} {{ pageData.profile.lastName }}</h2>
                         <p class="info">{{ pageData.profile.expertIn }}</p>

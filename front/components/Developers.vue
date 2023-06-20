@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { ProfileData } from '../data/DataType'
+const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
 
 defineProps<{
     data: ProfileData
@@ -14,7 +15,7 @@ defineProps<{
         <div class="cards-container">
             <div class="profile-card reveal" v-for="(profile, index) in data.profiles">
                 <a :href="'/profile/' + profile._id">
-                    <img :src="profile.profileImage" :alt="profile.firstName + ' ' + profile.lastName + ' Image'">
+                    <img :src="serverUrl + profile.profileImage" :alt="profile.firstName + ' ' + profile.lastName + ' Image'">
                     <h3>{{ profile.firstName }} {{ profile.lastName }}</h3>
                     <p>{{ profile.smallInfo }}</p>
                 </a>

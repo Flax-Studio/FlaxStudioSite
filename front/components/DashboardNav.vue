@@ -6,15 +6,12 @@ defineProps<{
     iconUrl: string
 }>()
 
-async function onImageLoadError(element: any){
-    element.onerror=null;
-    element.src= noImage
-}
+
 </script>
 <template>
     <nav>
         <div class="profile">
-            <img :src="iconUrl" @error="event => onImageLoadError(event.target)" alt="profile image">
+            <img :src="iconUrl" alt="profile image">
             
             <div>
                 <span>{{ name }}</span>
