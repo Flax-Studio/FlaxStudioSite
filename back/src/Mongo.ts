@@ -126,6 +126,15 @@ export default class MongoAPI {
 
     }
 
+    async getUpdateProductData(productId: string) {
+        try {
+            return await Product.findById(productId).select('-__v') as ProductData | null
+        } catch (error) {
+            console.error('Error in product:', error);
+            return null
+        }
+    }
+
     async getUpdateProfileData(accountId: string) {
         try {
             const account = await Account.findById(accountId).select('-_id -__v -email -role -joinedAt') as AccountUpdateData | null
@@ -149,7 +158,7 @@ export default class MongoAPI {
 
     async updateProject(productData: ProductData) {
         try {
-            const product = await Product.create(productData)
+            const product = await Product.findByIdAndUpdate(productData._id, productData)
             return product
         } catch (error) {
             console.error('Error in account:', error);

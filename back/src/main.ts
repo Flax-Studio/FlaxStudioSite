@@ -423,6 +423,29 @@ app.get('/admin/updateProfile', async (req, res) => {
     }
 })
 
+app.get('/admin/updateProduct/:product_id', async (req, res) => {
+    console.log('product data requested')
+
+    try {
+        const accountId = res.locals.accountId as string
+        if (!await mongoApi.isAdmin(accountId)) {
+            res.status(400).send('You are not the admin. Only the admin can do this type of request.')
+            return
+        }
+
+        const data = await mongoApi.getUpdateProductData(req.params.product_id)
+        if (data != null) {
+            res.status(200).send(data)
+        } else {
+            res.status(404).send('Not found')
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Bad request')
+    }
+})
+
+
 
 app.put('/admin/updateProfile', async (req, res) => {
     console.log('update profile data requested')
@@ -430,6 +453,30 @@ app.put('/admin/updateProfile', async (req, res) => {
     try {
         const accountId = res.locals.accountId as string
         const data = await mongoApi.updateProfile(accountId, req.body.data as AccountUpdateData)
+        if (data != null) {
+            res.status(200).send('')
+        } else {
+            res.status(404).send('Not found')
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Bad request')
+    }
+
+})
+
+
+app.put('/admin/updateProduct', async (req, res) => {
+    console.log('update product data requested')
+
+    try {
+        const accountId = res.locals.accountId as string
+        if (!await mongoApi.isAdmin(accountId)) {
+            res.status(400).send('You are not the admin. Only the admin can do this type of request.')
+            return
+        }
+
+        const data = await mongoApi.updateProject(req.body.data as ProductData)
         if (data != null) {
             res.status(200).send('')
         } else {

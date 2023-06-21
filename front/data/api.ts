@@ -96,6 +96,12 @@ namespace Api {
         return get<AccountUpdateData>("admin/updateProfile", ``, myHeaders)
     }
 
+    export async function getUpdateProductData(token: string, productId: string) {
+        var myHeaders = new Headers();
+        myHeaders.append("x-access-token", token);
+        return get<ProductData>("admin/updateProduct/" + productId, ``, myHeaders)
+    }
+
     export async function updateProfile(token: string, data: AccountUpdateData) {
 
         let updateData = {
@@ -103,6 +109,15 @@ namespace Api {
             data: data
         }
         return put("admin/updateProfile", "", updateData)
+    }
+
+    export async function updateProduct(token: string, data: ProductData) {
+
+        let updateData = {
+            token: token,
+            data: data
+        }
+        return put("admin/updateProduct", "", updateData)
     }
 
 
