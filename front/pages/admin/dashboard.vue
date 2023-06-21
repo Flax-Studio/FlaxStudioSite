@@ -5,7 +5,6 @@ import { dateTimeString, getAgeFromTimestamp } from '~/data/utils'
 import { marked } from 'marked'
 const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
 
-
 const activeTabIndex = ref(0)
 const dashboardData = ref<DashboardData>()
 const isLoading = ref(true)
