@@ -10,7 +10,14 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import multer from 'multer'
 import fs from 'fs'
+import { dirname } from 'path'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const publicFileUrl = path.join(__dirname, '..')
+// console.log(path.join(__dirname, '..', 'public'))
 
 
 const storage = multer.diskStorage({
@@ -429,6 +436,7 @@ app.post('/reset-password', async (req, res) => {
 
 app.get('/admin/dashboard', async (req, res) => {
     console.log('dashboard data requested')
+    console.log(path.resolve(__dirname))
     const accountId = res.locals.accountId as string
     const data = await mongoApi.getDashboardData(accountId)
     if (data != null) {
@@ -649,7 +657,7 @@ app.get('/home', async (req, res) => {
 })
 
 app.get('/public/uploads/:filename', async (req, res) => {
-    const dirPath = process.cwd() + '/public/uploads/'
+    const dirPath = publicFileUrl + '/public/uploads/'
 
     if (fs.existsSync(dirPath + req.params.filename)) {
         res.sendFile(dirPath + req.params.filename)
