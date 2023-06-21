@@ -93,8 +93,10 @@ function markdownToHtml(markdown: string | undefined) {
                     </NuxtLink>
                 </button>
 
+                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.</p>
+                <p class="text-center" v-else-if="countActiveProjects() == 0">No active project found</p>
                 <div class="projects-container">
-                    <p class="text-center" v-if="countActiveProjects() == 0">No active project found</p>
+                    
                     <template v-for="product in dashboardData?.products">
                         <div v-if="product.dashStatus == 'active'" class="card">
                             <div class="header">
@@ -117,7 +119,8 @@ function markdownToHtml(markdown: string | undefined) {
             <!-- Projects -->
             <section v-if="activeTabIndex == 1">
                 <h2>Projects</h2>
-                <div class="table-holder">
+                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.</p>
+                <div v-else class="table-holder">
                     <table>
                         <colgroup>
                             <col style="width: auto;">
@@ -126,6 +129,7 @@ function markdownToHtml(markdown: string | undefined) {
                             <col style="width: auto;">
                             <col style="width: auto;">
                             <col style="width: auto;">
+                            <col style="width: 6rem;">
                             <col v-if="dashboardData?.profile.role != 'MEMBER'" style="width: 6rem;">
                             <col v-if="dashboardData?.profile.role != 'MEMBER'" style="width: 6rem;">
                         </colgroup>
@@ -137,6 +141,7 @@ function markdownToHtml(markdown: string | undefined) {
                                 <th>Team Lead</th>
                                 <th>Started At</th>
                                 <th>Completed At</th>
+                                <th>View</th>
                                 <th v-if="dashboardData?.profile.role != 'MEMBER'" style="text-align: center;">Edit</th>
                                 <th v-if="dashboardData?.profile.role != 'MEMBER'" style="text-align: center;">Delete</th>
                             </tr>
@@ -149,6 +154,19 @@ function markdownToHtml(markdown: string | undefined) {
                                 <td>{{ product.dashTeamLead }}</td>
                                 <td>{{ dateTimeString(product.dashStartedAt) }}</td>
                                 <td>{{ dateTimeString(product.dashCompletedAt) }}</td>
+
+                                <td>
+                                    <NuxtLink target="_blank" :to="'/product/' + product._id">
+                                        <button>
+                                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M13.267 4.209a.75.75 0 0 0-1.034 1.086l6.251 5.955H3.75a.75.75 0 0 0 0 1.5h14.734l-6.251 5.954a.75.75 0 0 0 1.034 1.087l7.42-7.067a.996.996 0 0 0 .3-.58.758.758 0 0 0-.001-.29.995.995 0 0 0-.3-.578l-7.419-7.067Z" />
+                                            </svg>
+                                        </button>
+                                    </NuxtLink>
+                                </td>
+
                                 <td v-if="dashboardData?.profile.role != 'MEMBER'">
                                     <NuxtLink :to="'/admin/productUpdate/' + product._id">
                                         <button>
@@ -172,13 +190,15 @@ function markdownToHtml(markdown: string | undefined) {
                             </tr>
                         </tbody>
                     </table>
+
                 </div>
             </section>
 
             <!-- Members -->
             <section v-if="activeTabIndex == 2">
                 <h2>Members</h2>
-                <div class="table-holder">
+                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.</p>
+                <div v-else class="table-holder">
                     <table>
                         <colgroup>
                             <col style="width: auto;">
@@ -207,7 +227,11 @@ function markdownToHtml(markdown: string | undefined) {
                                         :alt="member.firstName + ' ' + member.lastName"></td>
                                 <td>{{ member.firstName }} {{ member.lastName }}</td>
                                 <td>{{ member.role }}</td>
-                                <td>{{ member.projects.split(' ').length }}</td>
+
+                                <td>
+                                    <span v-if="member.projects.trim() != ''">{{ member.projects.split(' ').length }}</span>
+                                    <span v-else>0</span>
+                                </td>
                                 <td>{{ dateTimeString(member.joinedAt) }}</td>
                                 <td>{{ member.isPublic }}</td>
 
@@ -449,6 +473,12 @@ function markdownToHtml(markdown: string | undefined) {
     margin: 1em 0;
 }
 
+.dashboard section>p {
+    color: var(--color-on-secondary);
+    font-size: var(--medium-font);
+    margin: 1em 0;
+}
+
 .dashboard section .projects-container {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -540,7 +570,7 @@ function markdownToHtml(markdown: string | undefined) {
     background-color: var(--color-error)
 }
 
-.dashboard table tr.success::before {
+.dashboard table tr.completed::before {
     background-color: var(--color-success)
 }
 

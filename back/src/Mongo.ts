@@ -98,8 +98,14 @@ export default class MongoAPI {
             if (profile == null) return null
             profile!!.password = ''
 
-            const products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductDashboardData>
-            const accounts = await Account.find().select('_id firstName lastName profileImage role expertIn projects joinedAt isPublic isApproved') as Array<AccountDashboardData>
+            let products = Array<ProductDashboardData>()
+            let accounts = Array<AccountDashboardData>()
+            
+            // send data only when user is approved
+            if(profile.isApproved){
+                products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductDashboardData>
+                accounts = await Account.find().select('_id firstName lastName profileImage role expertIn projects joinedAt isPublic isApproved') as Array<AccountDashboardData>
+            }
 
             const data: DashboardData = {
                 members: accounts,
