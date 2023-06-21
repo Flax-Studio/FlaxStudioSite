@@ -26,20 +26,22 @@ async function fetchDataFromServer() {
     const token = localStorage.getItem('token')
 
     if (token == null) {
-        throw { message: "You don't have access to server, please signin", statusCode: 401 }
+        //throw { message: "You don't have access to server, please signin", statusCode: 401 }
+        alert("You don't have access to server, please signin")
+        return
     }
 
     const res = await Api.getDashboardData(token!!)
     if (res.isError) {
         alert(res.error)
-        throw { message: res.error, statusCode: 403 }
+        return // throw { message: res.error, statusCode: 403 }
     } else {
         if (res.result != null) {
             dashboardData.value = res.result
             isLoading.value = false
             isAuthenticated.value = true
         } else {
-            throw { message: "'Something went wrong, please refresh the page", statusCode: 500 }
+            alert("Something went wrong, please refresh the page")
         }
     }
 }
