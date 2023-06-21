@@ -266,7 +266,7 @@ app.post('/verify-signup', async (req, res) => {
                 let response = await mongoApi.createAccount(account)
 
                 // create token for auth
-                const token = jwt.sign({ accountId: account._id }, tokenKey)
+                const token = jwt.sign(account._id, tokenKey)
                 if (response != null) {
                     res.status(200).send({ token: token })
                 } else {
