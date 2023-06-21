@@ -86,6 +86,30 @@ app.get('/admin/*', async (req, res, next) => {
     }
 })
 
+app.delete('/admin/*', async (req, res, next) => {
+
+    try {
+        const token =
+            req.body.token || req.query.token || req.headers["x-access-token"];
+
+        if (!token) {
+            return res.status(403).send("A token is required for authentication");
+        }
+
+        const decoded = jwt.verify(token, tokenKey)
+        res.locals.accountId = decoded
+        if (await mongoApi.isAccountExist(decoded as string)) {
+            next()
+        } else {
+            return res.status(401).send("Invalid Token");
+        }
+
+
+    } catch (err) {
+        return res.status(401).send("Invalid Token");
+    }
+})
+
 app.post('/admin/*', async (req, res, next) => {
 
     try {
@@ -438,6 +462,29 @@ app.get('/admin/updateProduct/:product_id', async (req, res) => {
         const data = await mongoApi.getUpdateProductData(req.params.product_id)
         if (data != null) {
             res.status(200).send(data)
+        } else {
+            res.status(404).send('Not found')
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Bad request')
+    }
+})
+
+
+app.delete('/admin/deleteProduct/:product_id', async (req, res) => {
+    console.log('delete product data requested')
+
+    try {
+        const accountId = res.locals.accountId as string
+        if (!await mongoApi.isAdmin(accountId)) {
+            res.status(400).send('You are not the admin. Only the admin can do this type of request.')
+            return
+        }
+
+        const data = await mongoApi.deleteProject(req.params.product_id)
+        if (data != null) {
+            res.status(200).send('Successfully deleted')
         } else {
             res.status(404).send('Not found')
         }

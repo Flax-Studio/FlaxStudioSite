@@ -67,6 +67,40 @@ function markdownToHtml(markdown: string | undefined) {
     return marked(markdown)
 }
 
+
+async function deleteProduct(productId: string) {
+    const token = localStorage.getItem('token')
+
+    if (token == null) {
+        alert("You don't have access to server, please signin")
+        return
+    }
+
+    if (confirm('Do you really want to delete this product?') == false) {
+        return
+    }
+
+    const res = await Api.deleteProductData(token!!, productId)
+    if (res.isError) {
+        alert(res.error)
+    } else {
+        if (res.result != null) {
+            alert(res.result)
+
+            // remove product from dashboard
+            for (let index = 0; index < dashboardData.value!!.products.length; index++) {
+                const product = dashboardData.value!!.products[index];
+                if (product._id == productId) {
+                    dashboardData.value?.products.splice(index, 1)
+                }
+            }
+
+        } else {
+            alert("Something went wrong, please refresh the page")
+        }
+    }
+}
+
 </script>
 <template>
     <div v-if="isLoading" class="loader-container">
@@ -93,10 +127,11 @@ function markdownToHtml(markdown: string | undefined) {
                     </NuxtLink>
                 </button>
 
-                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.</p>
+                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.
+                </p>
                 <p class="text-center" v-else-if="countActiveProjects() == 0">No active project found</p>
                 <div class="projects-container">
-                    
+
                     <template v-for="product in dashboardData?.products">
                         <div v-if="product.dashStatus == 'active'" class="card">
                             <div class="header">
@@ -119,7 +154,8 @@ function markdownToHtml(markdown: string | undefined) {
             <!-- Projects -->
             <section v-if="activeTabIndex == 1">
                 <h2>Projects</h2>
-                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.</p>
+                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.
+                </p>
                 <div v-else class="table-holder">
                     <table>
                         <colgroup>
@@ -179,7 +215,7 @@ function markdownToHtml(markdown: string | undefined) {
                                     </NuxtLink>
                                 </td>
                                 <td v-if="dashboardData?.profile.role != 'MEMBER'">
-                                    <button class="delete">
+                                    <button class="delete" @click="deleteProduct(product._id)">
                                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -197,7 +233,8 @@ function markdownToHtml(markdown: string | undefined) {
             <!-- Members -->
             <section v-if="activeTabIndex == 2">
                 <h2>Members</h2>
-                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.</p>
+                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.
+                </p>
                 <div v-else class="table-holder">
                     <table>
                         <colgroup>

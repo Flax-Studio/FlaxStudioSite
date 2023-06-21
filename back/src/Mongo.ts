@@ -151,6 +151,17 @@ export default class MongoAPI {
         }
     }
 
+
+    async deleteProject(productId: string) {
+        try {
+            const project = await Product.findByIdAndDelete(productId)
+            return project
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
     async addProject(productData: ProductData) {
         try {
             const project = await Product.create(productData)

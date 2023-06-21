@@ -121,37 +121,11 @@ namespace Api {
     }
 
 
-
-
-
-
-    // export async function getCategoryProducts(categoryId: number, limit: number) {
-    //     return get<ProductData[]>("category-products", `categoryId=${categoryId}&limit=${limit}`)
-    // }
-
-
-
-
-    // export async function addCategory(adminId: string, categoryName: string, isSlide: boolean, imageUrl: string) {
-    //     let categoryData = {
-    //         adminId: adminId,
-    //         name: categoryName,
-    //         isSlide: isSlide,
-    //         url: imageUrl
-
-    //     }
-    //     return post("admin/category", "", categoryData)
-    // }
-
-
-    // export async function updateProduct(adminId: string, data: ProductUpdate) {
-
-    //     let updateData = {
-    //         adminId: adminId,
-    //         data: data
-    //     }
-    //     return put("admin/product", "", updateData)
-    // }
+    export async function deleteProductData(token: string, productId: string) {
+        var myHeaders = new Headers();
+        myHeaders.append("x-access-token", token);
+        return deleteRequest<String>("admin/deleteProduct/" + productId, myHeaders)
+    }
 
 
 
@@ -195,7 +169,6 @@ namespace Api {
             headers: headers
         };
 
-        // console.log(`${apiURL}/${path}?${query}`)
 
         try {
             const res = await fetch(`${apiURL}/${path}?${query}`, requestOptions);
@@ -220,7 +193,6 @@ namespace Api {
             body: JSON.stringify(body),
         };
 
-        // console.log(`${apiURL}/${path}?${query}`)
 
         try {
             const res = await fetch(`${apiURL}/${path}?${query}`, requestOptions);
@@ -244,7 +216,6 @@ namespace Api {
             body: JSON.stringify(body),
         };
 
-        // console.log(`${apiURL}/${path}?${query}`)
 
         try {
             const res = await fetch(`${apiURL}/${path}?${query}`, requestOptions);
@@ -255,6 +226,27 @@ namespace Api {
             }
         } catch (error) {
             console.log(error)
+            return createResult<T>(null, true, "fetch error")
+        }
+    }
+
+
+    async function deleteRequest<T>(path: string, headers: HeadersInit) {
+        const requestOptions: RequestInit = {
+            method: "DELETE",
+            redirect: "follow",
+            headers: headers
+        };
+
+
+        try {
+            const res = await fetch(`${apiURL}/${path}`, requestOptions);
+            if (res.ok) {
+                return createResult<T>(await res.text() as T, false)
+            } else {
+                return createResult<T>(null, true, await res.text())
+            }
+        } catch (error) {
             return createResult<T>(null, true, "fetch error")
         }
     }
