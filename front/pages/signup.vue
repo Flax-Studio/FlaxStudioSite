@@ -118,7 +118,7 @@ async function verifyOTP() {
                 <div v-else class="loader2"></div>
             </button>
 
-            <div class="divider">
+            <!-- <div class="divider">
                 <hr>
                 <span>Or</span>
             </div>
@@ -138,7 +138,7 @@ async function verifyOTP() {
                         fill="#ea4335" />
                 </svg>
                 <span>Sign up with Google</span>
-            </button>
+            </button> -->
             <p>Already have an account? <NuxtLink to="/signin">Sign in</NuxtLink></p>
         </form>
 

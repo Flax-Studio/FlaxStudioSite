@@ -37,7 +37,7 @@ async function signIn(){
                 <span v-if="!isProcessing">Sign In</span>
                 <div v-else class="loader2"></div>
             </button>
-            <div class="divider">
+            <!-- <div class="divider">
                 <hr>
                 <span>Or</span>
             </div>
@@ -57,7 +57,7 @@ async function signIn(){
                         fill="#ea4335" />
                 </svg> 
                 <span>Sign in with Google</span>
-            </button>
+            </button> -->
             <p>Don't have an account? <NuxtLink to="/signup">Sign up</NuxtLink></p>
         </form>
     </div>
