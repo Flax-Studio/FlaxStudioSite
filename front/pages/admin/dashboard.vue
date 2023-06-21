@@ -75,7 +75,7 @@ function markdownToHtml(markdown: string | undefined) {
     <div v-if="isAuthenticated" class="dashboard">
         <Sidebar :onClick="(index) => changeActiveTab(index)" />
 
-        <main>
+        <div>
             <DashboardNav :icon-url="serverUrl + dashboardData?.profile.profileImage"
                 :role="dashboardData?.profile.role || ''"
                 :name="dashboardData?.profile.firstName + ' ' + dashboardData?.profile.lastName" />
@@ -358,7 +358,7 @@ function markdownToHtml(markdown: string | undefined) {
                 </div>
 
             </section>
-        </main>
+        </div>
     </div>
 </template>
 
@@ -543,10 +543,7 @@ function markdownToHtml(markdown: string | undefined) {
 .dashboard table tr.success::before {
     background-color: var(--color-success)
 }
-</style>
 
-
-<style>
 .dashboard .profile .basic button {
     border: none;
     position: absolute;
@@ -599,19 +596,6 @@ function markdownToHtml(markdown: string | undefined) {
     color: var(--color-primary-variant);
     font-size: var(--medium-font);
 }
-
-.dashboard .profile p {
-    margin: 1em 0;
-    font-size: var(--medium-font);
-}
-
-.dashboard .profile table td,
-.dashboard .profile table th {
-    padding: 0.5rem 2rem;
-    padding-left: 0;
-    text-align: left;
-}
-
 
 
 /* -----------extra details */
@@ -669,5 +653,27 @@ function markdownToHtml(markdown: string | undefined) {
     background-color: var(--color-primary-variant);
     color: var(--color-secondary);
 
+}
+
+
+@media only screen and (max-width: 800px) {
+    .dashboard {
+        grid-template-columns: 200px auto;
+    }
+}
+</style>
+
+
+<style>
+.dashboard .profile p {
+    margin: 1em 0;
+    font-size: var(--medium-font);
+}
+
+.dashboard .profile table td,
+.dashboard .profile table th {
+    padding: 0.5rem 2rem;
+    padding-left: 0;
+    text-align: left;
 }
 </style>
