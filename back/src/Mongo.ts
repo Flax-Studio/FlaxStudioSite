@@ -99,7 +99,7 @@ export default class MongoAPI {
             profile!!.password = ''
 
             const products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductDashboardData>
-            const accounts = await Account.find().select('_id firstName lastName profileImage role expertIn projects joinedAt') as Array<AccountDashboardData>
+            const accounts = await Account.find().select('_id firstName lastName profileImage role expertIn projects joinedAt isPublic isApproved') as Array<AccountDashboardData>
 
             const data: DashboardData = {
                 members: accounts,
@@ -137,7 +137,7 @@ export default class MongoAPI {
 
     async getUpdateProfileData(accountId: string) {
         try {
-            const account = await Account.findById(accountId).select('-_id -__v -email -role -joinedAt') as AccountUpdateData | null
+            const account = await Account.findById(accountId).select('-_id -__v -email -role -joinedAt -isPublic -isApproved') as AccountUpdateData | null
             return account
         } catch (error) {
             console.error('Error in account:', error);
@@ -192,7 +192,7 @@ export default class MongoAPI {
 
     async getProfilePageData(accountId: string) {
         try {
-            const account = await Account.findById(accountId).select('-password -mode -projects -__v') as AccountPublicData | null
+            const account = await Account.findById(accountId).select('-password -mode -projects -__v -isPublic -isApproved') as AccountPublicData | null
             if(account == null) return null
             const allAccounts = await Account.find({ _id: { $ne: accountId } }).select('_id firstName lastName profileImage expertIn') as AccountSmallData[]
             const profilePageData: ProfilePageData = {
@@ -209,7 +209,7 @@ export default class MongoAPI {
 
     async getHomePageData() {
         try {
-            const accounts = await Account.find().select('_id firstName lastName profileImage role expertIn smallInfo') as AccountBasicData[]
+            const accounts = await Account.find({isApproved: true, isPublic: true}).select('_id firstName lastName profileImage role expertIn smallInfo') as AccountBasicData[]
             const products = await Product.find().select('_id name dashIconUrl dashDescription dashStatus') as ProductBasicData[]
             
             const homePageData: HomePageData = {

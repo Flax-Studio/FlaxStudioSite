@@ -24,7 +24,9 @@ const accountSchema = new Schema({
     languages: { type: String, required: false },
     joinedAt: { type: Number, required: true },
     projects: { type: String, required: false },
-    seoDescription: { type: String, required: false }
+    seoDescription: { type: String, required: false },
+    isPublic: { type: Boolean, required: true },
+    isApproved: { type: Boolean, required: true }
 
 });
 

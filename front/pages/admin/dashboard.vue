@@ -185,6 +185,10 @@ function markdownToHtml(markdown: string | undefined) {
                             <col style="width: auto;">
                             <col style="width: auto;">
                             <col style="width: auto;">
+                            <col style="width: auto;">
+                            <col style="width: auto;">
+                            <col style="width: auto;">
+
                         </colgroup>
                         <thead>
                             <tr>
@@ -193,6 +197,7 @@ function markdownToHtml(markdown: string | undefined) {
                                 <th>Role</th>
                                 <th>Projects</th>
                                 <th>Joined At</th>
+                                <th>Public</th>
                                 <th style="text-align: center;">Profile</th>
                             </tr>
                         </thead>
@@ -204,6 +209,7 @@ function markdownToHtml(markdown: string | undefined) {
                                 <td>{{ member.role }}</td>
                                 <td>{{ member.projects.split(' ').length }}</td>
                                 <td>{{ dateTimeString(member.joinedAt) }}</td>
+                                <td>{{ member.isPublic }}</td>
 
                                 <td>
                                     <button>

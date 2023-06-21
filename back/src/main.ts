@@ -259,7 +259,9 @@ app.post('/verify-signup', async (req, res) => {
                     expertIn: '',
                     socialLinks: socialLinks,
                     externalProjectsLinks: Array<ProjectLink>(),
-                    seoDescription: ''
+                    seoDescription: '',
+                    isPublic: false,
+                    isApproved: false
                 }
                 let response = await mongoApi.createAccount(account)
 

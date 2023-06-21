@@ -58,7 +58,9 @@ export interface AccountData {
     languages: string,
     joinedAt: number,
     projects: string,
-    seoDescription: string
+    seoDescription: string,
+    isPublic: boolean,
+    isApproved: boolean
 }
 
 export interface AccountUpdateData {
@@ -110,6 +112,8 @@ export interface AccountDashboardData {
     expertIn: string,
     projects: string,
     joinedAt: number,
+    isPublic: boolean,
+    isApproved: boolean
 }
 
 export interface AccountSmallData {
