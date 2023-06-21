@@ -10,7 +10,7 @@ export function generateId(max = 15){
 }
 
 export function generateOTP(){
-    const chars = '0123456789'
+    const chars = '123456789'
     let otp = ''
     for (let index = 0; index < 6; index++) {
 

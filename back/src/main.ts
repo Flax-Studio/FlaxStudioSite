@@ -22,7 +22,8 @@ const publicFileUrl = path.join(__dirname, '..')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/uploads/')
+        const destinationPath = path.join(__dirname, 'public', 'uploads');
+        cb(null, destinationPath);
     },
     filename: function (req, file, cb) {
         const index = (file.originalname as string).lastIndexOf('.')
@@ -592,7 +593,7 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
             if (req.body.prevImageName != '') {
                 const fileUrl = './public/uploads/' + req.body.prevImageName
                 try {
-                    if (fs.existsSync(fileUrl)) {    // check file exist or not
+                    if (req.body.prevImageName != 'no_image.png' && fs.existsSync(fileUrl)) {    // check file exist or not
                         fs.unlinkSync(fileUrl)       // delete the file
                     }
 
