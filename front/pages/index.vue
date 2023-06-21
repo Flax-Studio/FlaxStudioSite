@@ -35,11 +35,11 @@ const { data, error } = await useFetch(dataUrl)
 if (data.value != null) {
     pageData = data.value as HomePageData
     profileData.profiles = pageData.members
-    
+
     pageData.products.forEach(product => {
-        if(product.dashStatus == 'completed'){
+        if (product.dashStatus == 'completed') {
             releasedAppsData.apps.push(product)
-        }else{
+        } else {
             upcomingAppsData.apps.push(product)
         }
     });
@@ -57,6 +57,9 @@ useServerSeoMeta({
 
 </script>
 <template>
+    <Head>
+        <Meta name="google-site-verification" content="HK_XP0qP2VBinnsAiNSbP20dwmonM73j9_lZT2LACPQ" />
+    </Head>
     <HeaderComponent />
     <HomeLanding />
     <Developers :data="profileData" />
