@@ -22,7 +22,7 @@ const publicFileUrl = path.join(__dirname, '..')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const destinationPath = path.join(__dirname, 'public', 'uploads');
+        const destinationPath = path.join(__dirname, '..', 'public', 'uploads');
         cb(null, destinationPath);
     },
     filename: function (req, file, cb) {
