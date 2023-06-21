@@ -22,11 +22,9 @@ const product = ref<ProductData>({
     landingImageUrl: '',
     playStoreUrl: '',
     productSeoDesc: '',
-    productSeoTitle: '',
     productAboutDesc: '',
     productAboutEndDesc: '',
     productFeatures: '',
-    privacySeoTitle: '',
     privacySeoDescription: '',
     privacyAboutDesc: ''
 })
@@ -252,11 +250,6 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
                 </div>
             </div>
 
-            <div class="input-holder">
-                <input v-model="product.productSeoTitle" type="text" placeholder="SEO title for project page">
-                <label>Project SEO title</label>
-            </div>
-
 
             <div class="input-holder">
                 <textarea v-model="product.productSeoDesc" placeholder="SEO description for project page"></textarea>
@@ -270,11 +263,7 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
 
 
             <h3>Privacy Page Part</h3>
-            <div class="input-holder">
-                <input v-model="product.privacySeoTitle" type="text" placeholder="SEO title for project privacy page">
-                <label>Project privacy SEO title</label>
-            </div>
-
+           
 
             <div class="input-holder">
                 <textarea v-model="product.privacySeoDescription"
@@ -290,7 +279,7 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
 
             <button type="submit">
                 <div class="loader2" v-if="isSubmitting"></div>
-                <span v-else>Create Product</span>
+                <span v-else>Create Project</span>
             </button>
 
         </form>

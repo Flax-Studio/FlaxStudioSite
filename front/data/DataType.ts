@@ -161,13 +161,12 @@ export interface ProductData {
     landingDescription: string,
     landingImageUrl: string,
     playStoreUrl: string,
-    productSeoTitle: string,
+
     productSeoDesc: string,
     productAboutDesc: string,
     productAboutEndDesc: string,
     productFeatures: string,
 
-    privacySeoTitle: string,
     privacySeoDescription: string,
     privacyAboutDesc: string
 }
