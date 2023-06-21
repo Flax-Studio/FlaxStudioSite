@@ -293,7 +293,7 @@ async function uploadImage(eventTarget: EventTarget | null) {
 
             <button type="submit">
                 <div class="loader2" v-if="isSubmitting"></div>
-                <span v-else>Send</span>
+                <span v-else>Update Profile</span>
             </button>
 
         </form>

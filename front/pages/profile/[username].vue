@@ -122,13 +122,13 @@ function markdownToHtml(markdown: string) {
                     <hr>
                     <h2>Skills</h2>
                     <div class="chip-container">
-                        <span v-for="skill in pageData.profile.skills.split('|')">{{ skill }}</span>
+                        <span v-for="skill in pageData.profile.skills.toLowerCase().split('|')">{{ skill }}</span>
                     </div>
 
                     <hr>
                     <h2>Languages</h2>
                     <div class="chip-container">
-                        <span v-for="lang in pageData.profile.languages.split('|')">{{ lang }}</span>
+                        <span v-for="lang in pageData.profile.languages.toLowerCase().split('|')">{{ lang }}</span>
                     </div>
 
                 </div>
@@ -250,7 +250,7 @@ function markdownToHtml(markdown: string) {
 }
 
 .profile-about h2 {
-    color: var(--color-primary-variant);
+    color: var(--color-tertiary);
 }
 
 .profile-about hr {
@@ -271,7 +271,7 @@ function markdownToHtml(markdown: string) {
     text-decoration: none;
     padding: 0.6rem 1.5rem;
     border: 1px solid var(--color-primary-variant);
-    border-radius: var(--border-radius-medium);
+    border-radius: var(--default-border-radius);
     font-size: var(--medium-font);
     color: var(--color-primary-variant);
     font-weight: 600;
@@ -279,9 +279,8 @@ function markdownToHtml(markdown: string) {
 
 .profile-about .chip-container span:hover, .profile-about .chip-container a:hover {
 
-    background-color: var(--color-primary);
+    background-color: var(--color-primary-variant);
     color: white;
-    border: 1px solid var(--color-primary);
 }
 
 
