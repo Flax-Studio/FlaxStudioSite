@@ -16,7 +16,7 @@ async function signIn(){
     }else{
         if(res.result != null){
             localStorage.setItem('token', res.result.token)
-            window.location.href = '/'
+            window.location.href = '/admin/dashboard'
         }else{
             alert('Something went wrong')
         }
