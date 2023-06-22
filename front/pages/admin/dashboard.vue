@@ -535,6 +535,8 @@ async function deleteProduct(productId: string) {
 
 .dashboard .projects-container .header img {
     width: 60px;
+    height: 60px;
+    object-fit: cover;
     border-radius: var(--border-radius-medium);
 }
 
@@ -580,6 +582,8 @@ async function deleteProduct(productId: string) {
 
 .dashboard table img {
     width: 50px;
+    height: 50px;
+    object-fit: cover;
     border-radius: var(--border-radius-medium);
 }
 
@@ -642,6 +646,8 @@ async function deleteProduct(productId: string) {
 
 .dashboard .profile .heading img {
     width: 80px;
+    height: 80px;
+    object-fit: cover;
     border-radius: 50%;
 }
 

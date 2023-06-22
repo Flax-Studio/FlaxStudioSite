@@ -56,7 +56,8 @@ nav .edit:hover {
 
 nav .profile img {
     width: 50px;
-    height: auto;
+    height: 50px;
+    object-fit: cover;
     border-radius: 50%;
     display: inline-block;
 
