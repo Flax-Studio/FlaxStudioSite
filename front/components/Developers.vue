@@ -14,11 +14,11 @@ defineProps<{
         <p>{{ data.description }}</p>
         <div class="cards-container">
             <div class="profile-card reveal" v-for="(profile, index) in data.profiles">
-                <a :href="'/profile/' + profile._id">
+                <NuxtLink :to="'/profile/' + profile._id">
                     <img :src="serverUrl + profile.profileImage" :alt="profile.firstName + ' ' + profile.lastName + ' Image'">
                     <h3>{{ profile.firstName }} {{ profile.lastName }}</h3>
                     <p>{{ profile.smallInfo }}</p>
-                </a>
+                </NuxtLink>
             </div>
         </div>
     </div>

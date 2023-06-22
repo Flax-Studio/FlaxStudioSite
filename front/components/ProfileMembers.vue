@@ -9,7 +9,7 @@ defineProps<{
     <div class="members">
         <h3>Members</h3>
 
-        <a v-for="user in userProfiles" :href="'/profile/' + user._id">
+        <NuxtLink v-for="user in userProfiles" :href="'/profile/' + user._id">
             <div>
                 <img :src="serverUrl + user.profileImage" :alt="user.firstName + ' ' + user.lastName + ' Image'">
                 <div>
@@ -17,7 +17,7 @@ defineProps<{
                     <p>{{ user.expertIn }}</p>
                 </div>
             </div>
-        </a>
+        </NuxtLink>
     </div>
 </template>
 <style scoped>
@@ -43,6 +43,7 @@ defineProps<{
 .members a{
     display: block;
     text-decoration: none;
+    color: var(--color-on-secondary);
 }
 
 .members a:hover{
@@ -65,7 +66,9 @@ defineProps<{
 }
 
 .members p {
+    margin-top: 0.4em;
     font-size: 14px;
+    line-height: 1.2;
 }
 
 @media only screen and (max-width: 900px) {
