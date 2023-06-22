@@ -211,7 +211,7 @@ function markdownToHtml(markdown: string) {
 
 
 .profile-bio .left img {
-    height: 120px;
+    width: 120px;
     height: 120px;
     object-fit: cover;
     border-radius: 50%;
