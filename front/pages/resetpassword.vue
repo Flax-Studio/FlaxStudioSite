@@ -20,6 +20,9 @@ async function onResetPassword(){
 
 </script>
 <template>
+    <Head>
+        <Title>Reset Password</Title>
+    </Head>
     <div class="auth">
         <form method="post" @submit.prevent="onResetPassword">
             <h2>Reset Password</h2>

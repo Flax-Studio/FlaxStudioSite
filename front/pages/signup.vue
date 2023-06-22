@@ -102,6 +102,9 @@ async function verifyOTP() {
 
 </script>
 <template>
+    <Head>
+        <Title>Sign Up</Title>
+    </Head>
     <div class="auth">
 
         <!-- Sign up form -->
