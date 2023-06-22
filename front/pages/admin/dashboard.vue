@@ -132,7 +132,7 @@ async function deleteProduct(productId: string) {
                 <div class="projects-container">
 
                     <template v-for="product in dashboardData?.products">
-                        <div v-if="product.dashStatus == 'active'" class="card">
+                        <div v-if="product.dashStatus == 'active'" class="card home-card">
                             <div class="header">
                                 <img :src="serverUrl + product.dashIconUrl" :alt="product.name">
                                 <div>
@@ -574,7 +574,9 @@ async function deleteProduct(productId: string) {
 
 /* ------------------ table ------------------------- */
 
-
+.dashboard .home-card{
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
+}
 .dashboard table tr {
     position: relative;
 }
