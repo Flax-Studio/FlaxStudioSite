@@ -383,9 +383,6 @@ async function deleteProduct(productId: string) {
                                 </svg>
                             </a>
 
-
-
-
                         </template>
                     </div>
                 </div>
