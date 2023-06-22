@@ -180,7 +180,6 @@ function markdownToHtml(markdown: string) {
 </template>
 <style scoped>
 
-
 .profile-container {
     overflow: auto;
     background-color: var(--surface-color);
@@ -289,23 +288,6 @@ function markdownToHtml(markdown: string) {
 
 }
 
-.profile-detail .profile-about {
-    border-radius: var(--default-border-radius);
-    margin-left: 16px;
-    background-color: white;
-    padding: 24px;
-
-}
-
-
-.profile-about p {
-    margin: 24px 0;
-    color: var(--color-on-secondary);
-}
-
-.profile-about h2 {
-    color: var(--color-tertiary);
-}
 
 .profile-about hr {
     margin: 24px 0;
@@ -397,5 +379,25 @@ function markdownToHtml(markdown: string) {
     .hide-responsive {
         display: none;
     }
+}
+</style>
+
+
+<style>
+.profile-detail .profile-about {
+    border-radius: var(--default-border-radius);
+    margin-left: 16px;
+    background-color: white;
+    padding: 24px;
+
+}
+
+.profile-about p {
+    margin: 24px 0;
+    color: var(--color-on-secondary);
+}
+
+.profile-about h2 {
+    color: var(--color-tertiary);
 }
 </style>
