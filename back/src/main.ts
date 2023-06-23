@@ -364,7 +364,8 @@ app.post('/forgot-password', async (req, res) => {
             accountId: account._id,
             email: email,
             token: generateId(),
-            expiry: new Date().getTime() + 10 * 60000       // expire after 10 min
+            expiry: new Date().getTime() + 10 * 60000,       // expire after 10 min
+            isUsed: false
         }
 
         let isUpdated = false
@@ -389,7 +390,7 @@ app.post('/forgot-password', async (req, res) => {
             from: mailerEmail,
             to: email,
             subject: `Reset Your Account Password: ${email}`,
-            html: getResetPasswordHtml(account.firstName, `http://localhost:3000/resetpassword?token=${pending.token}`)
+            html: getResetPasswordHtml(account.firstName, `${serverUrl}/resetpassword/${pending.token}`)
         })
 
         res.status(200).send({ email: email })
@@ -400,10 +401,10 @@ app.post('/forgot-password', async (req, res) => {
 
 })
 
-app.post('/reset-password', async (req, res) => {
+app.put('/reset-password/:token', async (req, res) => {
     try {
-        const token = req.body.token as string
-        const password = req.body.password as string
+        const token = req.params.token as string
+        const password = await bcrypt.hash(req.body.password as string, 10)          // encrypt password
 
         // matching token, expiry and then reset the password 
         const currentTime = new Date().getTime()
@@ -411,20 +412,58 @@ app.post('/reset-password', async (req, res) => {
         for (let index = 0; index < pendingReset.length; index++) {
             if (pendingReset[index].token == token && currentTime < pendingReset[index].expiry) {
 
-                const result = await mongoApi.resetAccountPassword(pendingReset[index].accountId, password)
-                if (result == null) {
-                    res.status(400).send('Unable to reset your password')
-                } else {
-                    res.status(200).send({ email: pendingReset[index].email })
+                if(pendingReset[index].isUsed == false){
+                    const result = await mongoApi.resetAccountPassword(pendingReset[index].accountId, password)
+                    if (result == null) {
+                        res.status(400).send('Unable to reset your password')
+                    } else {
+                        res.status(200).send({ email: pendingReset[index].email })
+                        pendingReset[index].isUsed = true
+                    }
+                }else{
+                    res.status(400).send('Reset password already done')
                 }
-
-                pendingReset = pendingReset.splice(index, 1)
+                
                 return
             }
         }
 
-        res.status(400).send('Invalid credential')
+        res.status(503).send('Reset password request expired')
     } catch (error) {
+        res.status(400).send('Bad request')
+    }
+})
+
+
+app.get('/reset-password-validity/:token', (req, res) => {
+    try {
+        const token = req.params.token as string
+        const currentTime = new Date().getTime()
+
+        let validTokenFound = false
+       
+        // matching token if it is not expired and valid
+        pendingReset.forEach(reset => {
+            if(reset.token == token){
+                validTokenFound = true
+
+                if(reset.isUsed == true){
+                    return res.status(400).send('Reset password already done')
+
+                }else if(reset.expiry > currentTime){  // check if expired or not
+                    return res.status(200).send('Valid')
+
+                }else{
+                    return res.status(503).send('Reset password request expired')
+                }
+            }
+        });
+
+        if (!validTokenFound) {
+            res.status(400).send('Bad request')
+        }
+    } catch (error) {
+        console.log(error)
         res.status(400).send('Bad request')
     }
 })

@@ -139,7 +139,8 @@ export interface PendingResetPassword {
     accountId: string,
     email: string,
     token: string,
-    expiry: number
+    expiry: number,
+    isUsed: boolean
 }
 
 

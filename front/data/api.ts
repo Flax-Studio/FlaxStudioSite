@@ -61,10 +61,9 @@ namespace Api {
 
     export async function resetPassword(token: string, password: string) {
         let data = {
-            token: token,
             password: password
         }
-        return post<{ email: string }>("reset-password", "", data)
+        return put<string>('reset-password/' + token, "", data)
     }
 
 
@@ -222,7 +221,7 @@ namespace Api {
             if (res.ok) {
                 return createResult<string>('', false)
             } else {
-                return createResult(null, true, '')
+                return createResult(null, true, await res.text())
             }
         } catch (error) {
             console.log(error)
