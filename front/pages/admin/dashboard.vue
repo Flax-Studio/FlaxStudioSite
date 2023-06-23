@@ -494,7 +494,7 @@ async function deleteProduct(productId: string) {
 
 
 .dashboard section {
-    max-width: 1000px;
+    max-width: 1200px;
     width: 100%;
     padding: 0 2rem;
     margin: 3rem auto;
