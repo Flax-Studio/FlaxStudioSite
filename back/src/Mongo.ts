@@ -226,7 +226,7 @@ export default class MongoAPI {
 
     async getHomePageData() {
         try {
-            const accounts = await Account.find({isApproved: true, isPublic: true}).select('_id firstName lastName profileImage role expertIn smallInfo') as AccountBasicData[]
+            const accounts = await Account.find({isApproved: true, isPublic: true}).sort({joinedAt: 1}).select('_id firstName lastName profileImage role expertIn smallInfo') as AccountBasicData[]
             const products = await Product.find().select('_id name dashIconUrl dashDescription dashStatus') as ProductBasicData[]
             
             const homePageData: HomePageData = {
