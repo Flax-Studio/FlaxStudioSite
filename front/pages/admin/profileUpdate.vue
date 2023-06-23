@@ -264,6 +264,12 @@ async function uploadImage(eventTarget: EventTarget | null) {
                     <label>Facebook url</label>
                 </div>
 
+
+                <div v-else-if="social.name == 'twitter'" class="input-holder">
+                    <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.twitter.com">
+                    <label>Twitter url</label>
+                </div>
+
                 <div v-else-if="social.name == 'instagram'" class="input-holder">
                     <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.insta.com">
                     <label>Instagram url</label>
