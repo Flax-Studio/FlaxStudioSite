@@ -47,7 +47,7 @@ function markdownToHtml(markdown: string) {
     <PrivacyLanding :description="markdownToHtml(pageData.landingDescription)" :app-name="pageData.name"
         :app-link="pageData.playStoreUrl"
         :app-page-link="'/product/' + pageData._id" />
-    <div class="privacy-content" v-html="markdownToHtml(pageData.privacyAboutDesc)"></div>
+    <div id="about" class="privacy-content" v-html="markdownToHtml(pageData.privacyAboutDesc)"></div>
     <FooterComponent />
 </template>
 <style>

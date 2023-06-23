@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 </script>
 <template>
-    <div class="features-container">
+    <div class="features-container" id="about">
         <h2>Some of the best features of our Apps</h2>
         <div class="features">
             <div class="card reveal">

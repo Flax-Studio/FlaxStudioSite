@@ -4,9 +4,9 @@
     <header>
         <div class="header-parent">
             <div class="header">
-                <h2><a href="./">Flax Studio</a></h2>
+                <h2><a href="/">Flax Studio</a></h2>
                 <div>
-                    <a href="./">Home</a>
+                    <a href="/">Home</a>
                     <a href="#about" class="hide-responsive">About</a>
                 </div>
             </div>

@@ -145,7 +145,7 @@ function markdownToHtml(markdown: string) {
             </div>
         </div>
 
-        <div class="profile-detail-container">
+        <div class="profile-detail-container" id="about">
             <div class="profile-detail">
                 <div class="profile-about">
                     <h2 id="about">About</h2>
