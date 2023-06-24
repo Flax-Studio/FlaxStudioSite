@@ -11,6 +11,13 @@ const isLoading = ref(true)
 const isAuthenticated = ref(false)
 
 
+const activeProjCount = ref(0)
+const projectCount = ref(0)
+const approveCount = ref(0)
+const memberCount = ref(0)
+const isAdmin = ref(false)
+
+
 function changeActiveTab(index: number) {
     activeTabIndex.value = index
 }
@@ -39,6 +46,17 @@ async function fetchDataFromServer() {
             dashboardData.value = res.result
             isLoading.value = false
             isAuthenticated.value = true
+
+            if (dashboardData.value.profile.role == 'CEO' || dashboardData.value.profile.role == 'CO') {
+                isAdmin.value = true
+            }
+
+            await nextTick()
+            activeProjCount.value = countActiveProjects()
+            projectCount.value = dashboardData.value.products.length
+            const approveAndUnapproved = countApprovedAndUnapprovedAccount()
+            memberCount.value = approveAndUnapproved.approved
+            approveCount.value = approveAndUnapproved.unApproved
         } else {
             alert("Something went wrong, please refresh the page")
         }
@@ -57,6 +75,27 @@ function countActiveProjects() {
     });
 
     return count
+}
+
+
+function countApprovedAndUnapprovedAccount() {
+
+    if (dashboardData.value == undefined) return {
+        approved: 0,
+        unApproved: 0
+    }
+
+    let count = 0
+    dashboardData.value!!.members.forEach(mem => {
+        if (!mem.isApproved) {
+            count++
+        }
+    });
+
+    return {
+        approved: dashboardData.value!!.members.length - count,
+        unApproved: count
+    }
 }
 
 
@@ -106,7 +145,8 @@ async function deleteProduct(productId: string) {
         <div class="loader2 dark"></div>
     </div>
     <div v-if="isAuthenticated" class="dashboard">
-        <Sidebar :onClick="(index) => changeActiveTab(index)" />
+        <Sidebar :is-admin="isAdmin" :active-proj-count="activeProjCount" :project-count="projectCount"
+            :member-count="memberCount" :approve-count="approveCount" :onClick="(index) => changeActiveTab(index)" />
 
         <div>
             <DashboardNav :icon-url="serverUrl + dashboardData?.profile.profileImage"
@@ -116,7 +156,7 @@ async function deleteProduct(productId: string) {
             <!-- Home -->
             <section v-if="activeTabIndex == 0">
                 <h2>Active Projects</h2>
-                <button v-if="dashboardData?.profile.role == 'CEO' || dashboardData?.profile.role == 'CO'">
+                <button v-if="isAdmin">
                     <NuxtLink to="./productAdd">
                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -165,8 +205,8 @@ async function deleteProduct(productId: string) {
                             <col style="width: auto;">
                             <col style="width: auto;">
                             <col style="width: 6rem;">
-                            <col v-if="dashboardData?.profile.role != 'MEMBER'" style="width: 6rem;">
-                            <col v-if="dashboardData?.profile.role != 'MEMBER'" style="width: 6rem;">
+                            <col v-if="isAdmin" style="width: 6rem;">
+                            <col v-if="isAdmin" style="width: 6rem;">
                         </colgroup>
                         <thead>
                             <tr>
@@ -177,8 +217,8 @@ async function deleteProduct(productId: string) {
                                 <th>Started At</th>
                                 <th>Completed At</th>
                                 <th>View</th>
-                                <th v-if="dashboardData?.profile.role != 'MEMBER'" style="text-align: center;">Edit</th>
-                                <th v-if="dashboardData?.profile.role != 'MEMBER'" style="text-align: center;">Delete</th>
+                                <th v-if="isAdmin" style="text-align: center;">Edit</th>
+                                <th v-if="isAdmin" style="text-align: center;">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -202,7 +242,7 @@ async function deleteProduct(productId: string) {
                                     </NuxtLink>
                                 </td>
 
-                                <td v-if="dashboardData?.profile.role != 'MEMBER'">
+                                <td v-if="isAdmin">
                                     <NuxtLink :to="'/admin/productUpdate/' + product._id">
                                         <button>
                                             <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
@@ -213,7 +253,7 @@ async function deleteProduct(productId: string) {
                                         </button>
                                     </NuxtLink>
                                 </td>
-                                <td v-if="dashboardData?.profile.role != 'MEMBER'">
+                                <td v-if="isAdmin">
                                     <button class="delete" @click="deleteProduct(product._id)">
                                         <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -258,31 +298,35 @@ async function deleteProduct(productId: string) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="member in dashboardData?.members">
-                                <td><img :src="serverUrl + member.profileImage"
-                                        :alt="member.firstName + ' ' + member.lastName"></td>
-                                <td>{{ member.firstName }} {{ member.lastName }}</td>
-                                <td>{{ member.role }}</td>
+                            <template v-for="member in dashboardData?.members">
+                                <tr v-if="member.isApproved">
+                                    <td><img :src="serverUrl + member.profileImage"
+                                            :alt="member.firstName + ' ' + member.lastName"></td>
+                                    <td>{{ member.firstName }} {{ member.lastName }}</td>
+                                    <td>{{ member.role }}</td>
 
-                                <td>
-                                    <span v-if="member.projects.trim() != ''">{{ member.projects.split(' ').length }}</span>
-                                    <span v-else>0</span>
-                                </td>
-                                <td>{{ dateTimeString(member.joinedAt) }}</td>
-                                <td>{{ member.isPublic }}</td>
+                                    <td>
+                                        <span v-if="member.projects.trim() != ''">{{ member.projects.split(' ').length
+                                        }}</span>
+                                        <span v-else>0</span>
+                                    </td>
+                                    <td>{{ dateTimeString(member.joinedAt) }}</td>
+                                    <td>{{ member.isPublic }}</td>
 
-                                <td>
-                                    <NuxtLink target="_blank" :to="'/profile/' + member._id">
-                                        <button>
-                                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M13.267 4.209a.75.75 0 0 0-1.034 1.086l6.251 5.955H3.75a.75.75 0 0 0 0 1.5h14.734l-6.251 5.954a.75.75 0 0 0 1.034 1.087l7.42-7.067a.996.996 0 0 0 .3-.58.758.758 0 0 0-.001-.29.995.995 0 0 0-.3-.578l-7.419-7.067Z" />
-                                            </svg>
-                                        </button>
-                                    </NuxtLink>
-                                </td>
-                            </tr>
+                                    <td>
+                                        <NuxtLink target="_blank" :to="'/profile/' + member._id">
+                                            <button>
+                                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M13.267 4.209a.75.75 0 0 0-1.034 1.086l6.251 5.955H3.75a.75.75 0 0 0 0 1.5h14.734l-6.251 5.954a.75.75 0 0 0 1.034 1.087l7.42-7.067a.996.996 0 0 0 .3-.58.758.758 0 0 0-.001-.29.995.995 0 0 0-.3-.578l-7.419-7.067Z" />
+                                                </svg>
+                                            </button>
+                                        </NuxtLink>
+                                    </td>
+                                </tr>
+                            </template>
+
                         </tbody>
                     </table>
                 </div>
@@ -415,6 +459,76 @@ async function deleteProduct(productId: string) {
                 </div>
 
             </section>
+
+
+            <!-- Members -->
+            <section v-if="activeTabIndex == 4 && isAdmin">
+                <h2>Approve Members</h2>
+                <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.
+                </p>
+                <div v-else class="table-holder">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Icon</th>
+                                <th>Name</th>
+                                <th>Expert In</th>
+                                <th>Joined At</th>
+                                <th style="text-align: center;">Profile</th>
+                                <th style="text-align: center;">Approve</th>
+                                <th style="text-align: center;">Reject</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template v-for="member in dashboardData?.members">
+                                <tr v-if="!member.isApproved">
+                                    <td>
+                                        <img :src="serverUrl + member.profileImage"
+                                            :alt="member.firstName + ' ' + member.lastName">
+                                    </td>
+                                    <td>{{ member.firstName }} {{ member.lastName }}</td>
+                                    <td>{{ member.expertIn }}</td>
+                                    <td>{{ dateTimeString(member.joinedAt) }}</td>
+
+                                    <td>
+                                        <NuxtLink target="_blank" :to="'/profile/' + member._id">
+                                            <button>
+                                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M13.267 4.209a.75.75 0 0 0-1.034 1.086l6.251 5.955H3.75a.75.75 0 0 0 0 1.5h14.734l-6.251 5.954a.75.75 0 0 0 1.034 1.087l7.42-7.067a.996.996 0 0 0 .3-.58.758.758 0 0 0-.001-.29.995.995 0 0 0-.3-.578l-7.419-7.067Z" />
+                                                </svg>
+                                            </button>
+                                        </NuxtLink>
+                                    </td>
+
+                                    <td>
+                                        <button class="success">
+                                            <svg width="36" height="36" fill="none" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm3.22 6.97-4.47 4.47-1.97-1.97a.75.75 0 0 0-1.06 1.06l2.5 2.5a.75.75 0 0 0 1.06 0l5-5a.75.75 0 1 0-1.06-1.06Z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+
+                                    <td>
+                                        <button class="delete">
+                                            <svg width="36" height="36" fill="none" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2Zm3.53 6.47-.084-.073a.75.75 0 0 0-.882-.007l-.094.08L12 10.939l-2.47-2.47-.084-.072a.75.75 0 0 0-.882-.007l-.094.08-.073.084a.75.75 0 0 0-.007.882l.08.094L10.939 12l-2.47 2.47-.072.084a.75.75 0 0 0-.007.882l.08.094.084.073a.75.75 0 0 0 .882.007l.094-.08L12 13.061l2.47 2.47.084.072a.75.75 0 0 0 .882.007l.094-.08.073-.084a.75.75 0 0 0 .007-.882l-.08-.094L13.061 12l2.47-2.47.072-.084a.75.75 0 0 0 .007-.882l-.08-.094-.084-.073.084.073Z" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
         </div>
     </div>
 </template>
@@ -573,9 +687,10 @@ async function deleteProduct(productId: string) {
 
 /* ------------------ table ------------------------- */
 
-.dashboard .home-card{
+.dashboard .home-card {
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
 }
+
 .dashboard table tr {
     position: relative;
 }

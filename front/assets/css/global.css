@@ -162,6 +162,10 @@ h2{
     fill: var(--color-secondary);
 }
 
+.table-holder td .success svg {
+    fill: var(--color-success);
+}
+
 .table-holder td button:hover {
     scale: 1.2;
 }
