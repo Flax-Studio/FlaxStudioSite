@@ -370,7 +370,7 @@ async function deleteProduct(productId: string) {
                                 <th>Role</th>
                                 <th>Projects</th>
                                 <th>Joined At</th>
-                                <th>Public</th>
+                                <th style="text-align: center;">Public</th>
                                 <th style="text-align: center;">Profile</th>
                             </tr>
                         </thead>
