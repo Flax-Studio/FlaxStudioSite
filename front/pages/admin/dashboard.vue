@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { DashboardData } from '~/data/DataType';
+import { AccountDashboardData, DashboardData } from '~/data/DataType';
 import Api from '~/data/api';
 import { dateTimeString, getAgeFromTimestamp } from '~/data/utils'
 import { marked } from 'marked'
@@ -13,9 +13,12 @@ const isAuthenticated = ref(false)
 
 const activeProjCount = ref(0)
 const projectCount = ref(0)
-const approveCount = ref(0)
-const memberCount = ref(0)
 const isAdmin = ref(false)
+
+const approvedMembers = ref(Array<AccountDashboardData>())
+const unApprovedMembers = ref(Array<AccountDashboardData>())
+
+let isApproving = false
 
 
 function changeActiveTab(index: number) {
@@ -25,6 +28,70 @@ function changeActiveTab(index: number) {
 onMounted(function () {
     fetchDataFromServer()
 })
+
+
+async function approveMember(memberId: string, isApproved: boolean, targetButton: EventTarget | null) {
+
+    if (targetButton == null || isApproving == true) return
+    const token = localStorage.getItem('token')
+
+    if (token == null) {
+        //throw { message: "You don't have access to server, please signin", statusCode: 401 }
+        alert("You don't have access to server, please signin")
+        return
+    }
+
+    const button = targetButton as HTMLButtonElement
+    button.querySelector('div')!!.style.display = 'block'
+    button.querySelector('svg')!!.style.display = 'none'
+    isApproving = true
+
+    const res = await Api.approveMember(token!!, isApproved, memberId)
+
+    isApproving = false
+    button.querySelector('div')!!.style.display = 'none'
+    button.querySelector('svg')!!.style.display = 'block'
+
+    if (res.isError) {
+        alert(res.error)
+        return
+    } else {
+
+        // on approve success
+        // finding member
+        for (let index = 0; index < dashboardData.value!!.members.length; index++) {
+
+            if (dashboardData.value!!.members[index]._id == memberId) {
+                dashboardData.value!!.members[index].isApproved = isApproved
+                break
+            }
+        }
+
+        // updating ui 
+        approvedMembers.value = []          // clear data
+        unApprovedMembers.value = []        // clear data
+
+        dashboardData.value!!.members.forEach(mem => {
+            if (mem.isApproved) {
+                approvedMembers.value.push(mem)
+            } else {
+                unApprovedMembers.value.push(mem)
+            }
+        });
+    }
+
+}
+
+
+function approvePublic(memberId: string, isPublic: boolean) {
+    const token = localStorage.getItem('token')
+
+    if (token == null) {
+        //throw { message: "You don't have access to server, please signin", statusCode: 401 }
+        alert("You don't have access to server, please signin")
+        return
+    }
+}
 
 
 async function fetchDataFromServer() {
@@ -51,12 +118,18 @@ async function fetchDataFromServer() {
                 isAdmin.value = true
             }
 
-            await nextTick()
             activeProjCount.value = countActiveProjects()
             projectCount.value = dashboardData.value.products.length
-            const approveAndUnapproved = countApprovedAndUnapprovedAccount()
-            memberCount.value = approveAndUnapproved.approved
-            approveCount.value = approveAndUnapproved.unApproved
+
+            dashboardData.value.members.forEach(mem => {
+                if (mem.isApproved) {
+                    approvedMembers.value.push(mem)
+                } else {
+                    unApprovedMembers.value.push(mem)
+                }
+            });
+
+
         } else {
             alert("Something went wrong, please refresh the page")
         }
@@ -77,26 +150,6 @@ function countActiveProjects() {
     return count
 }
 
-
-function countApprovedAndUnapprovedAccount() {
-
-    if (dashboardData.value == undefined) return {
-        approved: 0,
-        unApproved: 0
-    }
-
-    let count = 0
-    dashboardData.value!!.members.forEach(mem => {
-        if (!mem.isApproved) {
-            count++
-        }
-    });
-
-    return {
-        approved: dashboardData.value!!.members.length - count,
-        unApproved: count
-    }
-}
 
 
 
@@ -146,7 +199,8 @@ async function deleteProduct(productId: string) {
     </div>
     <div v-if="isAuthenticated" class="dashboard">
         <Sidebar :is-admin="isAdmin" :active-proj-count="activeProjCount" :project-count="projectCount"
-            :member-count="memberCount" :approve-count="approveCount" :onClick="(index) => changeActiveTab(index)" />
+            :member-count="approvedMembers.length" :approve-count="unApprovedMembers.length"
+            :onClick="(index) => changeActiveTab(index)" />
 
         <div>
             <DashboardNav :icon-url="serverUrl + dashboardData?.profile.profileImage"
@@ -298,8 +352,8 @@ async function deleteProduct(productId: string) {
                             </tr>
                         </thead>
                         <tbody>
-                            <template v-for="member in dashboardData?.members">
-                                <tr v-if="member.isApproved">
+                            <template v-for="member in approvedMembers">
+                                <tr>
                                     <td><img :src="serverUrl + member.profileImage"
                                             :alt="member.firstName + ' ' + member.lastName"></td>
                                     <td>{{ member.firstName }} {{ member.lastName }}</td>
@@ -461,7 +515,7 @@ async function deleteProduct(productId: string) {
             </section>
 
 
-            <!-- Members -->
+            <!-- Approve Members -->
             <section v-if="activeTabIndex == 4 && isAdmin">
                 <h2>Approve Members</h2>
                 <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.
@@ -480,8 +534,8 @@ async function deleteProduct(productId: string) {
                             </tr>
                         </thead>
                         <tbody>
-                            <template v-for="member in dashboardData?.members">
-                                <tr v-if="!member.isApproved">
+                            <template v-for="member in unApprovedMembers">
+                                <tr>
                                     <td>
                                         <img :src="serverUrl + member.profileImage"
                                             :alt="member.firstName + ' ' + member.lastName">
@@ -503,7 +557,9 @@ async function deleteProduct(productId: string) {
                                     </td>
 
                                     <td>
-                                        <button class="success">
+                                        <button @click="event => approveMember(member._id, true, event.target)"
+                                            class="success">
+                                            <div class="loader2"></div>
                                             <svg width="36" height="36" fill="none" viewBox="0 0 24 24"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -513,7 +569,9 @@ async function deleteProduct(productId: string) {
                                     </td>
 
                                     <td>
-                                        <button class="delete">
+                                        <button @click="event => approveMember(member._id, false, event.target)"
+                                            class="delete">
+                                            <div class="loader2"></div>
                                             <svg width="36" height="36" fill="none" viewBox="0 0 24 24"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -546,6 +604,7 @@ async function deleteProduct(productId: string) {
     width: 30px;
     height: 30px;
 }
+
 
 .dashboard section>button {
     border-radius: var(--default-border-radius);
@@ -687,8 +746,22 @@ async function deleteProduct(productId: string) {
 
 /* ------------------ table ------------------------- */
 
+.dashboard button.success .loader2 {
+    border-color: var(--color-success);
+    display: none;
+}
+
+.dashboard button.delete .loader2 {
+    border-color: var(--color-error);
+    display: none;
+}
+
 .dashboard .home-card {
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.dashboard table button * {
+    pointer-events: none;
 }
 
 .dashboard table tr {

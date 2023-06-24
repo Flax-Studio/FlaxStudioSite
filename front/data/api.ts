@@ -126,6 +126,26 @@ namespace Api {
         return deleteRequest<String>("admin/deleteProduct/" + productId, myHeaders)
     }
 
+    export async function approveMember(token: string, isApproved: boolean, memberId: string) {
+
+        let data = {
+            token: token,
+            isApproved: isApproved,
+            memberId: memberId
+        }
+        return put("admin/approveMember", "", data)
+    }
+
+    export async function approvePublic(token: string, isPublic: boolean, memberId: string) {
+
+        let data = {
+            token: token,
+            isPublic: isPublic,
+            memberId: memberId
+        }
+        return put("admin/approvePublic", "", data)
+    }
+
 
 
 

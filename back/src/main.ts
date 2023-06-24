@@ -651,6 +651,59 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
     }
 })
 
+app.put('/admin/approveMember', async (req, res) => {
+
+    console.log('approve user requested')
+    try {
+        const adminId = res.locals.accountId as string
+        const isApproved = req.body.isApproved as boolean
+        const memberId = req.body.memberId as string
+
+        if (!await mongoApi.isAdmin(adminId)) {
+            res.status(400).send('You are not the admin. Only the admin can do this type of request.')
+            return
+        }
+
+        const data = await mongoApi.approveMember(memberId, isApproved)
+        if (data != null) {
+            res.status(200).send('')
+        } else {
+            res.status(404).send('Not found')
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Bad request')
+    }
+
+})
+
+
+app.put('/admin/approvePublic', async (req, res) => {
+
+    console.log('approve public requested')
+    try {
+        const adminId = res.locals.accountId as string
+        const isPublic = req.body.isPublic as boolean
+        const memberId = req.body.memberId as string
+
+        if (!await mongoApi.isAdmin(adminId)) {
+            res.status(400).send('You are not the admin. Only the admin can do this type of request.')
+            return
+        }
+
+        const data = await mongoApi.approvePublic(memberId, isPublic)
+        if (data != null) {
+            res.status(200).send('')
+        } else {
+            res.status(404).send('Not found')
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send('Bad request')
+    }
+
+})
+
 
 
 
@@ -707,27 +760,6 @@ app.get('/public/uploads/:filename', async (req, res) => {
 })
 
 
-
-
-
-
-// app.put('/admin/*', async (req, res, next) => {
-//     if (!isMongoConnected) {
-//         res.status(400).send("Database connection error")
-//     } else {
-//         try {
-//             let adminId = req.body.adminId
-//             if (await isAdmin(adminId)) {
-//                 next()
-//             } else {
-//                 res.status(403).send("You don't have access")
-//             }
-
-//         } catch (error) {
-//             res.status(400).send(error)
-//         }
-//     }
-// })
 
 app.get('/', async function (req, res) {
 
