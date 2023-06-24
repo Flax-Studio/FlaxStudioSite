@@ -62,6 +62,9 @@ function markdownToHtml(markdown: string) {
 
 </script>
 <template>
+    <Head>
+        <Title>{{ pageData.profile.firstName + ' ' + pageData.profile.lastName }}</Title>
+    </Head>
     <HeaderComponent />
     <div class="profile-container">
         <div class="profile-parent">

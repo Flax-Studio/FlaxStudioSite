@@ -163,6 +163,9 @@ async function uploadImage(eventTarget: EventTarget | null) {
 </script>
 
 <template>
+    <Head>
+        <Title>Profile Update</Title>
+    </Head>
     <div v-if="isLoading" class="loader-container">
         <div class="loader2 dark"></div>
     </div>
@@ -208,8 +211,7 @@ async function uploadImage(eventTarget: EventTarget | null) {
             </div>
 
             <div class="input-holder">
-                <input v-model="dob" type="date"
-                    placeholder="Your date of birth" required>
+                <input v-model="dob" type="date" placeholder="Your date of birth" required>
                 <label>DOB*</label>
             </div>
 

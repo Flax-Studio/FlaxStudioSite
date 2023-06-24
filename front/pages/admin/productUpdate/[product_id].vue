@@ -182,6 +182,10 @@ async function adjustTextareaHeight(target: EventTarget | null) {
 </script>
 
 <template>
+    <Head>
+        <Title>Product Update</Title>
+    </Head>
+
     <div v-if="isLoading" class="loader-container">
         <div class="loader2 dark"></div>
     </div>
@@ -287,7 +291,8 @@ async function adjustTextareaHeight(target: EventTarget | null) {
             </div>
 
             <div class="input-holder">
-                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.productFeatures" placeholder="e.g: <Title> --: <Content>"></textarea>
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.productFeatures"
+                    placeholder="e.g: <Title> --: <Content>"></textarea>
                 <label>Features</label>
             </div>
 
@@ -308,7 +313,8 @@ async function adjustTextareaHeight(target: EventTarget | null) {
 
 
             <div class="input-holder">
-                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.productSeoDesc" placeholder="SEO description for project page"></textarea>
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.productSeoDesc"
+                    placeholder="SEO description for project page"></textarea>
                 <label>Project SEO description</label>
             </div>
 

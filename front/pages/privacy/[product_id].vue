@@ -43,6 +43,9 @@ function markdownToHtml(markdown: string) {
 
 </script>
 <template>
+        <Head>
+        <Title>{{ pageData.name + ' - Privacy' }}</Title>
+    </Head>
     <HeaderComponent />
     <PrivacyLanding :description="markdownToHtml(pageData.landingDescription)" :app-name="pageData.name"
         :app-link="pageData.playStoreUrl"

@@ -15,8 +15,6 @@ const isProcessing = ref(false)
 // fetch data from server for ssr
 const { data, error } = await useFetch(checkUrl)
 
-console.log(data)
-console.log(error)
 if (data.value == null) {
    throw { message: error.value?.data, statusCode: error.value?.statusCode || 404 }
 }
