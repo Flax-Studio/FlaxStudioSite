@@ -554,9 +554,14 @@ async function deleteProduct(productId: string) {
 
             </section>
 
+            <section v-if="activeTabIndex == 4">
+                <h2>Chats</h2>
+                <p v-if="!isAdmin" class="text-center">This part is under construction 😀</p>
+                <ChatsArea v-else/>
+            </section>
 
             <!-- Approve Members -->
-            <section v-if="activeTabIndex == 4 && isAdmin">
+            <section v-if="activeTabIndex == 5 && isAdmin">
                 <h2>Approve Members</h2>
                 <p class="text-center" v-if="!dashboardData?.profile.isApproved">You are not approved yet to view this data.
                 </p>
@@ -633,6 +638,7 @@ async function deleteProduct(productId: string) {
 
 
 <style scoped>
+
 .loader-container {
     min-height: 100vh;
     display: flex;

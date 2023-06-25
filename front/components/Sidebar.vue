@@ -58,7 +58,7 @@ function changeTab(index: number) {
                         d="M15.75 2a2.25 2.25 0 0 1 2.245 2.096L18 4.25v.749L19.75 5a2.25 2.25 0 0 1 2.245 2.096L22 7.25v9.5a2.25 2.25 0 0 1-2.096 2.245L19.75 19H18v.75a2.25 2.25 0 0 1-2.096 2.245L15.75 22h-7.5a2.25 2.25 0 0 1-2.245-2.096L6 19.75V19H4.25a2.25 2.25 0 0 1-2.245-2.096L2 16.75v-9.5a2.25 2.25 0 0 1 2.096-2.245L4.25 5 6 4.999V4.25a2.25 2.25 0 0 1 2.096-2.245L8.25 2h7.5Zm0 1.5h-7.5a.75.75 0 0 0-.743.648L7.5 4.25v15.5c0 .38.282.694.648.743l.102.007h7.5a.75.75 0 0 0 .743-.648l.007-.102V4.25a.75.75 0 0 0-.648-.743L15.75 3.5ZM6 6.499 4.25 6.5a.75.75 0 0 0-.743.648L3.5 7.25v9.5c0 .38.282.694.648.743l.102.007H6V6.499Zm13.75.001L18 6.499V17.5h1.75a.75.75 0 0 0 .743-.648l.007-.102v-9.5a.75.75 0 0 0-.75-.75Z" />
                 </svg>
                 <span>Members</span>
-                <span class="end">{{ memberCount}}</span>
+                <span class="end">{{ memberCount }}</span>
 
             </li>
             <li :class="{ 'active': activeTabIndex == 3 }" @click="changeTab(3)">
@@ -70,7 +70,17 @@ function changeTab(index: number) {
                 <span>Profile</span>
             </li>
 
-            <li v-if="isAdmin" :class="{ 'active': activeTabIndex == 4 }" @click="changeTab(4)">
+            <li :class="{ 'active': activeTabIndex == 4 }" @click="changeTab(4)">
+                <span class="marker"></span>
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9.562 3a7.5 7.5 0 0 0-6.798 10.673l-.724 2.842a1.25 1.25 0 0 0 1.504 1.524c.75-.18 1.903-.457 2.93-.702A7.5 7.5 0 1 0 9.561 3Zm-6 7.5a6 6 0 1 1 3.33 5.375l-.244-.121-.264.063c-.923.22-1.99.475-2.788.667l.69-2.708.07-.276-.13-.253a5.971 5.971 0 0 1-.664-2.747Zm11 10.5c-1.97 0-3.762-.759-5.1-2h.1c.718 0 1.415-.089 2.08-.257.865.482 1.86.757 2.92.757.96 0 1.866-.225 2.67-.625l.243-.121.264.063c.922.22 1.966.445 2.74.61-.175-.751-.414-1.756-.642-2.651l-.07-.276.13-.253a5.971 5.971 0 0 0 .665-2.747 5.995 5.995 0 0 0-2.747-5.042 8.44 8.44 0 0 0-.8-2.047 7.503 7.503 0 0 1 4.344 10.263c.253 1.008.509 2.1.671 2.803a1.244 1.244 0 0 1-1.467 1.5 132.62 132.62 0 0 1-2.913-.64 7.476 7.476 0 0 1-3.088.663Z" />
+                </svg>
+                <span>Chats</span>
+                <span class="end">0</span>
+            </li>
+
+            <li v-if="isAdmin" :class="{ 'active': activeTabIndex == 5 }" @click="changeTab(5)">
                 <span class="marker"></span>
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -79,7 +89,10 @@ function changeTab(index: number) {
                 <span>Approve</span>
                 <span class="end">{{ approveCount }}</span>
             </li>
+
+
         </ul>
+
     </aside>
 </template>
 <style scoped>
@@ -134,7 +147,7 @@ aside li {
     font-weight: 600;
 }
 
-aside li .end{
+aside li .end {
     margin-left: auto;
 }
 
@@ -163,5 +176,4 @@ aside li:hover {
 aside li:hover .marker {
     height: 60%;
     left: 0;
-}
-</style>
+}</style>
