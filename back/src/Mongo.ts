@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Account, Product, RejectedAccount } from "./Model.js";
-import { AccountBasicData, AccountDashboardData, AccountData, AccountPublicData, AccountSmallData, AccountUpdateData, DashboardData, HomePageData, ProductBasicData, ProductDashboardData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
+import { AccountBasicData, AccountDashboardData, AccountData, AccountPublicData, AccountSmallData, AccountUpdateData, DashboardData, HomePageData, ProductBasicData, ProductDashboardData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData, SitemapData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -187,16 +187,16 @@ export default class MongoAPI {
         try {
             let account: null | AccountData = null
 
-            if(isApproved){ // approving the account
+            if (isApproved) { // approving the account
                 account = await Account.findByIdAndUpdate(memberId, { isApproved: true })
 
-            }else{   // add to reject list
+            } else {   // add to reject list
                 account = await Account.findByIdAndDelete(memberId)
-                if(account != null){
+                if (account != null) {
                     await RejectedAccount.create(account)
                 }
             }
-           
+
             return account
         } catch (error) {
             console.error('Error in account:', error);
@@ -267,6 +267,23 @@ export default class MongoAPI {
             return homePageData
         } catch (error) {
             console.error('Error in account:', error);
+            return null
+        }
+    }
+
+
+    async getSitemapData() {
+        try {
+            const accounts = await Account.find().select('_id')
+            const products = await Product.find().select('_id')
+            const sitemapData: SitemapData = {
+                products: accounts as any as Array<string>,
+                accounts: products as any as Array<string>
+            }
+
+            return sitemapData
+        } catch (error) {
+            console.error('sitemap error:', error);
             return null
         }
     }

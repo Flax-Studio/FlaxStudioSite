@@ -23,7 +23,6 @@ export interface HomePageData{
 }
 
 
-
 export interface AccountData {
     _id: string
     firstName: string,
@@ -215,6 +214,11 @@ export interface ProductData {
 
     privacySeoDescription: string,
     privacyAboutDesc: string
+}
+
+export interface SitemapData{
+    products: Array<string>,
+    accounts: Array<string>
 }
 
 

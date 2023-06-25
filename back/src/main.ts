@@ -759,6 +759,17 @@ app.get('/public/uploads/:filename', async (req, res) => {
     }
 })
 
+app.get('/sitemap', async(req, res) => {
+    console.log('Requested home page data')
+    const data = await mongoApi.getSitemapData()
+    if (data != null) {
+        res.status(200).send(data)
+    } else {
+        res.status(400).send('bad request')
+    }
+
+})
+
 
 
 app.get('/', async function (req, res) {
