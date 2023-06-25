@@ -45,7 +45,7 @@ if (data.value != null) {
     });
 
 } else {
-    throw { message: 'Requested page could not be found.', statusCode: error.value?.statusCode || 404 }
+    throw { message: 'Server internal error, please try again later', statusCode: error.value?.statusCode}
 }
 
 useServerSeoMeta({
