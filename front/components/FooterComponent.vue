@@ -6,7 +6,7 @@
             <div class="top">
                 <div class="branding">
                     <div class="logo">
-                        <img src="../public/favicon.ico" alt="Flax studio">
+                        <img src="../public/extra/flaxstudio.png" alt="Flax studio">
                         <h2>Flax Studio</h2>
                     </div>
                     <p>A developers place where we interact, learn and create stuff together.</p>
