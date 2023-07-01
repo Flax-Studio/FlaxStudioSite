@@ -6,6 +6,12 @@ import { HomePageData, ProfileData } from '~/data/DataType';
 const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
 const dataUrl = serverUrl + '/home'
 
+useHead({
+    meta: [
+        { name: 'google-site-verification', content: 'jONmpqCm2qSUGHtR-6eYL3lIsPxght7AhhRKDCM-A4A' }
+    ],
+})
+
 let pageData: HomePageData = {
     members: [],
     products: []
@@ -45,21 +51,18 @@ if (data.value != null) {
     });
 
 } else {
-    throw { message: 'Server internal error, please try again later', statusCode: error.value?.statusCode}
+    throw { message: 'Server internal error, please try again later', statusCode: error.value?.statusCode }
 }
 
 useServerSeoMeta({
     title: 'Home - Flax Studio',
     ogTitle: 'Home - Flax Studio',
     description: 'Flax studio is developer place where we learn, create and talk to each others.',
-    ogDescription: 'Flax studio is developer place where we learn, create and talk to each others.'
+    ogDescription: 'Flax studio is developer place where we learn, create and talk to each others.',
 })
 
 </script>
 <template>
-    <Head>
-        <meta name="google-site-verification" content="jONmpqCm2qSUGHtR-6eYL3lIsPxght7AhhRKDCM-A4A" />
-    </Head>
     <HeaderComponent />
     <HomeLanding />
     <Developers :data="profileData" />
