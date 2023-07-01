@@ -20,8 +20,6 @@ export default cachedEventHandler(async function () {
         console.log(error)
     }
 
-    console.log(sitemap)
-
     return sitemap
 
 }, {
