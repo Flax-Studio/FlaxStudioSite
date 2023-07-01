@@ -57,9 +57,8 @@ useServerSeoMeta({
 
 </script>
 <template>
-    <Head>
-        <Meta name="google-site-verification" content="HK_XP0qP2VBinnsAiNSbP20dwmonM73j9_lZT2LACPQ" />
-    </Head>
+    <!-- <Head>
+    </Head> -->
     <HeaderComponent />
     <HomeLanding />
     <Developers :data="profileData" />
