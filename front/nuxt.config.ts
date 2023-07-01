@@ -10,6 +10,9 @@ export default defineNuxtConfig({
     ],
 
     sitemap: {
-        siteUrl: process.env.VITE_SITE_URL || 'https://example.com'
+        siteUrl: process.env.VITE_SITE_URL || 'https://example.com',
+        exclude:[
+            '/admin/**'
+        ]
     }
 })

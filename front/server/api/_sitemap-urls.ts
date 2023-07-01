@@ -26,5 +26,5 @@ export default cachedEventHandler(async function () {
 
 }, {
     name: 'sitemap-dynamic-urls',
-    maxAge: 60 * 10 // cache URLs for 10 minutes
+    maxAge: 60 * 29 // cache URLs for 29 minutes
 })
