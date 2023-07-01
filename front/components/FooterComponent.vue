@@ -55,6 +55,10 @@ footer .logo {
     gap: 0.8rem;
 }
 
+footer .logo img{
+    width: 80px;
+}
+
 footer .top {
     margin-top: 4rem;
     display: flex;
