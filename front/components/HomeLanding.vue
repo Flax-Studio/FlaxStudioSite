@@ -14,7 +14,7 @@
                         Playstore</a>
                 </div>
                 <div class="images">
-                    <img src="../public/app_images/home_image.png" alt="our apps">
+                    <img src="../public/extra/home_image.png" alt="our apps">
                 </div>
             </div>
         </div>
