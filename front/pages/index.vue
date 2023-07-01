@@ -57,8 +57,8 @@ if (data.value != null) {
 useServerSeoMeta({
     title: 'Home - Flax Studio',
     ogTitle: 'Home - Flax Studio',
-    description: 'Flax studio is developer place where we learn, create and talk to each others.',
-    ogDescription: 'Flax studio is developer place where we learn, create and talk to each others.',
+    description: 'Flax studio is developer place where we learn, create and talk to each others. Our team members start working on app, web app, website and game development. We love to create stuffs.',
+    ogDescription: 'Flax studio is developer place where we learn, create and talk to each others. Our team members start working on app, web app, website and game development. We love to create stuffs.',
 })
 
 </script>
