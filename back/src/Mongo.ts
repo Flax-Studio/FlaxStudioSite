@@ -277,8 +277,8 @@ export default class MongoAPI {
             const accounts = await Account.find().select('_id')
             const products = await Product.find().select('_id')
             const sitemapData: SitemapData = {
-                products: accounts as any as Array<string>,
-                accounts: products as any as Array<string>
+                products: products as any as Array<string>,
+                accounts: accounts as any as Array<string>
             }
 
             return sitemapData

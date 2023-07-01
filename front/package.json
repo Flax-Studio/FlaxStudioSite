@@ -11,7 +11,8 @@
   "devDependencies": {
     "@types/marked": "^5.0.0",
     "@types/node": "^18",
-    "nuxt": "^3.5.2"
+    "nuxt": "^3.5.2",
+    "nuxt-simple-sitemap": "^2.7.0"
   },
   "dependencies": {
     "marked": "^5.1.0",
