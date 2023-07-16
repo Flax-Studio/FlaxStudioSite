@@ -35,13 +35,13 @@
     --color-error: rgb(245, 76, 76);
     --color-success: rgb(53, 184, 107);
     --color-primary-variant-light: #d3339621;
-    --color-tertiary:#6F40BD;
+    --color-tertiary: #6F40BD;
     --color-secondary: White;
     --color-on-secondary: #210053b6;
     --surface-color: #F5F5F5;
     --surface-variant-color: #ffffff;
     --surface-dark-color: #e0e0e0;
-    
+
 
 
     --big-2-font: 28px;
@@ -50,6 +50,12 @@
     --medium-font: 16px;
     --medium-2-font: 18px;
     --small-font: 12px;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
 }
 
 p {
@@ -57,7 +63,7 @@ p {
     line-height: 1.6;
 }
 
-h2{
+h2 {
     font-size: var(--big-font);
 }
 
@@ -118,11 +124,11 @@ h2{
     border-radius: var(--radius-medium);
 }
 
-.table-holder table *{
+.table-holder table * {
     white-space: nowrap;
 }
 
-.table-holder table .name{
+.table-holder table .name {
     min-width: 500px;
     white-space: normal;
 }
