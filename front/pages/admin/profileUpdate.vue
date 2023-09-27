@@ -1,6 +1,7 @@
 <script setup lang='ts'>
-import { AccountUpdateData, ProductData } from '~/data/DataType';
+import { AccountUpdateData } from '~/data/DataType';
 import Api from '~/data/api';
+import { dateTimeToInputFormat } from '~/data/utils'
 
 const isSubmitting = ref(false)
 const isIconUploading = ref(false)
@@ -30,8 +31,14 @@ async function fetchDataFromServer() {
     } else {
         if (res.result != null) {
             profileData.value = res.result
-            console.log(res.result)
+            dob.value = dateTimeToInputFormat(profileData.value.dob)
             isLoading.value = false
+
+            await nextTick()
+            // setting height of textarea
+            document.querySelectorAll('textarea').forEach(element => {
+                adjustTextareaHeight(element)
+            });
         } else {
             alert('Something went wrong, please refresh the page')
         }
@@ -81,6 +88,14 @@ async function updateProfile() {
             alert('Something went wrong')
         }
     }
+}
+
+async function adjustTextareaHeight(target: EventTarget | null) {
+    if (target == null) return
+    await nextTick()
+    const textarea = target as HTMLTextAreaElement
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
 }
 
 
@@ -144,9 +159,13 @@ async function uploadImage(eventTarget: EventTarget | null) {
 }
 
 
+
 </script>
 
 <template>
+    <Head>
+        <Title>Profile Update</Title>
+    </Head>
     <div v-if="isLoading" class="loader-container">
         <div class="loader2 dark"></div>
     </div>
@@ -185,7 +204,7 @@ async function uploadImage(eventTarget: EventTarget | null) {
             </div>
 
             <div class="input-holder">
-                <textarea v-model="profileData.smallInfo"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="profileData.smallInfo"
                     placeholder="The description for your profile, it will visible on home page." maxlength="130"
                     required></textarea>
                 <label>Small description*</label>
@@ -208,7 +227,7 @@ async function uploadImage(eventTarget: EventTarget | null) {
             </div>
 
             <div class="input-holder">
-                <textarea v-model="profileData.about"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="profileData.about"
                     placeholder="Your profile page description, it must be long. (Markdown Supported)" required></textarea>
                 <label>Profile description*</label>
             </div>
@@ -245,6 +264,12 @@ async function uploadImage(eventTarget: EventTarget | null) {
                 <div v-else-if="social.name == 'facebook'" class="input-holder">
                     <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.facebook.com">
                     <label>Facebook url</label>
+                </div>
+
+
+                <div v-else-if="social.name == 'twitter'" class="input-holder">
+                    <input v-model="profileData.socialLinks[index].url" type="url" placeholder="https://www.twitter.com">
+                    <label>Twitter url</label>
                 </div>
 
                 <div v-else-if="social.name == 'instagram'" class="input-holder">
@@ -286,7 +311,7 @@ async function uploadImage(eventTarget: EventTarget | null) {
 
             <h3>SEO</h3>
             <div class="input-holder">
-                <textarea v-model="profileData.seoDescription"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="profileData.seoDescription"
                     placeholder="Your description for the seo, it will be visible on google search."></textarea>
                 <label>SEO description </label>
             </div>

@@ -40,9 +40,33 @@ export function dateTimeString(unixMilliseconds: number) {
 export function getAgeFromTimestamp(milliseconds: number) {
     const now = Date.now();
     const millisecondsPerYear = 1000 * 60 * 60 * 24 * 365.25; // Accounting for leap years
-    
+
     const ageMilliseconds = now - milliseconds;
     const ageYears = Math.floor(ageMilliseconds / millisecondsPerYear);
-  
+
     return ageYears;
-  }
+}
+
+
+export function dateTimeToInputFormat(milliseconds: number){
+    const dateTime = new Date(milliseconds)
+    const year = dateTime.getFullYear()
+    const months = dateTime.getMonth() + 1    // because it Jan is at 0 index
+    const days = dateTime.getDate()
+
+    let dateTimeString = year.toString()
+    if(months < 10){
+        dateTimeString += '-0' + months
+    }else{
+        dateTimeString += '-' + months
+    }
+
+    if(days < 10){
+        dateTimeString += '-0' + days
+    }else{
+        dateTimeString += '-' + days
+    }
+
+    return dateTimeString
+
+}

@@ -26,6 +26,9 @@ async function signIn(){
 
 </script>
 <template>
+    <Head>
+        <Title>Sign In</Title>
+    </Head>
     <div class="auth">
         <form method="post" @submit.prevent="signIn">
             <h2>Sign In</h2>

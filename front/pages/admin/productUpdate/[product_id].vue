@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { ProductData } from '~/data/DataType';
 import Api from '~/data/api';
+import { dateTimeToInputFormat } from '~/data/utils';
 
 const router = useRouter()
 const { params } = router.currentRoute.value
@@ -56,6 +57,15 @@ async function fetchDataFromServer() {
         if (res.result != null) {
             product.value = res.result
             isLoading.value = false
+
+            startDate.value = dateTimeToInputFormat(product.value.dashStartedAt)
+            endDate.value = dateTimeToInputFormat(product.value.dashCompletedAt)
+
+            await nextTick()
+            // setting height of textarea
+            document.querySelectorAll('textarea').forEach(element => {
+                adjustTextareaHeight(element)
+            });
         } else {
             alert('Something went wrong, please refresh the page')
         }
@@ -160,9 +170,22 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
 
 }
 
+async function adjustTextareaHeight(target: EventTarget | null) {
+    if (target == null) return
+    await nextTick()
+    const textarea = target as HTMLTextAreaElement
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+}
+
+
 </script>
 
 <template>
+    <Head>
+        <Title>Product Update</Title>
+    </Head>
+
     <div v-if="isLoading" class="loader-container">
         <div class="loader2 dark"></div>
     </div>
@@ -178,7 +201,7 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
             </div>
 
             <div class="input-holder">
-                <textarea v-model="product.dashDescription"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.dashDescription"
                     placeholder="Project description which is only visible on dashboard" required></textarea>
                 <label>Project Description*</label>
             </div>
@@ -244,7 +267,7 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
             <h3>Project Page Part</h3>
 
             <div class="input-holder">
-                <textarea v-model="product.landingDescription"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.landingDescription"
                     placeholder="Landing description for project page, it will be visible to the users who visit this page."></textarea>
                 <label>Landing description</label>
             </div>
@@ -256,19 +279,20 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
 
 
             <div class="input-holder">
-                <textarea v-model="product.productAboutDesc"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.productAboutDesc"
                     placeholder="Description for project page, it will be visible to the users who visit this page (Markdown supported)"></textarea>
                 <label>Project description</label>
             </div>
 
             <div class="input-holder">
-                <textarea v-model="product.productAboutEndDesc"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.productAboutEndDesc"
                     placeholder="Second description (Markdown supported)"></textarea>
                 <label>Project second description</label>
             </div>
 
             <div class="input-holder">
-                <textarea v-model="product.productFeatures" placeholder="e.g: <Title> --: <Content>"></textarea>
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.productFeatures"
+                    placeholder="e.g: <Title> --: <Content>"></textarea>
                 <label>Features</label>
             </div>
 
@@ -289,7 +313,8 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
 
 
             <div class="input-holder">
-                <textarea v-model="product.productSeoDesc" placeholder="SEO description for project page"></textarea>
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.productSeoDesc"
+                    placeholder="SEO description for project page"></textarea>
                 <label>Project SEO description</label>
             </div>
 
@@ -303,13 +328,13 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
 
 
             <div class="input-holder">
-                <textarea v-model="product.privacySeoDescription"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.privacySeoDescription"
                     placeholder="SEO description for project privacy page"></textarea>
                 <label>Project privacy SEO description</label>
             </div>
 
             <div class="input-holder">
-                <textarea v-model="product.privacyAboutDesc"
+                <textarea @input="event => adjustTextareaHeight(event.target)" v-model="product.privacyAboutDesc"
                     placeholder="Project privacy about description (Markdown Supported)"></textarea>
                 <label>Project privacy about description </label>
             </div>

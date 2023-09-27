@@ -102,12 +102,15 @@ async function verifyOTP() {
 
 </script>
 <template>
+    <Head>
+        <Title>Sign Up</Title>
+    </Head>
     <div class="auth">
 
         <!-- Sign up form -->
         <form v-if="!isOtpVisible" method="post" @submit.prevent="onSignupSubmit()">
             <h2>Sign Up</h2>
-            <p>Welcome to TyperBuddy</p>
+            <p>Welcome to Flax Studio</p>
             <input v-model="first" type="text" placeholder="First name" required>
             <input v-model="last" type="text" placeholder="Last name" required>
             <input v-model="email" type="email" placeholder="Email" required>

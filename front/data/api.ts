@@ -61,10 +61,9 @@ namespace Api {
 
     export async function resetPassword(token: string, password: string) {
         let data = {
-            token: token,
             password: password
         }
-        return post<{ email: string }>("reset-password", "", data)
+        return put<string>('reset-password/' + token, "", data)
     }
 
 
@@ -125,6 +124,26 @@ namespace Api {
         var myHeaders = new Headers();
         myHeaders.append("x-access-token", token);
         return deleteRequest<String>("admin/deleteProduct/" + productId, myHeaders)
+    }
+
+    export async function approveMember(token: string, isApproved: boolean, memberId: string) {
+
+        let data = {
+            token: token,
+            isApproved: isApproved,
+            memberId: memberId
+        }
+        return put("admin/approveMember", "", data)
+    }
+
+    export async function approvePublic(token: string, isPublic: boolean, memberId: string) {
+
+        let data = {
+            token: token,
+            isPublic: isPublic,
+            memberId: memberId
+        }
+        return put("admin/approvePublic", "", data)
     }
 
 
@@ -222,7 +241,7 @@ namespace Api {
             if (res.ok) {
                 return createResult<string>('', false)
             } else {
-                return createResult(null, true, '')
+                return createResult(null, true, await res.text())
             }
         } catch (error) {
             console.log(error)

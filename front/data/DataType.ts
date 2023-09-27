@@ -216,3 +216,8 @@ export interface ProductDashboardData {
     dashStatus: string
 }
 
+
+export interface SitemapData{
+    products: Array<{_id: string}>,
+    accounts: Array<{_id: string}>
+}

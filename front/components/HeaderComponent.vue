@@ -1,13 +1,22 @@
 <script setup lang='ts'>
+const isRegister = ref(false)
+onMounted(function () {
+    if (localStorage.getItem('token') != null) {
+        isRegister.value = true
+    }
+})
 </script>
 <template>
     <header>
         <div class="header-parent">
             <div class="header">
-                <h2><a href="./">Flax Studio</a></h2>
+                <h2><NuxtLink to="/">Flax Studio</NuxtLink></h2>
                 <div>
-                    <a href="./">Home</a>
+                    <NuxtLink to="/">Home</NuxtLink>
                     <a href="#about" class="hide-responsive">About</a>
+                    <NuxtLink v-if="isRegister" to="/admin/dashboard">
+                        <img src="../public/extra/dashboard.png" alt="dashboard_icon">
+                    </NuxtLink>
                 </div>
             </div>
         </div>
@@ -49,8 +58,18 @@ header {
     text-decoration: none;
 }
 
+.header a img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
 .header div {
     margin-right: 12px;
+    display: flex;
+    align-items: center;
 }
 
 .header div a {

@@ -11,7 +11,7 @@ function markdownToHtml(markdown: string) {
 
 </script>
 <template>
-    <div class="about-container">
+    <div class="about-container" id="about">
         <h2>About App</h2>
         <div v-html="markdownToHtml(about)"></div>
     </div>

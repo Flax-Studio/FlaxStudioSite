@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Account, Product } from "./Model.js";
-import { AccountBasicData, AccountDashboardData, AccountData, AccountPublicData, AccountSmallData, AccountUpdateData, DashboardData, HomePageData, ProductBasicData, ProductDashboardData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData } from "./DataType.js";
+import { Account, Product, RejectedAccount } from "./Model.js";
+import { AccountBasicData, AccountDashboardData, AccountData, AccountPublicData, AccountSmallData, AccountUpdateData, DashboardData, HomePageData, ProductBasicData, ProductDashboardData, ProductData, ProductPageData, ProductPrivacyPageData, ProfilePageData, SitemapData } from "./DataType.js";
 
 export default class MongoAPI {
 
@@ -100,9 +100,9 @@ export default class MongoAPI {
 
             let products = Array<ProductDashboardData>()
             let accounts = Array<AccountDashboardData>()
-            
+
             // send data only when user is approved
-            if(profile.isApproved){
+            if (profile.isApproved) {
                 products = await Product.find().select('_id name dashIconUrl dashDescription dashPlatform dashTeamLead dashStartedAt dashCompletedAt dashStatus') as Array<ProductDashboardData>
                 accounts = await Account.find().select('_id firstName lastName profileImage role expertIn projects joinedAt isPublic isApproved') as Array<AccountDashboardData>
             }
@@ -121,7 +121,7 @@ export default class MongoAPI {
     }
 
 
-    async updateProfile(accountId: string, data: AccountUpdateData){
+    async updateProfile(accountId: string, data: AccountUpdateData) {
         try {
             const account = await Account.findByIdAndUpdate(accountId, data)
             return account
@@ -183,6 +183,37 @@ export default class MongoAPI {
         }
     }
 
+    async approveMember(memberId: string, isApproved: boolean) {
+        try {
+            let account: null | AccountData = null
+
+            if (isApproved) { // approving the account
+                account = await Account.findByIdAndUpdate(memberId, { isApproved: true })
+
+            } else {   // add to reject list
+                account = await Account.findByIdAndDelete(memberId)
+                if (account != null) {
+                    await RejectedAccount.create(account)
+                }
+            }
+
+            return account
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
+    async approvePublic(memberId: string, isPublic: boolean) {
+        try {
+            let account = await Account.findByIdAndUpdate(memberId, { isPublic: isPublic })
+            return account
+        } catch (error) {
+            console.error('Error in account:', error);
+            return null
+        }
+    }
+
 
 
     // -------------------------- public requests ---------------------
@@ -210,7 +241,7 @@ export default class MongoAPI {
     async getProfilePageData(accountId: string) {
         try {
             const account = await Account.findById(accountId).select('-password -mode -projects -__v -isPublic -isApproved') as AccountPublicData | null
-            if(account == null) return null
+            if (account == null) return null
             const allAccounts = await Account.find({ _id: { $ne: accountId } }).select('_id firstName lastName profileImage expertIn') as AccountSmallData[]
             const profilePageData: ProfilePageData = {
                 profile: account,
@@ -226,9 +257,9 @@ export default class MongoAPI {
 
     async getHomePageData() {
         try {
-            const accounts = await Account.find({isApproved: true, isPublic: true}).select('_id firstName lastName profileImage role expertIn smallInfo') as AccountBasicData[]
+            const accounts = await Account.find({ isApproved: true, isPublic: true }).sort({ joinedAt: 1 }).select('_id firstName lastName profileImage role expertIn smallInfo') as AccountBasicData[]
             const products = await Product.find().select('_id name dashIconUrl dashDescription dashStatus') as ProductBasicData[]
-            
+
             const homePageData: HomePageData = {
                 members: accounts,
                 products: products
@@ -236,6 +267,23 @@ export default class MongoAPI {
             return homePageData
         } catch (error) {
             console.error('Error in account:', error);
+            return null
+        }
+    }
+
+
+    async getSitemapData() {
+        try {
+            const accounts = await Account.find().select('_id')
+            const products = await Product.find().select('_id')
+            const sitemapData: SitemapData = {
+                products: products as any as Array<string>,
+                accounts: accounts as any as Array<string>
+            }
+
+            return sitemapData
+        } catch (error) {
+            console.error('sitemap error:', error);
             return null
         }
     }

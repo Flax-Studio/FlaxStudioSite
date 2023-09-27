@@ -129,6 +129,9 @@ async function uploadImage(eventTarget: EventTarget | null, isIcon: boolean) {
 </script>
 
 <template>
+        <Head>
+        <Title>Product Add</Title>
+    </Head>
     <main>
         <form method="post" @submit.prevent="addProduct">
             <h2>Project</h2>
