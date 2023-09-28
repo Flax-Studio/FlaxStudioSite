@@ -65,9 +65,9 @@ useServerSeoMeta({
 <template>
     <HeaderComponent />
     <HomeLanding />
-    <Developers :data="profileData" />
     <AppsAndGames :data="releasedAppsData" />
     <AppsAndGames :data="upcomingAppsData" />
+    <Developers :data="profileData" />
     <Features />
     <FooterComponent />
 </template>
