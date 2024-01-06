@@ -1,4 +1,4 @@
-import { SitemapData } from "data/DataType"
+import { SitemapData } from "../../data/DataType"
 
 const apiURL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001'
 
