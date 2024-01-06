@@ -32,7 +32,7 @@ jobs:
         env:
           NODE_MAILER_EMAIL: ${{ secrets.NODE_MAILER_EMAIL }}
           NODE_MAILER_PASS: ${{ secrets.NODE_MAILER_PASS }}
-          ATLAS_URI: ${{ secrets.ATLAS_URI }}
+          ATLAS_URI: ${{ vars.ATLAS_URI }}
           SERVER_URL: ${{ secrets.SERVER_URL }}
           NAME: "nitesh"
         working-directory: ./back
