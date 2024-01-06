@@ -11,6 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+    environment: flaxstudio
 
     steps:
       - name: Checkout code
@@ -34,8 +35,7 @@ jobs:
           NODE_MAILER_PASS: ${{ secrets.NODE_MAILER_PASS }}
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
           SERVER_URL: ${{ secrets.SERVER_URL }}
-          NAME: "nitesh"
         working-directory: ./back
-        run: pm2 start dist/main.js --name flax-studio-back
+        run: printenv && pm2 start dist/main.js --name flax-studio-back
 
 
