@@ -59,7 +59,7 @@ let isMongoConnected = await mongoApi.connectMongoose(atlas)
 app.use((req, res, next) => {
     if (!isMongoConnected) {
         
-        res.status(503).send("Database connection error: " + JSON.stringify({ atlas: atlas, mailerEmail: mailerEmail, serverUrl: serverUrl }))
+        res.status(503).send("Database connection error")
     } else {
         next()
     }
