@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: temp
+        run: echo ${{ secrets.NODE_MAILER_EMAIL }} && echo ${{ secrets.ATLAS_URI }}
 
       - name: Install dependencies
         working-directory: ./back
