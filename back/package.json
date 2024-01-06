@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "dev": "nodemon dist/main.js",
-        "build": "tsc -b"
+        "build": "esbuild src/main.ts --bundle --platform=node --format=esm --packages=external --outdir=dist"
     },
     "author": "Nitesh",
     "license": "ISC",
@@ -31,6 +31,8 @@
         "@types/jsonwebtoken": "^9.0.2",
         "@types/multer": "^1.4.7",
         "@types/nodemailer": "^6.4.8",
+        "esbuild": "^0.19.11",
+        "esbuild-node-tsc": "^2.0.5",
         "typescript": "^5.3.3"
     }
 }

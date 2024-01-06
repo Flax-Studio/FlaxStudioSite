@@ -476,7 +476,6 @@ app.get('/reset-password-validity/:token', (req, res) => {
 
 app.get('/admin/dashboard', async (req, res) => {
     console.log('dashboard data requested')
-    console.log(path.resolve(__dirname))
     const accountId = res.locals.accountId as string
     const data = await mongoApi.getDashboardData(accountId)
     if (data != null) {
