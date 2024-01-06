@@ -1,0 +1,40 @@
+name: Deploy Flax studio backend
+
+on:
+  push:
+    branches: [back-production]
+
+  pull_request:
+    branches: [back-production]
+
+env:
+  NODE_MAILER_EMAIL: ${{ secrets.NODE_MAILER_EMAIL }}
+  NODE_MAILER_PASS: ${{ secrets.NODE_MAILER_PASS }}
+  ATLAS_URI: ${{ secrets.ATLAS_URI }}
+  SERVER_URL: ${{ secrets.SERVER_URL }}
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        working-directory: ./back
+        run: yarn install
+
+      - name: Build the app
+        working-directory: ./back
+        run: yarn build
+
+      - name: close the server
+        continue-on-error: true
+        run: pm2 delete flax-studio-back
+
+      - name: start the server
+        working-directory: ./back
+        run: pm2 start dist/main.js --name flax-studio-back
+
+

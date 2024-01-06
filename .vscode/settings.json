@@ -1,8 +1,8 @@
 {
     "files.exclude": {
         "*/.nuxt": true,
-        "*/node_modules": true,
-        "**/*.js": true
+        "*/node_modules": false,
+        "**/*.js": false
 
     },
     "cSpell.words": [
