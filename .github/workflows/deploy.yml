@@ -7,12 +7,6 @@ on:
   pull_request:
     branches: [back-production]
 
-env:
-  NODE_MAILER_EMAIL: ${{ secrets.NODE_MAILER_EMAIL }}
-  NODE_MAILER_PASS: ${{ secrets.NODE_MAILER_PASS }}
-  ATLAS_URI: ${{ secrets.ATLAS_URI }}
-  SERVER_URL: ${{ secrets.SERVER_URL }}
-  NAME: "nitesh"
 
 jobs:
   deploy:
@@ -21,8 +15,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: temp
-        run: echo "$NODE_MAILER_EMAIL and $ATLAS_URI and $NAME"
 
       - name: Install dependencies
         working-directory: ./back
@@ -37,6 +29,12 @@ jobs:
         run: pm2 delete flax-studio-back
 
       - name: start the server
+        env:
+          NODE_MAILER_EMAIL: ${{ secrets.NODE_MAILER_EMAIL }}
+          NODE_MAILER_PASS: ${{ secrets.NODE_MAILER_PASS }}
+          ATLAS_URI: ${{ secrets.ATLAS_URI }}
+          SERVER_URL: ${{ secrets.SERVER_URL }}
+          NAME: "nitesh"
         working-directory: ./back
         run: pm2 start dist/main.js --name flax-studio-back
 
