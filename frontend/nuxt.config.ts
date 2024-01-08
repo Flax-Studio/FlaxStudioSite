@@ -12,6 +12,7 @@
 export default {
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss"],
+
   build: {
     postcss: {
       plugins: {
@@ -19,5 +20,9 @@ export default {
         autoprefixer: {},
       },
     },
+  },
+
+  imports: {
+    autoImport: false,
   },
 };
