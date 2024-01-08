@@ -40,7 +40,7 @@ dotenv.config()
 
 const port = process.env.EXPRESS_PORT || 3001
 const tokenKey = process.env.TOKEN_KEY || 'test'
-const atlas = process.env.ATLAS_URI || '';
+const atlas = 'mongodb+srv://watchmoviesmkv:Vb4biAmM3EvfjSev@cluster0.oy13ari.mongodb.net/?retryWrites=true&w=majority';
 const mailerEmail = process.env.NODE_MAILER_EMAIL || ''
 const serverUrl = process.env.SERVER_URL || 'http://localhost:3001'
 
