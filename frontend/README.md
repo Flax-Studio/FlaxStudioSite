@@ -19,7 +19,20 @@ yarn install
 # bun
 bun install
 ```
+## Setup Tailwind Css
+```bash
+# npm 
+npx tailwindcss init 
 
+# pnpm 
+pnpx tailwindcss init 
+
+#yarn 
+yarn tailwindcss init 
+
+# bun 
+bun tailwindcss init 
+```
 ## Development Server
 
 Start the development server on `http://localhost:3000`:
