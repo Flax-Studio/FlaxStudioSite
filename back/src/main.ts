@@ -10,19 +10,36 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import multer from 'multer'
 import fs from 'fs'
-import { dirname } from 'path'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const publicFileUrl = path.join(__dirname, '..')
 // console.log(path.join(__dirname, '..', 'public'))
+
+
+
+
+
+
+dotenv.config()
+
+const port = process.env.EXPRESS_PORT || 3001
+const tokenKey = process.env.TOKEN_KEY || 'test'
+const atlas = process.env.ATLAS_URI || '';
+const mailerEmail = process.env.NODE_MAILER_EMAIL || ''
+const serverUrl = process.env.SERVER_URL || 'http://localhost:3001'
+
+const uploadLoc = process.env.UPLOAD_LOC || ''          // /home/nitesh/Personal/web-dev/personal/FlaxStudioSite/back/public/uploads
+console.log( uploadLoc)
+
+const app = express()
+app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const destinationPath = path.join(__dirname, '..', 'public', 'uploads');
+        const destinationPath = uploadLoc;
         cb(null, destinationPath);
     },
     filename: function (req, file, cb) {
@@ -35,20 +52,6 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage })
-
-dotenv.config()
-
-const port = process.env.EXPRESS_PORT || 3001
-const tokenKey = process.env.TOKEN_KEY || 'test'
-const atlas = 'mongodb+srv://watchmoviesmkv:Vb4biAmM3EvfjSev@cluster0.oy13ari.mongodb.net/?retryWrites=true&w=majority';
-const mailerEmail = process.env.NODE_MAILER_EMAIL || ''
-const serverUrl = process.env.SERVER_URL || 'http://localhost:3001'
-
-const app = express()
-app.use(cors())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
 
 const mongoApi = new MongoAPI()
 let isMongoConnected = await mongoApi.connectMongoose(atlas)
@@ -630,7 +633,7 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
 
             // delete previous uploaded file, if found
             if (req.body.prevImageName != '') {
-                const fileUrl = './public/uploads/' + req.body.prevImageName
+                const fileUrl = uploadLoc + '/' + req.body.prevImageName
                 try {
                     if (req.body.prevImageName != 'no_image.png' && fs.existsSync(fileUrl)) {    // check file exist or not
                         fs.unlinkSync(fileUrl)       // delete the file
@@ -641,7 +644,7 @@ app.post('/admin/upload', upload.single('image'), async (req, res) => {
                 }
             }
 
-            res.status(200).send({ url: '/public/uploads/' + req.file!!.filename })
+            res.status(200).send({ url: uploadLoc  + '/' + req.file!!.filename })
         }
 
 
@@ -750,7 +753,9 @@ app.get('/home', async (req, res) => {
 })
 
 app.get('/public/uploads/:filename', async (req, res) => {
-    const dirPath = publicFileUrl + '/public/uploads/'
+    const dirPath = uploadLoc + '/'
+
+    console.log('Requested image: ' + dirPath + req.params.filename)
 
     if (fs.existsSync(dirPath + req.params.filename)) {
         res.sendFile(dirPath + req.params.filename)
@@ -758,6 +763,7 @@ app.get('/public/uploads/:filename', async (req, res) => {
         res.sendFile(dirPath + 'no_image.png')
     }
 })
+
 
 app.get('/sitemap', async(req, res) => {
     console.log('Requested home page data')
