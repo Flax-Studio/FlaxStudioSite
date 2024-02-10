@@ -19,11 +19,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./back
-        run: yarn install
+        run: bun install
 
       - name: Build the app
         working-directory: ./back
-        run: yarn build
+        run: bun run build
 
       - name: close the server
         continue-on-error: true
@@ -35,6 +35,7 @@ jobs:
           NODE_MAILER_PASS: ${{ secrets.NODE_MAILER_PASS }}
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
           SERVER_URL: ${{ secrets.SERVER_URL }}
+          UPLOAD_LOC: /home/nitesh/projects/flaxstudio/back/actions-runner/uploads
         working-directory: ./back
         run: printenv && pm2 start dist/main.js --name flax-studio-back
         
