@@ -37,6 +37,7 @@ app.use(bodyParser.json())
 
 
 
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         const destinationPath = uploadLoc;
