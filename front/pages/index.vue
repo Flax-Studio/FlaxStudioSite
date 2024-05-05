@@ -10,7 +10,14 @@ useHead({
     meta: [
         { name: 'google-site-verification', content: 'jONmpqCm2qSUGHtR-6eYL3lIsPxght7AhhRKDCM-A4A' }
     ],
+    script: [
+        { innerHTML: 'const urbanChatbotId = "baeaba26-7018-4f00-80f7-edb57489e698"' },
+        { src: 'https://urbanchat.ai/integration/chatbot-integration.js' }
+    ]
+
+
 })
+
 
 let pageData: HomePageData = {
     members: [],
@@ -71,6 +78,4 @@ useServerSeoMeta({
     <Features />
     <FooterComponent />
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>
