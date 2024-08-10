@@ -20,11 +20,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./back
-        run: yarn install
+        run: bun install
 
       - name: Build the app
         working-directory: ./back
-        run: yarn build
+        run: bun build
 
       - name: close the server
         continue-on-error: true
