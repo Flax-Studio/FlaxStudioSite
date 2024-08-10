@@ -35,7 +35,7 @@ jobs:
           NODE_MAILER_PASS: ${{ secrets.NODE_MAILER_PASS }}
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
           SERVER_URL: ${{ secrets.SERVER_URL }}
-          UPLOAD_LOC: ${{ var.UPLOAD_LOC }}
+          UPLOAD_LOC: ${{ env.UPLOAD_LOC }}
         working-directory: ./back
         run: printenv && pm2 start dist/main.js --name flax-studio-back
         
