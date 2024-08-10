@@ -19,11 +19,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./back
-        run: bun install
+        run: pnpm install
 
       - name: Build the app
         working-directory: ./back
-        run: bun run build
+        run: pnpm run build
 
       - name: close the server
         continue-on-error: true
